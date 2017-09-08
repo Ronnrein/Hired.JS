@@ -1,0 +1,47 @@
+.white-background {
+    background-color: white !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+#selected-assignment .assignment-list-header {
+    text-decoration: underline;
+}
+
+#assignment-body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 400px !important;
+    height: 100%;
+}
+
+#assignment-body > div.segment {
+    border-radius: 0 !important;
+}
+
+#assignment-body > div.top, #assignment-body > div.bottom {
+    border-top: 0;
+}
+
+#assignment-body > div.bottom {
+    border-bottom: 0;
+}
+
+#assignment-body > div.attached:not(.top):not(.bottom) {
+    flex: 1 !important;
+    border-top: initial;
+}
+
+#assignment-body .icon.avatar {
+    width: 1.18em !important;
+}
