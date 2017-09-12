@@ -7,6 +7,8 @@ import AceEditor from "react-ace";
 import * as EditorStore from "../store/Editor";
 import "brace/mode/javascript";
 import "brace/theme/monokai";
+import { Grid, Segment, Item, Header, Icon, Feed, Comment, Button, Input, Label, Divider } from "semantic-ui-react";
+import EditorConsole from "./EditorConsole";
 
 type EditorProps =
     EditorStore.EditorState
@@ -25,11 +27,11 @@ class Editor extends React.Component<EditorProps, {}> {
         if(Number.isNaN(id)) {
             return;
         }
-        if(this.props.assignment !== undefined && id === this.props.assignment.id) {
+        if(id === this.props.assignment.id) {
             return this.onValueChange(this.props.value);
         }
         Promise.resolve(this.props.loadAssignment(id)).then(() => {
-            this.onValueChange(this.props.assignment !== undefined ? this.props.assignment.template : "");
+            this.onValueChange(this.props.assignment.template);
         });
     }
 
@@ -46,36 +48,65 @@ class Editor extends React.Component<EditorProps, {}> {
     }
 
     onRunClick() {
-        if(this.props.assignment === undefined || this.state.arguments.indexOf("") !== -1) {
+        if (this.state.arguments.indexOf("") !== -1) {
+            this.props.addToConsole("Please set arguments to run function");
             return;
         }
+        
         this.props.runScript(this.props.assignment.id, this.props.value, this.state.arguments);
     }
 
     public render() {
-        let text = this.props.assignment !== undefined
-            ? this.props.assignment.summary//.split("\n").map((item) => <p>{item}</p>)
-            : "";
+        let a = this.props.assignment;
         return (this.state.mounted ? <div>
-            <h1>Editor</h1>
-            { text }
-            <AceEditor
-                mode="javascript"
-                theme="monokai"
-                name="editor"
-                editorProps={{$blockScrolling: true}}
-                onChange={script => this.onValueChange(script)}
-                value={this.props.value}
-            />
-            <input type="number" id="argument0" onChange={(e: any) => this.onArgumentChange(parseInt(e.target.id.replace("argument", "")), e.target.value)} />
-            <input type="number" id="argument1" onChange={(e: any) => this.onArgumentChange(parseInt(e.target.id.replace("argument", "")), e.target.value)} />
-            <button onClick={ () => this.onRunClick() }>Run</button>
-            { this.props.result != undefined &&
-                <b>Expected { this.props.result.runs[0].correct }, got { this.props.result.runs[0].result }</b>
-            }
-            {this.props.result != undefined && this.props.result.error != undefined &&
-                <b>ERROR: { this.props.result.error }</b>
-            }
+            <Header as="h2" attached="top">
+                <Icon name="code" />
+                <Header.Content>
+                    Editor
+                    <Header.Subheader>{a.id === 0 ? "Code editor" : `Assignment ${a.id}`}</Header.Subheader>
+                </Header.Content>
+            </Header>
+            <Segment attached className="no-padding">
+                <Grid celled stackable className="no-margin">
+                    <Grid.Row>
+                        <Grid.Column width={11} className="no-padding">
+                            <Segment id="assignment-body" loading={this.props.isLoading}>
+                                <Segment attached="top">
+                                    Toolbar
+                                </Segment>
+                                <Segment attached id="editor-container">
+                                    <AceEditor
+                                        mode="javascript"
+                                        theme="monokai"
+                                        name="editor"
+                                        editorProps={{ $blockScrolling: true }}
+                                        onChange={script => this.onValueChange(script)}
+                                        value={this.props.value}
+                                    />
+                                </Segment>
+                                <Segment attached="bottom">
+                                    <div id="run-input">
+                                        <Input label="console.log(add(" placeholder="0" onChange={(e: any) => this.onArgumentChange(0, e.target.value)} />
+                                        <Input labelPosition="right" placeholder="0" onChange={(e: any) => this.onArgumentChange(1, e.target.value)}>
+                                            <Label>,</Label>
+                                            <input />
+                                            <Label>));</Label>
+                                            <Button positive onClick={() => this.onRunClick()}>Run</Button>
+                                        </Input>
+                                        <Button primary>Verify script</Button>
+                                    </div>
+                                </Segment>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column width={5}>
+                            <Item.Group divided>
+
+                            </Item.Group>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Segment>
+            <EditorConsole value={this.props.console} />
         </div> : null);
     }
 }

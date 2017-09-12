@@ -45,3 +45,84 @@
 #assignment-body .icon.avatar {
     width: 1.18em !important;
 }
+
+#editor-container {
+    padding: 0;
+}
+
+#editor-container > div {
+    margin: 0;
+    width: 100% !important;
+    height: 100%;
+}
+
+#run-input {
+    display: flex;
+}
+
+#run-input > div {
+    flex: 1;
+}
+
+#run-input > div:first-child input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#run-input > div:not(:first-child) .label {
+    border-radius: 0;
+}
+
+#run-input button.positive {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#run-input input {
+    width: 20px;
+}
+
+#assignment-body.segment {
+    padding: 0;
+    border: 0;
+}
+
+#editor-console {
+    position: relative;
+    background-color: #272822;
+}
+
+#editor-console-messages {
+    overflow-y: scroll;
+    height: 200px;
+}
+
+#editor-console-shadow {
+    box-shadow: inset 0 80px 90px -80px black;
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    left: 0;
+    top: 0;
+}
+
+#editor-console p {
+    margin: 0 !important;
+    font-family: "Lucida Console", Monaco, monospace;
+    color: green;
+    font-size: 0.9em;
+}
+
+#editor-console p:before {
+    content: ">";
+    margin-right: 5px;
+}
+
+#editor-console p:last-of-type {
+    color: greenyellow;
+}
+
+#editor-console p:last-of-type:before {
+    content: "\00bb";
+    color: greenyellow;
+}
