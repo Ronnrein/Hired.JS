@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { Segment } from "semantic-ui-react";
 import { convertNewLine } from "../utils";
 
@@ -7,26 +7,28 @@ type Props = {
 }
 
 class EditorConsole extends React.Component<Props, {}> {
-    private bottom: HTMLSpanElement;
+  private container: HTMLElement;
+  private autoScroll: boolean;
+
+    componentWillUpdate() {
+        this.autoScroll = this.container.scrollTop + this.container.offsetHeight === this.container.scrollHeight;
+    }
 
     componentDidUpdate() {
-        this.scrollToBottom();
+        if(this.autoScroll) {
+            this.container.scrollTop = this.container.scrollHeight;
+        }
     }
 
     render() {
         return (
-            <Segment attached="bottom" id="editor-console" inverted>
+            <Segment as="div" attached="bottom" id="editor-console" inverted>
                 <div id="editor-console-shadow"></div>
-                <div id="editor-console-messages">
+                <div id="editor-console-messages" ref={(el: HTMLDivElement) => { this.container = el }}>
                     {convertNewLine(this.props.value)}
-                    <span ref={(el: HTMLSpanElement) => { this.bottom = el }}></span>
                 </div>
             </Segment>
         );
-    }
-
-    scrollToBottom() {
-        this.bottom.scrollIntoView();
     }
 }
 
