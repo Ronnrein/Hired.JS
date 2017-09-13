@@ -1,4 +1,4 @@
-﻿import { fetch, addTask } from "domain-task";
+import { fetch, addTask } from "domain-task";
 import { Action, Reducer, ActionCreator } from "redux";
 import { AppThunkAction } from "./";
 
@@ -12,14 +12,22 @@ export interface Assignment {
     id: number;
     name: string;
     title: string;
+    function: string;
     summary: string;
     template: string;
     messages: Message[];
+    arguments: Argument[];
 }
 
 export interface Message {
     author: Worker;
     text: string;
+    image?: string;
+}
+
+export interface Argument {
+    description: string;
+    example: string;
 }
 
 export interface Worker {

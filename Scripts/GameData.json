@@ -10,6 +10,7 @@
       "id": 1,
       "name": "Basic addition",
       "title": "Welcome!",
+      "function": "add",
       "summary": "Create a function that accepts two numbers, and returns the numbers added together.",
       "solution": "function(num1, num2) { return num1 + num2; }",
       "template": "function add(num1, num2) {\n\treturn 0;\n}",
@@ -20,6 +21,10 @@
         "author": 4,
         "text": "Why wasn't my first assignment this simple? :("
       }],
+      "arguments": [
+        { "description": "Number", "example": "52" },
+        { "description": "Number", "example": "24" }
+      ],
       "tests": [
         { "arguments": [  4,  9 ], "result":  13 },
         { "arguments": [ 23, 29 ], "result":  52 },
@@ -36,16 +41,23 @@
       "id": 2,
       "name": "Avarage of two numbers",
       "title": "Another one",
+      "function": "avarage",
       "summary": "Create a function that accepts two numbers, and returns the avarage (rounded down) of the numbers.",
-      "solution": "function(num1, num2) { return Math.floor((num1 + num2) / 2); }",
-      "template": "function avarage(num1, num2) {\n\treturn 0;\n}",
+      "solution": "function(num1, num2, num3) { return Math.floor((num1 + num2 + num3) / 3); }",
+      "template": "function avarage(num1, num2, num3) {\n\t//Perform stuff here\n\treturn 0;\n}",
       "messages": [{
         "author": 1,
         "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
       }, {
         "author": 2,
-        "text": "I promise i will make him give you a more exciting assignment after this one, jeez"
+        "text": "I promise i will make him give you a more exciting assignment after this one, jeez",
+        "image": "cat.png"
       }],
+      "arguments": [
+        { "description": "Number", "example": "52" },
+        { "description": "Number", "example": "24" },
+        { "description": "Number", "example": "24" }
+      ],
       "tests": [
         { "arguments": [  5,  2 ], "result":   3 },
         { "arguments": [ 94, 23 ], "result":  58 },

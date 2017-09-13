@@ -1,4 +1,4 @@
-﻿import { fetch, addTask } from "domain-task";
+import { fetch, addTask } from "domain-task";
 import { Action, Reducer, ActionCreator } from "redux";
 import { AppThunkAction } from "./";
 import { Assignment } from "./AssignmentList";
@@ -122,9 +122,11 @@ const unloadedState: EditorState = {
         id: 0,
         name: "",
         title: "",
+        function: "",
         summary: "",
         template: "",
-        messages: []
+        messages: [],
+        arguments: []
     },
     console: "Hired.JS Internal System v2.04\nLoading system...\nLoading complete",
     isLoading: false
