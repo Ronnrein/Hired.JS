@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -123,6 +123,9 @@ class AssignmentList extends React.Component<AssignmentListProps, {}> {
                         <Feed.Date>{message.author.position}</Feed.Date>
                     </Feed.Summary>
                     <Feed.Extra text>{convertNewLine(message.text)}</Feed.Extra>
+                    {message.image !== null &&
+                        <Feed.Extra images><img src={`/images/attachments/${message.image}`} /></Feed.Extra>
+                    }
                 </Feed.Content>
             </Feed.Event>
         );

@@ -60,17 +60,29 @@
     display: flex;
 }
 
-#run-input > div {
+#run-input > div.input {
     flex: 1;
+    margin: 0;
+    border-radius: 0;
 }
 
-#run-input > div:first-child input {
+#run-input input {
+    border-radius: 0;
+}
+
+#run-input > div.label {
+    flex: 0;
+    padding-top: .78571429em;
+    margin: 0;
+}
+
+#run-input > div.label:not(:first-child) {
+    border-radius: 0;
+}
+
+#run-input > div.label:first-child {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-}
-
-#run-input > div:not(:first-child) .label {
-    border-radius: 0;
 }
 
 #run-input button.positive {

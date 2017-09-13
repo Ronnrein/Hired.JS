@@ -7,7 +7,7 @@ import AceEditor from "react-ace";
 import * as EditorStore from "../store/Editor";
 import "brace/mode/javascript";
 import "brace/theme/monokai";
-import { Grid, Segment, Item, Header, Icon, Feed, Comment, Button, Input, Label, Divider } from "semantic-ui-react";
+import { Grid, Segment, Item, Header, Icon, Feed, Comment, Button, Input, Label, Divider, Popup } from "semantic-ui-react";
 import EditorConsole from "./EditorConsole";
 
 type EditorProps =
@@ -18,7 +18,7 @@ type EditorProps =
 class Editor extends React.Component<EditorProps, {}> {
     state = {
         mounted: false,
-        arguments: Array(2).fill("")
+        arguments: Array(0)
     };
 
     componentDidMount() {
@@ -32,6 +32,9 @@ class Editor extends React.Component<EditorProps, {}> {
         }
         Promise.resolve(this.props.loadAssignment(id)).then(() => {
             this.onValueChange(this.props.assignment.template);
+            this.setState({
+                arguments: Array(this.props.assignment.arguments.length).fill("")
+            });
         });
     }
 
@@ -84,18 +87,6 @@ class Editor extends React.Component<EditorProps, {}> {
                                         value={this.props.value}
                                     />
                                 </Segment>
-                                <Segment attached="bottom">
-                                    <div id="run-input">
-                                        <Input label="console.log(add(" placeholder="0" onChange={(e: any) => this.onArgumentChange(0, e.target.value)} />
-                                        <Input labelPosition="right" placeholder="0" onChange={(e: any) => this.onArgumentChange(1, e.target.value)}>
-                                            <Label>,</Label>
-                                            <input />
-                                            <Label>));</Label>
-                                            <Button positive onClick={() => this.onRunClick()}>Run</Button>
-                                        </Input>
-                                        <Button primary>Verify script</Button>
-                                    </div>
-                                </Segment>
                             </Segment>
                         </Grid.Column>
                         <Grid.Column width={5}>
@@ -104,10 +95,43 @@ class Editor extends React.Component<EditorProps, {}> {
                             </Item.Group>
                         </Grid.Column>
                     </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            {this.renderRunForm()}
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
             </Segment>
             <EditorConsole value={this.props.console} />
         </div> : null);
+    }
+
+    private renderRunForm() {
+        let args = this.props.assignment.arguments;
+        let fields: any[] = [];
+        for (let i = 0; i < args.length; i++) {
+            if(i > 0) {
+                fields.push(<Label size="large" key={`l${i}`}>,</Label>);
+            }
+            fields.push(<Popup
+                trigger={<Input placeholder={args[i].description} onChange={(e: any) => this.onArgumentChange(i, e.target.value)} />}
+                on="focus"
+                content={`Example: ${args[i].example}`}
+                position="top center"
+                size="tiny"
+                inverted
+                key={`p${i}`}
+            />);
+        }
+        return (
+            <div id="run-input">
+                <Label size="large">console.log({this.props.assignment.function}(</Label>
+                {fields}
+                <Label size="large">));</Label>
+                <Button positive onClick={() => this.onRunClick()}>Run</Button>
+                <Button primary>Verify script</Button>
+            </div>
+        );
     }
 }
 
