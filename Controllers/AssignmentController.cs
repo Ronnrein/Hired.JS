@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,14 +38,17 @@ namespace Hiredjs.Controllers {
         [HttpPost]
         public async Task<IActionResult> Run(int id, [FromBody] PlayerTaskRunVm model) {
             GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == id);
-            if (assignment == null) {
+            if (id == 0) {
+                assignment = new GameData.Assignment { Solution = null };
+            }
+            else if (assignment == null) {
                 return NotFound();
             }
-            AssignmentResultVm results = await _nodeServices.InvokeAsync<AssignmentResultVm>(
+            AssignmentRunResultVm results = await _nodeServices.InvokeAsync<AssignmentRunResultVm>(
                 "Scripts/Run.js",
                 model.Script,
                 assignment.Solution,
-                model.Test != null ? new [] { model.Test } : assignment.Tests
+                model.Arguments
             );
             return Json(results);
         }

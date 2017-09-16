@@ -1,4 +1,4 @@
-﻿import * as React from "react";
+import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
@@ -9,6 +9,7 @@ import "brace/mode/javascript";
 import "brace/theme/monokai";
 import { Grid, Segment, Item, Header, Icon, Feed, Comment, Button, Input, Label, Divider, Popup } from "semantic-ui-react";
 import EditorConsole from "./EditorConsole";
+import { convertNewLine } from "../utils";
 
 type EditorProps =
     EditorStore.EditorState
@@ -18,16 +19,19 @@ type EditorProps =
 class Editor extends React.Component<EditorProps, {}> {
     state = {
         mounted: false,
-        arguments: Array(0)
+        arguments: Array()
     };
 
     componentDidMount() {
         this.setState({ mounted: true });
         let id = +this.props.match.params.id;
         if(Number.isNaN(id)) {
-            return;
+            id = 0;
         }
-        if(id === this.props.assignment.id) {
+        if (id === this.props.assignment.id) {
+            this.setState({
+                arguments: Array(this.props.assignment.arguments.length).fill("")
+            });
             return this.onValueChange(this.props.value);
         }
         Promise.resolve(this.props.loadAssignment(id)).then(() => {
@@ -61,12 +65,14 @@ class Editor extends React.Component<EditorProps, {}> {
 
     public render() {
         let a = this.props.assignment;
+        let message = a.messages[0];
+        let image = `/images/workers/${message.author.id}.jpg`;
         return (this.state.mounted ? <div>
             <Header as="h2" attached="top">
                 <Icon name="code" />
                 <Header.Content>
                     Editor
-                    <Header.Subheader>{a.id === 0 ? "Code editor" : `Assignment ${a.id}`}</Header.Subheader>
+                    <Header.Subheader>{a.name}</Header.Subheader>
                 </Header.Content>
             </Header>
             <Segment attached className="no-padding">
@@ -90,8 +96,20 @@ class Editor extends React.Component<EditorProps, {}> {
                             </Segment>
                         </Grid.Column>
                         <Grid.Column width={5}>
-                            <Item.Group divided>
-
+                            <Item.Group as={Feed} divided>
+                                <Feed.Event>
+                                    <Feed.Label image={image} />
+                                    <Feed.Content>
+                                        <Feed.Summary>
+                                            <Feed.User as="span">{message.author.name}</Feed.User>
+                                            <Feed.Date>{message.author.position}</Feed.Date>
+                                        </Feed.Summary>
+                                        <Feed.Extra text>{convertNewLine(a.summary)}</Feed.Extra>
+                                        {message.image !== null &&
+                                            <Feed.Extra images><img src={`/images/attachments/${message.image}`} /></Feed.Extra>
+                                        }
+                                    </Feed.Content>
+                                </Feed.Event>
                             </Item.Group>
                         </Grid.Column>
                     </Grid.Row>

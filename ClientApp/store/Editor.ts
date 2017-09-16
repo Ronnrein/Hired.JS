@@ -18,7 +18,6 @@ export interface RunResult {
     error: string;
     result: string;
     correct: string;
-    time: number;
 }
 
 export interface ScriptResult {
@@ -41,7 +40,7 @@ export interface RequestScriptRunAction {
 
 export interface ReceiveScriptRunAction {
     type: "RECEIVE_SCRIPT_RUN";
-    result: ScriptResult;
+    result: RunResult;
 }
 
 export interface RequestScriptVerificationAction {
@@ -81,12 +80,9 @@ export const actionCreators = {
             },
             body: JSON.stringify({
                 script: script,
-                test: {
-                    arguments: args,
-                    result: null
-                }
+                arguments: id !== 0 ? args : args[0].replace(/\s/g, "").split(",")
             })
-        }).then(response => response.json() as Promise<ScriptResult>).then(data => {
+        }).then(response => response.json() as Promise<RunResult>).then(data => {
             dispatch({ type: "RECEIVE_SCRIPT_RUN", result: data });
         });
         addTask(fetchAssignment);
@@ -117,16 +113,26 @@ export const actionCreators = {
 };
 
 const unloadedState: EditorState = {
-    value: "",
+    value: "// Define your function here\nfunction func(args, here) {\n\treturn args + here;\n}",
     assignment: {
         id: 0,
-        name: "",
+        name: "Free play",
         title: "",
-        function: "",
-        summary: "",
+        function: "func",
+        summary: "Here you can freely try different things in the editor!",
         template: "",
-        messages: [],
-        arguments: []
+        messages: [{
+            author: {
+                id: 0,
+                name: "Hired.JS",
+                position: "Admin"
+            },
+            text: ""
+        }],
+        arguments: [{
+            description: "Argument list",
+            example: "1, \"Hello there!\""
+        }]
     },
     console: "Hired.JS Internal System v2.04\nLoading system...\nLoading complete",
     isLoading: false
@@ -149,15 +155,21 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
                 console: `${state.console}\n${consoleText}`
             });
         case "RECEIVE_SCRIPT_RUN":
-            let run = action.result.runs[0];
-            let logs = run.logs.map((l) => {
+            let logs = action.result.logs.map((l) => {
                 return `console.log: ${l}`;
             });
             let log = logs.length !== 0 ? `\n${logs.join("\n")}` : "";
-            let result = action.result.error != undefined
-                ? action.result.error
-                : `${run.success ? "Success!" : "Incorrect"} (Expected ${run.correct}, got ${run.result})`;
-            consoleText = `Assignment ${state.assignment.id} run result: ${result}`;
+            let message: string;
+            if(action.result.error != undefined) {
+                message = action.result.error;
+            }
+            else if(action.result.correct === null) {
+                message = `Function output: ${action.result.result}`;
+            } else {
+                message = `${action.result.success ? "Success!" : "Incorrect"}`;
+                message += ` (Expected ${action.result.correct }, got ${action.result.result })`;
+            }
+            consoleText = `Run result: ${message}`;
             return Object.assign({}, state, {
                 result: action.result,
                 console: `${state.console+log}\n${consoleText}`,

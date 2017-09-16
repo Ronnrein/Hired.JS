@@ -1,68 +1,44 @@
-﻿const { VM } = require("vm2");
+const { VM } = require("vm2");
 
-module.exports = function(callback, script, solution, tests) {
-    const results = [];
-
-    // Define the iteration variable outside loop to use in console.log function
-    let i = 0;
+module.exports = function(callback, script, solution, args) {
+    const o = {
+        logs: [],
+        success: false,
+        error: null,
+        result: 0,
+        correct: null
+    };
 
     // Initialize the VM
     let vm = new VM({
         sandbox: {
             console: {
-                log: function(str) { consoleLog(str); }
+                log: function(str) { result.logs.push(str); }
             }
         }
     });
 
-    // Go through the argument list
-    for (let test of tests) {
-        let o = {
-            logs: [],
-            arguments: test.arguments,
-            success: false,
-            error: null,
-            result: 0,
-            correct: test.result,
-            time: 0
-        };
-        results[i] = o;
+    try {
+        o.result = vm.run(`(${script})(${args.join(", ")})`);
+    } catch (e) {
+
+        // Something went wrong in the users code
+        o.error = `${e.name}: ${e.message}`;
+    }
+    if (o.error === null && solution !== null) {
         try {
+            o.correct = vm.run(`(${solution})(${args.join(", ")})`);
+        } catch(e) {
 
-            // Start recording time to measure performance
-            let t = process.hrtime();
-            o.result = vm.run(`(${script})(${test.arguments.join(", ")})`);
-            t = process.hrtime(t);
-            o.time = t[0] * 1e9 + t[1];
-        } catch (e) {
-
-            // Something went wrong in the users code
-            o.error = `${e.name}: ${e.message}`;
+            // Should not happen, if it does something is wrong in the task template
+            o.error = "Task error, please report to developer";
         }
-        if(o.correct === null) {
-            try {
-                o.correct = vm.run(`(${solution})(${test.arguments.join(", ")})`);
-            } catch (e) {
-
-                // Should not happen, if it does something is wrong in the task template
-                o.error = "Task error, please report to developer";
-            }
-        }
-        if (results[i].error !== null) {
-
-            // If there has been an error, do not continue
-            break;
-        }
-
-        // Finally check if the two results match or not
-        o.success = o.result.toString() === o.correct.toString();
-        i++;
     }
 
-    callback(null, { runs: results });
+    // Finally check if the two results match or not
+    o.success = o.error === null && (
+        solution === null || (o.correct !== null && o.result.toString() === o.correct.toString())
+    );
 
-    // Function to capture console.log statements into results object
-    function consoleLog(str) {
-        results[i].logs.push(str);
-    }
+    callback(null, o);
 }
