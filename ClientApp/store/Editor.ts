@@ -5,10 +5,10 @@ import { Assignment } from "./AssignmentList";
 
 export interface EditorState {
     assignment: Assignment;
-    result?: ScriptResult;
     value: string;
     console: string;
     isLoading: boolean;
+    result?: RunResult | VerificationResult;
 }
 
 export interface RunResult {
@@ -20,11 +20,10 @@ export interface RunResult {
     correct: string;
 }
 
-export interface ScriptResult {
-    runs: RunResult[];
-    success: boolean;
-    error: string;
-    time: number;
+export interface VerificationResult extends RunResult {
+    tests: number;
+    completed: number;
+    failed?: RunResult;
 }
 
 export interface LoadAssignmentAction {
@@ -50,7 +49,7 @@ export interface RequestScriptVerificationAction {
 
 export interface ReceiveScriptVerificationAction {
     type: "RECEIVE_SCRIPT_VERIFICATION";
-    result: ScriptResult;
+    result: VerificationResult;
 }
 
 export interface ValueChange {
@@ -95,9 +94,11 @@ export const actionCreators = {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ script: script })
+            body: JSON.stringify({
+                script: script
+            })
         }).then(
-            response => response.json() as Promise<ScriptResult>
+            response => response.json() as Promise<VerificationResult>
         ).then(data => {
             dispatch({ type: "RECEIVE_SCRIPT_VERIFICATION", result: data });
         });
@@ -140,7 +141,7 @@ const unloadedState: EditorState = {
 
 export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
-    let consoleText: string;
+    let consoleText: string, message: string;
     switch (action.type) {
         case "LOAD_ASSIGNMENT":
             return Object.assign({}, state, {
@@ -149,7 +150,10 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
                 console: `${state.console}\nLoaded assignment ${action.assignment.id}`
             });
         case "REQUEST_SCRIPT_RUN":
-            consoleText = `Running assignment ${state.assignment.id} with arguments (${action.arguments.join(", ")})`;
+        case "REQUEST_SCRIPT_VERIFICATION":
+            consoleText = action.type === "REQUEST_SCRIPT_RUN"
+                ? `Running assignment ${state.assignment.id} with arguments (${action.arguments.join(", ")})`
+                : `Running verification for assignment ${state.assignment.id}`;
             return Object.assign({}, state, {
                 isLoading: true,
                 console: `${state.console}\n${consoleText}`
@@ -159,9 +163,8 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
                 return `console.log: ${l}`;
             });
             let log = logs.length !== 0 ? `\n${logs.join("\n")}` : "";
-            let message: string;
             if(action.result.error != undefined) {
-                message = action.result.error;
+                message = `Error (${action.result.error})`;
             }
             else if(action.result.correct === null) {
                 message = `Function output: ${action.result.result}`;
@@ -169,16 +172,29 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
                 message = `${action.result.success ? "Success!" : "Incorrect"}`;
                 message += ` (Expected ${action.result.correct }, got ${action.result.result })`;
             }
-            consoleText = `Run result: ${message}`;
+            consoleText = `Result: ${message}`;
             return Object.assign({}, state, {
-                result: action.result,
                 console: `${state.console+log}\n${consoleText}`,
-                isLoading: false
+                isLoading: false,
+                result: action.result
             });
-        case "REQUEST_SCRIPT_VERIFICATION":
-            break;
         case "RECEIVE_SCRIPT_VERIFICATION":
-            break;
+            if(action.result.failed == undefined) {
+                message = `Success! Completed ${action.result.completed} of ${action.result.tests} runs`;
+            }
+            else if (action.result.failed.error != undefined) {
+                message = `Error (${action.result.failed.error})`;
+            }
+            else {
+                let r = action.result.failed;
+                message = `Incorrect (Expected ${r.correct}, got ${r.result} with arguments ${r.arguments.join(", ")})`;
+            }
+            consoleText = `Result: ${message}`;
+            return Object.assign({}, state, {
+                console: `${state.console}\n${consoleText}`,
+                isLoading: false,
+                result: action.result
+            });
         case "VALUE_CHANGE":
             return Object.assign({}, state, {
                 value: action.value

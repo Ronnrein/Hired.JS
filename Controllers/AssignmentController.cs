@@ -59,8 +59,8 @@ namespace Hiredjs.Controllers {
             if (assignment == null) {
                 return NotFound();
             }
-            AssignmentResultVm results = await _nodeServices.InvokeAsync<AssignmentResultVm>(
-                "Scripts/Run.js",
+            AssignmentVerificationResultVm results = await _nodeServices.InvokeAsync<AssignmentVerificationResultVm>(
+                "Scripts/Verify.js",
                 model.Script,
                 assignment.Solution,
                 assignment.Tests

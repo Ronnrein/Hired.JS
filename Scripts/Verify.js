@@ -1,17 +1,23 @@
 const { VM } = require("vm2");
 
 module.exports = function(callback, script, solution, tests) {
-    const results = [];
 
-    // Define the iteration variable outside loop to use in console.log function
     let i = 0;
+    let o;
 
     // Initialize the VM
-    let vm = new VM();
+    let vm = new VM({
+        sandbox: {
+            console: {
+                log: function(str) { o.logs.push(str); }
+            }
+        }
+    });
 
     // Go through the argument list
     for (let test of tests) {
-        let o = {
+        o = {
+            logs: [],
             arguments: test.arguments,
             success: false,
             error: null,
@@ -19,7 +25,6 @@ module.exports = function(callback, script, solution, tests) {
             correct: test.result,
             time: 0
         };
-        results[i] = o;
         try {
 
             // Start recording time to measure performance
@@ -41,7 +46,7 @@ module.exports = function(callback, script, solution, tests) {
                 o.error = "Task error, please report to developer";
             }
         }
-        if (results[i].error !== null) {
+        if (o.error !== null) {
 
             // If there has been an error, do not continue
             break;
@@ -49,8 +54,18 @@ module.exports = function(callback, script, solution, tests) {
 
         // Finally check if the two results match or not
         o.success = o.result.toString() === o.correct.toString();
+
+        if (!o.success) {
+
+            // If theres an incorrect answer, dot not continue
+            break;
+        }
         i++;
     }
 
-    callback(null, { runs: results });
+    callback(null, {
+        failed: o.error !== null || !o.success ? o : null,
+        tests: tests.length,
+        completed: i
+    });
 }

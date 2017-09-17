@@ -63,6 +63,10 @@ class Editor extends React.Component<EditorProps, {}> {
         this.props.runScript(this.props.assignment.id, this.props.value, this.state.arguments);
     }
 
+    onVerifyClick() {
+        this.props.verifyScript(this.props.assignment.id, this.props.value);
+    }
+
     public render() {
         let a = this.props.assignment;
         let message = a.messages[0];
@@ -147,7 +151,7 @@ class Editor extends React.Component<EditorProps, {}> {
                 {fields}
                 <Label size="large">));</Label>
                 <Button positive onClick={() => this.onRunClick()}>Run</Button>
-                <Button primary>Verify script</Button>
+                <Button primary onClick={() => this.onVerifyClick()}>Verify script</Button>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-﻿{
+{
   "workers": [
     { "id": 1, "name": "Paul Cleverley", "position": "Senior developer" },
     { "id": 2, "name": "Sandra Cowie", "position": "Developer" },
@@ -43,8 +43,8 @@
       "title": "Another one",
       "function": "avarage",
       "summary": "Create a function that accepts two numbers, and returns the avarage (rounded down) of the numbers.",
-      "solution": "function(num1, num2, num3) { return Math.floor((num1 + num2 + num3) / 3); }",
-      "template": "function avarage(num1, num2, num3) {\n\t//Perform stuff here\n\treturn 0;\n}",
+      "solution": "function(num1, num2, num3) { return Math.floor((num1 + num2) / 2); }",
+      "template": "function avarage(num1, num2) {\n\t//Perform stuff here\n\treturn 0;\n}",
       "messages": [{
         "author": 1,
         "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
@@ -55,7 +55,6 @@
       }],
       "arguments": [
         { "description": "Number", "example": "52" },
-        { "description": "Number", "example": "24" },
         { "description": "Number", "example": "24" }
       ],
       "tests": [
