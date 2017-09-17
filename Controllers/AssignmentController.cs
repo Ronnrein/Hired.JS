@@ -22,17 +22,9 @@ namespace Hiredjs.Controllers {
             _mapper = mapper;
         }
 
-        public IActionResult Get() {
+        [HttpGet]
+        public IActionResult Index() {
             return Json(_mapper.Map<IEnumerable<GameData.Assignment>, IEnumerable<AssignmentVm>>(_gameData.Assignments));
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id) {
-            GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == id);
-            if (assignment == null) {
-                return NotFound();
-            }
-            return Json(_mapper.Map<GameData.Assignment, AssignmentVm>(assignment));
         }
 
         [HttpPost]

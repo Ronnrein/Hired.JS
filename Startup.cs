@@ -70,7 +70,7 @@ namespace Hiredjs {
                     template: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute(
                     name: "api",
-                    template: "api/{controller}/{action}/{id?}");
+                    template: "api/{controller=Home}/{action=Index}/{id?}");
             });
 
             // Workaround for SPA letting requests under /api return 404

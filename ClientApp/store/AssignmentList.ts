@@ -54,7 +54,7 @@ type KnownAction = RequestAssignmentsAction | ReceiveAssignmentsAction | SelectA
 
 export const actionCreators = {
     requestAssignments: (): AppThunkAction<KnownAction> => (dispatch) => {
-        let fetchAssignments = fetch("api/assignment/get").then(
+        let fetchAssignments = fetch("api/assignment").then(
             response => response.json() as Promise<Assignment[]>
         ).then(data => {
             dispatch({ type: "RECEIVE_ASSIGNMENTS", assignments: data });
