@@ -40,9 +40,12 @@ namespace Hiredjs {
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<HiredjsDbContext>();
 
             // Only return 401 code without redirect on unauthorized
-            services.ConfigureApplicationCookie(o => o.Events.OnRedirectToLogin = (c) => {
-                c.Response.StatusCode = 401;
-                return Task.CompletedTask;
+            services.ConfigureApplicationCookie(o => {
+                o.Events.OnRedirectToLogin = (c) => {
+                    c.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+                o.ExpireTimeSpan = TimeSpan.FromDays(365);
             });
 
             // Add node services to allow us to run JavaScript

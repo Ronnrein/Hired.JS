@@ -8,8 +8,7 @@ import { ConnectedRouter } from "react-router-redux";
 import { createBrowserHistory } from "history";
 import configureStore from "./configureStore";
 import { ApplicationState }  from "./store";
-import * as RoutesModule from "./routes";
-let routes = RoutesModule.routes;
+import { App } from "./components/App";
 
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
 const history = createBrowserHistory({ basename: baseUrl });
@@ -21,7 +20,9 @@ function renderApp() {
     ReactDOM.render(
         <AppContainer>
             <Provider store={ store }>
-                <ConnectedRouter history={ history } children={ routes } />
+                <ConnectedRouter history={history}>
+                    <App />
+                </ConnectedRouter>
             </Provider>
         </AppContainer>,
         document.getElementById('react-app')
@@ -31,8 +32,5 @@ function renderApp() {
 renderApp();
 
 if (module.hot) {
-    module.hot.accept("./routes", () => {
-        routes = require<typeof RoutesModule>("./routes").routes;
-        renderApp();
-    });
+    module.hot.accept();
 }
