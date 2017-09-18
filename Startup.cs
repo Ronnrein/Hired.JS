@@ -1,9 +1,12 @@
+using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Hiredjs.Data;
 using Hiredjs.Models;
 using Hiredjs.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -25,9 +28,22 @@ namespace Hiredjs {
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
 
+            // Sessions
+            services.AddDistributedMemoryCache();
+            services.AddSession(o => {
+                o.IdleTimeout = TimeSpan.FromSeconds(10);
+                o.Cookie.HttpOnly = true;
+            });
+
             // Add database
             services.AddDbContext<HiredjsDbContext>(o => o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<HiredjsDbContext>();
+
+            // Only return 401 code without redirect on unauthorized
+            services.ConfigureApplicationCookie(o => o.Events.OnRedirectToLogin = (c) => {
+                c.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            });
 
             // Add node services to allow us to run JavaScript
             services.AddNodeServices();
@@ -67,7 +83,9 @@ namespace Hiredjs {
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
 
+            app.UseSession();
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
