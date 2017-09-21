@@ -1,29 +1,39 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Hiredjs.Models;
 using Hiredjs.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.NodeServices;
 
 namespace Hiredjs.Controllers {
 
+    [Authorize]
     public class AssignmentController : Controller{
 
         private readonly INodeServices _nodeServices;
         private readonly GameData _gameData;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public AssignmentController(INodeServices nodeServices, GameData gameData, IMapper mapper) {
+        public AssignmentController(
+            INodeServices nodeServices,
+            GameData gameData,
+            IMapper mapper,
+            UserManager<User> userManager
+        ) {
             _nodeServices = nodeServices;
             _gameData = gameData;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Index() {
+            // TODO: Hook up progression
             return Json(_mapper.Map<IEnumerable<GameData.Assignment>, IEnumerable<AssignmentVm>>(_gameData.Assignments));
         }
 

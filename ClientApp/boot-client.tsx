@@ -7,8 +7,9 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { createBrowserHistory } from "history";
 import configureStore from "./configureStore";
+import { Route } from "react-router-dom";
 import { ApplicationState }  from "./store";
-import { App } from "./components/App";
+import App from "./components/App";
 
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
 const history = createBrowserHistory({ basename: baseUrl });
@@ -21,11 +22,11 @@ function renderApp() {
         <AppContainer>
             <Provider store={ store }>
                 <ConnectedRouter history={history}>
-                    <App />
+                    <Route path="/" component={App} />
                 </ConnectedRouter>
             </Provider>
         </AppContainer>,
-        document.getElementById('react-app')
+        document.getElementById("react-app")
     );
 }
 

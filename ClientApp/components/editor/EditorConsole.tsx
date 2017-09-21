@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Segment } from "semantic-ui-react";
-import { convertNewLine } from "../utils";
+import { convertNewLine } from "../../utils";
 
 type Props = {
     value: string;

@@ -1,6 +1,6 @@
-﻿import * as React from "react";
-import { Image, Item, Icon } from "semantic-ui-react";
-import { Assignment } from "../store/AssignmentList";
+import * as React from "react";
+import { Item, Icon } from "semantic-ui-react";
+import { Assignment } from "../../store/Assignments";
 
 type Props = {
     assignment: Assignment;
@@ -8,7 +8,7 @@ type Props = {
     onClick?: any;
 }
 
-class TaskListItem extends React.Component<Props, {}> {
+class AssignmentListItem extends React.Component<Props, {}> {
         render() {
         let assignment = this.props.assignment;
         let image = `/images/workers/${assignment.messages[0].author.id}.jpg`;
@@ -31,4 +31,4 @@ class TaskListItem extends React.Component<Props, {}> {
     }
 }
 
-export default TaskListItem;
+export default AssignmentListItem;

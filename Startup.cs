@@ -67,6 +67,7 @@ namespace Hiredjs {
                     }));
                 o.CreateMap<GameData.Assignment.Message, AssignmentVm.Message>()
                     .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.Author)));
+                o.CreateMap<User, UserVm>();
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);

@@ -1,8 +1,8 @@
 import { fetch, addTask } from "domain-task";
-import { Action, Reducer, ActionCreator } from "redux";
+import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
 
-export interface AssignmentListState {
+export interface AssignmentsState {
     assignments: Assignment[];
     selectedAssignment?: Assignment;
     isLoading: boolean;
@@ -54,7 +54,9 @@ type KnownAction = RequestAssignmentsAction | ReceiveAssignmentsAction | SelectA
 
 export const actionCreators = {
     requestAssignments: (): AppThunkAction<KnownAction> => (dispatch) => {
-        let fetchAssignments = fetch("api/assignment").then(
+        let fetchAssignments = fetch("api/assignment", {
+            credentials: "same-origin"
+        }).then(
             response => response.json() as Promise<Assignment[]>
         ).then(data => {
             dispatch({ type: "RECEIVE_ASSIGNMENTS", assignments: data });
@@ -67,12 +69,12 @@ export const actionCreators = {
     }
 };
 
-const unloadedState: AssignmentListState = {
+const unloadedState: AssignmentsState = {
     assignments: [],
     isLoading: false
 }
 
-export const reducer: Reducer<AssignmentListState> = (state: AssignmentListState, incomingAction: Action) => {
+export const reducer: Reducer<AssignmentsState> = (state: AssignmentsState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case "REQUEST_ASSIGNMENTS":

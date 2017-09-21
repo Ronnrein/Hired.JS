@@ -1,7 +1,7 @@
 import { fetch, addTask } from "domain-task";
-import { Action, Reducer, ActionCreator } from "redux";
+import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
-import { Assignment } from "./AssignmentList";
+import { Assignment } from "./Assignments";
 
 export interface EditorState {
     assignment: Assignment;
@@ -33,8 +33,6 @@ export interface LoadAssignmentAction {
 
 export interface RequestScriptRunAction {
     type: "REQUEST_SCRIPT_RUN";
-    script: string;
-    arguments: string[];
 }
 
 export interface ReceiveScriptRunAction {
@@ -44,7 +42,6 @@ export interface ReceiveScriptRunAction {
 
 export interface RequestScriptVerificationAction {
     type: "REQUEST_SCRIPT_VERIFICATION";
-    script: string;
 }
 
 export interface ReceiveScriptVerificationAction {
@@ -66,44 +63,76 @@ type KnownAction = RequestScriptRunAction | ReceiveScriptRunAction | RequestScri
                  | ReceiveScriptVerificationAction | LoadAssignmentAction | ValueChange | ConsoleChange; 
 
 export const actionCreators = {
-    loadAssignment: (id: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let assignment = getState().assignmentList.assignments.filter(t => t.id === id)[0];
+    loadAssignment: (assignment: Assignment): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "LOAD_ASSIGNMENT", assignment: assignment });
     },
-    runScript: (id: number, script: string, args: string[]): AppThunkAction<KnownAction> => (dispatch) => {
+    runScript: (args: string[]): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let id = getState().editor.assignment.id;
         let fetchAssignment = fetch(`api/assignment/run/${id}`, {
+            credentials: "same-origin",
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                script: script,
+                script: getState().editor.value,
                 arguments: id !== 0 ? args : args[0].replace(/\s/g, "").split(",")
             })
         }).then(response => response.json() as Promise<RunResult>).then(data => {
             dispatch({ type: "RECEIVE_SCRIPT_RUN", result: data });
+            let message: string;
+            let logs = data.logs.map((l) => {
+                return `console.log: ${l}`;
+            });
+            let log = logs.length !== 0 ? `${logs.join("\n")}` : "";
+            if (data.error != undefined) {
+                message = `Error (${data.error})`;
+            }
+            else if (data.correct === null) {
+                message = `Function output: ${data.result}`;
+            } else {
+                message = `${data.success ? "Success!" : "Incorrect"}`;
+                message += ` (Expected ${data.correct}, got ${data.result})`;
+            }
+            actionCreators.addToConsole(`${log}\nResult: ${message}`);
         });
         addTask(fetchAssignment);
-        dispatch({ type: "REQUEST_SCRIPT_RUN", script: script, arguments: args });
+        actionCreators.addToConsole(`Running assignment ${getState().editor.assignment.id} with arguments (${args.join(", ")})`);
+        dispatch({ type: "REQUEST_SCRIPT_RUN" });
     },
-    verifyScript: (id: number, script: string): AppThunkAction<KnownAction> => (dispatch) => {
+    verifyScript: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let id = getState().editor.assignment.id;
         let fetchAssignment = fetch(`api/assignment/verify/${id}`, {
+            credentials: "same-origin",
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                script: script
+                script: getState().editor.value
             })
         }).then(
             response => response.json() as Promise<VerificationResult>
         ).then(data => {
             dispatch({ type: "RECEIVE_SCRIPT_VERIFICATION", result: data });
+            let message: string;
+            if (data.failed == undefined) {
+                message = `Success! Completed ${data.completed} of ${data.tests} runs`;
+            }
+            else if (data.failed.error != undefined) {
+                message = `Error (${data.failed.error})`;
+            }
+            else {
+                let r = data.failed;
+                message = `Incorrect (Expected ${r.correct}, got ${r.result} with arguments ${r.arguments.join(", ")})`;
+            }
+            actionCreators.addToConsole(`Result: ${message}`);
         });
         addTask(fetchAssignment);
-        dispatch({ type: "REQUEST_SCRIPT_VERIFICATION", script: script });
+        actionCreators.addToConsole(`Running verification for assignment ${getState().editor.assignment.id}`);
+        dispatch({ type: "REQUEST_SCRIPT_VERIFICATION" });
     },
     valueChange: (value: string): AppThunkAction<KnownAction> => (dispatch) => {
         dispatch({ type: "VALUE_CHANGE", value: value });
@@ -141,7 +170,6 @@ const unloadedState: EditorState = {
 
 export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
-    let consoleText: string, message: string;
     switch (action.type) {
         case "LOAD_ASSIGNMENT":
             return Object.assign({}, state, {
@@ -151,47 +179,16 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
             });
         case "REQUEST_SCRIPT_RUN":
         case "REQUEST_SCRIPT_VERIFICATION":
-            consoleText = action.type === "REQUEST_SCRIPT_RUN"
-                ? `Running assignment ${state.assignment.id} with arguments (${action.arguments.join(", ")})`
-                : `Running verification for assignment ${state.assignment.id}`;
             return Object.assign({}, state, {
-                isLoading: true,
-                console: `${state.console}\n${consoleText}`
+                isLoading: true
             });
         case "RECEIVE_SCRIPT_RUN":
-            let logs = action.result.logs.map((l) => {
-                return `console.log: ${l}`;
-            });
-            let log = logs.length !== 0 ? `\n${logs.join("\n")}` : "";
-            if(action.result.error != undefined) {
-                message = `Error (${action.result.error})`;
-            }
-            else if(action.result.correct === null) {
-                message = `Function output: ${action.result.result}`;
-            } else {
-                message = `${action.result.success ? "Success!" : "Incorrect"}`;
-                message += ` (Expected ${action.result.correct }, got ${action.result.result })`;
-            }
-            consoleText = `Result: ${message}`;
             return Object.assign({}, state, {
-                console: `${state.console+log}\n${consoleText}`,
                 isLoading: false,
                 result: action.result
             });
         case "RECEIVE_SCRIPT_VERIFICATION":
-            if(action.result.failed == undefined) {
-                message = `Success! Completed ${action.result.completed} of ${action.result.tests} runs`;
-            }
-            else if (action.result.failed.error != undefined) {
-                message = `Error (${action.result.failed.error})`;
-            }
-            else {
-                let r = action.result.failed;
-                message = `Incorrect (Expected ${r.correct}, got ${r.result} with arguments ${r.arguments.join(", ")})`;
-            }
-            consoleText = `Result: ${message}`;
             return Object.assign({}, state, {
-                console: `${state.console}\n${consoleText}`,
                 isLoading: false,
                 result: action.result
             });

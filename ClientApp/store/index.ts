@@ -1,14 +1,17 @@
 import * as Editor from "./Editor";
-import * as AssignmentList from "./AssignmentList";
+import * as Assignments from "./Assignments";
+import * as App from "./App";
 
 export interface ApplicationState {
     editor: Editor.EditorState;
-    assignmentList: AssignmentList.AssignmentListState;
+    assignments: Assignments.AssignmentsState;
+    app: App.AppState;
 }
 
 export const reducers = {
     editor: Editor.reducer,
-    assignmentList: AssignmentList.reducer
+    assignments: Assignments.reducer,
+    app: App.reducer
 };
 
 export interface AppThunkAction<TAction> {

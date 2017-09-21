@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CodenameGenerator;
 using Hiredjs.Data;
 using Hiredjs.Models;
+using Hiredjs.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,18 +33,24 @@ namespace Hiredjs.Controllers {
             _signInManager = signInManager;
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Index() {
+            return Json(_mapper.Map<User, UserVm>(await _userManager.GetUserAsync(User)));
+        } 
+
         [HttpPost]
-        public async Task<IActionResult> Login(string id) {
-            User user = await _userManager.FindByNameAsync(id);
+        public async Task<IActionResult> Login([FromBody] UserLoginVm login) {
+            User user = await _userManager.FindByNameAsync(login.UserName);
             if (user == null) {
-                return StatusCode(404);
+                return NotFound();
             }
             await _signInManager.SignInAsync(user, true);
-            return StatusCode(200);
+            return Json(_mapper.Map<User, UserVm>(user));
         }
 
         [HttpPost]
-        public async Task<string> Register() {
+        public async Task<IActionResult> Register() {
             Generator g = new Generator {
                 Casing = Casing.PascalCase,
                 Separator = ""
@@ -58,26 +66,15 @@ namespace Hiredjs.Controllers {
 
             User user = new User {UserName = userName};
             await _userManager.CreateAsync(user);
-            return user.UserName;
+            await _signInManager.SignInAsync(user, true);
+            return Json(_mapper.Map<User, UserVm>(user));
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
-            return StatusCode(200);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public IActionResult Delete() {
-            return StatusCode(200);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public string Test() {
-            return "AUTHORIZED";
+            return Ok();
         }
 
     }
