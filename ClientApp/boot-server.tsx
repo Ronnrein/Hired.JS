@@ -6,7 +6,7 @@ import { replace } from "react-router-redux";
 import { createMemoryHistory } from "history";
 import { createServerRenderer, RenderResult } from "aspnet-prerendering";
 import configureStore from "./configureStore";
-import App from "./components/App";
+import App from "./containers/App";
 import { Route } from "react-router-dom";
 
 export default createServerRenderer(params => {

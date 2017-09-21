@@ -9,7 +9,7 @@ import { createBrowserHistory } from "history";
 import configureStore from "./configureStore";
 import { Route } from "react-router-dom";
 import { ApplicationState }  from "./store";
-import App from "./components/App";
+import App from "./containers/App";
 
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href")!;
 const history = createBrowserHistory({ basename: baseUrl });

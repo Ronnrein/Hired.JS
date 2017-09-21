@@ -5,9 +5,8 @@ import { Assignment } from "./Assignments";
 import { LoginFields } from "../components/Login";
 import { checkFetchStatus } from "../utils";
 
-export interface AppState {
+export interface UserState {
     user?: User;
-    assignments?: Assignment[];
     loading: boolean;
     loadingText: string;
     message?: string;
@@ -107,17 +106,14 @@ export const actionCreators = {
         });
         dispatch({ type: "LOGOUT" });
     },
-    test: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        console.log("Loadingtext is: "+getState().app.loadingText);
-    }
 }
 
-const unloadedState: AppState = {
+const unloadedState: UserState = {
     loading: true,
     loadingText: "Loading..."
 };
 
-export const reducer: Reducer<AppState> = (state: AppState, incomingAction: Action) => {
+export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
     switch(action.type) {
         case "REQUEST_USER":

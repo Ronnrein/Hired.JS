@@ -3,9 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
 import * as EditorStore from "../store/Editor";
-import { Grid, Segment, Item, Header, Icon, Feed, Button, Input, Label, Popup } from "semantic-ui-react";
 import { default as EditorComponent } from "../components/editor/Editor";
-import { convertNewLine } from "../utils";
 
 type EditorProps =
     EditorStore.EditorState
