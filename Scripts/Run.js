@@ -13,7 +13,7 @@ module.exports = function(callback, script, solution, args) {
     let vm = new VM({
         sandbox: {
             console: {
-                log: function(str) { result.logs.push(str); }
+                log: function(str) { o.logs.push(str); }
             }
         }
     });
