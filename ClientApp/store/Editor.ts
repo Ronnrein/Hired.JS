@@ -85,7 +85,7 @@ export const actionCreators = {
             let logs = data.logs.map((l) => {
                 return `console.log: ${l}`;
             });
-            let log = logs.length !== 0 ? `${logs.join("\n")}` : "";
+            let log = logs.length !== 0 ? `\n${logs.join("\n")}\n` : "\n";
             if (data.error != undefined) {
                 message = `Error (${data.error})`;
             }
@@ -95,10 +95,17 @@ export const actionCreators = {
                 message = `${data.success ? "Success!" : "Incorrect"}`;
                 message += ` (Expected ${data.correct}, got ${data.result})`;
             }
-            actionCreators.addToConsole(`${log}\nResult: ${message}`);
+            dispatch({
+                type: "CONSOLE_CHANGE",
+                value: `${getState().editor.console}${log}Result: ${message}`
+            });
         });
         addTask(fetchAssignment);
-        actionCreators.addToConsole(`Running assignment ${getState().editor.assignment.id} with arguments (${args.join(", ")})`);
+        let console = `Running assignment ${getState().editor.assignment.id} with arguments (${args.join(", ")})`;
+        dispatch({
+            type: "CONSOLE_CHANGE",
+            value: `${getState().editor.console}\n${console}`
+        });
         dispatch({ type: "REQUEST_SCRIPT_RUN" });
     },
     verifyScript: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -128,10 +135,17 @@ export const actionCreators = {
                 let r = data.failed;
                 message = `Incorrect (Expected ${r.correct}, got ${r.result} with arguments ${r.arguments.join(", ")})`;
             }
-            actionCreators.addToConsole(`Result: ${message}`);
+            dispatch({
+                type: "CONSOLE_CHANGE",
+                value: `${getState().editor.console}\n"Result: ${message}`
+            });
         });
         addTask(fetchAssignment);
-        actionCreators.addToConsole(`Running verification for assignment ${getState().editor.assignment.id}`);
+        let console = `Running verification for assignment ${getState().editor.assignment.id}`;
+        dispatch({
+            type: "CONSOLE_CHANGE",
+            value: `${getState().editor.console}\n${console}`
+        });
         dispatch({ type: "REQUEST_SCRIPT_VERIFICATION" });
     },
     valueChange: (value: string): AppThunkAction<KnownAction> => (dispatch) => {
