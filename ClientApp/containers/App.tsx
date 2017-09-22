@@ -41,7 +41,7 @@ class App extends React.Component<AppProps, {}> {
     render() {
         return (
             <div>
-                <Dimmer active={this.props.loading}>
+                <Dimmer active={this.props.isLoading}>
                     <Loader size="big">{this.props.loadingText}</Loader>
                 </Dimmer>
                 {this.props.user === undefined ? (
@@ -51,7 +51,7 @@ class App extends React.Component<AppProps, {}> {
                         message={this.props.message}
                     />
                 ) : (
-                    <Layout user={this.props.user} />
+                    <Layout />
                 )}
             </div>
         );

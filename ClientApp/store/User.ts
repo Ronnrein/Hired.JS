@@ -7,8 +7,8 @@ import { checkFetchStatus } from "../utils";
 
 export interface UserState {
     user?: User;
-    loading: boolean;
-    loadingText: string;
+    isLoading: boolean;
+    loadingText?: string;
     message?: string;
 }
 
@@ -18,35 +18,41 @@ export interface User {
 
 export interface RequestUserAction {
     type: "REQUEST_USER";
+    loadingText: string;
+}
+
+export interface RequestLoginAction {
+    type: "REQUEST_LOGIN";
+    loadingText: string;
+}
+
+export interface RequestRegisterAction {
+    type: "REQUEST_REGISTER";
+    loadingText: string;
+}
+
+export interface RequestUsernameUpdateAction {
+    type: "REQUEST_USERNAME_UPDATE";
+}
+
+export interface LogoutAction {
+    type: "LOGOUT";
+    message: string;
 }
 
 export interface ReceiveUserSuccessAction {
     type: "RECEIVE_USER_SUCCESS";
     user: User;
+    message?: string;
 }
 
-export interface ReceiveUserFailedAction {
-    type: "RECEIVE_USER_FAILED";
+export interface UserRequestFailedAction {
+    type: "USER_REQUEST_FAILED";
+    message?: string;
 }
 
-export interface RequestLoginAction {
-    type: "REQUEST_LOGIN";
-}
-
-export interface ReceiveLoginFailedAction {
-    type: "RECEIVE_LOGIN_FAILED";
-}
-
-export interface RequestRegisterAction {
-    type: "REQUEST_REGISTER";
-}
-
-export interface LogoutAction {
-    type: "LOGOUT";
-}
-
-type KnownAction = RequestUserAction | ReceiveUserSuccessAction | ReceiveUserFailedAction
-    | RequestLoginAction | ReceiveLoginFailedAction | RequestRegisterAction | LogoutAction;
+type KnownAction = RequestUserAction | ReceiveUserSuccessAction | RequestLoginAction
+    | RequestRegisterAction | LogoutAction | RequestUsernameUpdateAction | UserRequestFailedAction;
 
 export const actionCreators = {
     fetchUser: (): AppThunkAction<KnownAction> => (dispatch) => {
@@ -58,11 +64,11 @@ export const actionCreators = {
             dispatch({ type: "RECEIVE_USER_SUCCESS", user: data });
         }).catch(e => {
             if(e.response.status === 401) {
-                dispatch({ type: "RECEIVE_USER_FAILED" });
+                dispatch({ type: "USER_REQUEST_FAILED" });
             }
         });
         addTask(fetchUser);
-        dispatch({ type: "REQUEST_USER" });
+        dispatch({ type: "REQUEST_USER", loadingText: "Loading..." });
     },
     login: (login: LoginFields): AppThunkAction<KnownAction> => (dispatch) => {
         let fetchLogin = fetch("api/user/login", {
@@ -81,11 +87,11 @@ export const actionCreators = {
             dispatch({ type: "RECEIVE_USER_SUCCESS", user: data });
         }).catch(e => {
             if (e.response.status === 404) {
-                dispatch({ type: "RECEIVE_LOGIN_FAILED" });
+                dispatch({ type: "USER_REQUEST_FAILED", message: "Profile not found!" });
             }
         });
         addTask(fetchLogin);
-        dispatch({ type: "REQUEST_LOGIN" });
+        dispatch({ type: "REQUEST_LOGIN", loadingText: "Logging in..." });
     },
     register: (): AppThunkAction<KnownAction> => (dispatch) => {
         let register = fetch("api/user/register", {
@@ -97,19 +103,42 @@ export const actionCreators = {
             dispatch({ type: "RECEIVE_USER_SUCCESS", user: data });
         });
         addTask(register);
-        dispatch({ type: "REQUEST_REGISTER" });
+        dispatch({ type: "REQUEST_REGISTER", loadingText: "Creating profile..." });
+    },
+    updateUsername: (userName: string): AppThunkAction<KnownAction> => (dispatch) => {
+        let update = fetch("api/user/updateUserName", {
+            credentials: "same-origin",
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userName: userName
+            })
+        }).then(checkFetchStatus).then(
+            response => response.json() as Promise<User>
+        ).then(data => {
+            dispatch({ type: "RECEIVE_USER_SUCCESS", user: data, message: "Changed username!" });
+        }).catch(e => {
+            if (e.response.status === 409) {
+                dispatch({ type: "USER_REQUEST_FAILED", message: "Username already exists!" });
+            }
+        });
+        addTask(update);
+        dispatch({ type: "REQUEST_USERNAME_UPDATE" });
     },
     logout: (): AppThunkAction<KnownAction> => (dispatch) => {
         fetch("api/user/logout", {
             credentials: "same-origin",
             method: "POST"
         });
-        dispatch({ type: "LOGOUT" });
+        dispatch({ type: "LOGOUT", message: "Successfully logged out" });
     },
 }
 
 const unloadedState: UserState = {
-    loading: true,
+    isLoading: true,
     loadingText: "Loading..."
 };
 
@@ -117,37 +146,30 @@ export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Ac
     const action = incomingAction as KnownAction;
     switch(action.type) {
         case "REQUEST_USER":
+        case "REQUEST_LOGIN":
+        case "REQUEST_REGISTER":
             return Object.assign({}, state, {
-                loading: true,
-                loadingText: "Loading..."
+                isLoading: true,
+                loadingText: action.loadingText
+            });
+        case "REQUEST_USERNAME_UPDATE":
+            return Object.assign({}, state, {
+                isLoading: true
             });
         case "RECEIVE_USER_SUCCESS":
             return Object.assign({}, state, {
-                loading: false,
+                isLoading: false,
                 user: action.user,
+                message: action.message
             });
-        case "RECEIVE_USER_FAILED":
+        case "USER_REQUEST_FAILED":
             return Object.assign({}, state, {
-                loading: false,
-            });
-        case "REQUEST_LOGIN":
-            return Object.assign({}, state, {
-                loading: true,
-                loadingText: "Logging in..."
-            });
-        case "RECEIVE_LOGIN_FAILED":
-            return Object.assign({}, state, {
-                loading: false,
-                message: "User profile not found!"
-            });
-        case "REQUEST_REGISTER":
-            return Object.assign({}, state, {
-                loading: true,
-                loadingText: "Creating profile..."
+                isLoading: false,
+                message: action.message
             });
         case "LOGOUT":
             return Object.assign({}, state, {
-                message: "Logged out!",
+                message: action.message,
                 user: undefined
             });
         default:

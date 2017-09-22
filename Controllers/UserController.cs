@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CodenameGenerator;
@@ -75,6 +74,18 @@ namespace Hiredjs.Controllers {
         public async Task<IActionResult> Logout() {
             await _signInManager.SignOutAsync();
             return Ok();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserName([FromBody] UserLoginVm newInfo) {
+            User user = await _userManager.GetUserAsync(User);
+            if (await _userManager.FindByNameAsync(newInfo.UserName) != null) {
+                return StatusCode(409);
+            }
+            user.UserName = newInfo.UserName;
+            await _userManager.UpdateAsync(user);
+            return Json(_mapper.Map<User, UserVm>(user));
         }
 
     }

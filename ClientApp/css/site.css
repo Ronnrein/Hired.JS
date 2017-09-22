@@ -142,3 +142,8 @@
 #login {
     padding-top: 100px;
 }
+
+/* Fix semantic icon position in buttons */
+.ui.icon.button > i {
+    padding: 0 !important;
+}
