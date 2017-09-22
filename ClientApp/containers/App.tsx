@@ -3,53 +3,41 @@ import { RouteComponentProps } from "react-router";
 import { ApplicationState } from "../store";
 import { connect } from "react-redux";
 import { Dimmer, Loader } from "semantic-ui-react";
-import Login, { LoginFields } from "../components/Login";
+import Login from "../containers/Login";
 import Layout from "../components/Layout";
 import * as UserStore from "../store/User";
+import * as AppStore from "../store/App";
 import { actionCreators as assignmentsActions } from "../store/Assignments";
 
 type ImportedProps = {
     requestAssignments: Function;
+    user: UserStore.User;
+    isInitializing: boolean;
 }
 
 type AppProps =
-    UserStore.UserState
-    & typeof UserStore.actionCreators
+    AppStore.AppState
+    & typeof AppStore.actionCreators
     & ImportedProps
     & RouteComponentProps<{}>;
 
 class App extends React.Component<AppProps, {}> {
 
-    componentDidMount() {
-        this.props.fetchUser();
-    }
-
+    // Load assignments once user is logged in
     componentWillReceiveProps(next: AppProps) {
-        if(this.props.user === undefined && next.user !== undefined) {
+        if (this.props.user === undefined && next.user !== undefined) {
             this.props.requestAssignments();
         }
-    }
-
-    onPlayClick() {
-        this.props.register();
-    }
-
-    onLoginClick(login: LoginFields) {
-        this.props.login(login);
     }
 
     render() {
         return (
             <div>
-                <Dimmer active={this.props.isLoading}>
-                    <Loader size="big">{this.props.loadingText}</Loader>
+                <Dimmer active={this.props.isInitializing}>
+                    <Loader size="big">Loading...</Loader>
                 </Dimmer>
                 {this.props.user === undefined ? (
-                    <Login
-                        onPlayClick={() => this.onPlayClick()}
-                        onLoginClick={(login: LoginFields) => this.onLoginClick(login)}
-                        message={this.props.message}
-                    />
+                    <Login />
                 ) : (
                     <Layout />
                 )}
@@ -60,6 +48,12 @@ class App extends React.Component<AppProps, {}> {
 }
 
 export default connect(
-    (state: ApplicationState) => state.user,
-    Object.assign(UserStore.actionCreators, { requestAssignments: assignmentsActions.requestAssignments })
+    (state: ApplicationState) => ({
+        user: state.user.user,
+        isInitializing: state.user.isInitializing,
+        notifications: state.app.notifications
+    }),
+    Object.assign(UserStore.actionCreators, {
+        requestAssignments: assignmentsActions.requestAssignments
+    })
 )(App) as typeof App;

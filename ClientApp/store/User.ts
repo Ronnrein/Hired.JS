@@ -1,19 +1,22 @@
 import { fetch, addTask } from "domain-task";
-import { Action, Reducer, ActionCreator } from "redux";
+import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
-import { Assignment } from "./Assignments";
-import { LoginFields } from "../components/Login";
 import { checkFetchStatus } from "../utils";
 
 export interface UserState {
     user?: User;
     isLoading: boolean;
+    isInitializing: boolean;
     loadingText?: string;
     message?: string;
 }
 
 export interface User {
     userName: string
+}
+
+export interface LoginFields {
+    userName: string;
 }
 
 export interface RequestUserAction {
@@ -138,7 +141,8 @@ export const actionCreators = {
 }
 
 const unloadedState: UserState = {
-    isLoading: true,
+    isLoading: false,
+    isInitializing: true,
     loadingText: "Loading..."
 };
 
@@ -159,12 +163,14 @@ export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Ac
         case "RECEIVE_USER_SUCCESS":
             return Object.assign({}, state, {
                 isLoading: false,
+                isInitializing: false,
                 user: action.user,
                 message: action.message
             });
         case "USER_REQUEST_FAILED":
             return Object.assign({}, state, {
                 isLoading: false,
+                isInitializing: false,
                 message: action.message
             });
         case "LOGOUT":

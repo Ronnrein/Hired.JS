@@ -1,14 +1,11 @@
 import * as React from "react";
 import { Container, Grid, Segment, Form, Button, Header, Input, Divider, Message } from "semantic-ui-react";
 
-export interface LoginFields {
-    userName: string;
-}
-
 type Props = {
+    message?: string;
+    isLoading: boolean;
     onPlayClick: Function;
     onLoginClick: Function;
-    message?: string;
 }
 
 class Login extends React.Component<Props, {}> {
@@ -20,7 +17,7 @@ class Login extends React.Component<Props, {}> {
 
     onUsernameChange(value: string) {
         this.setState({
-            login: Object.assign({}, this.state.login, {
+            login: Object.assign(this.state.login, {
                 userName: value
             })
         });
@@ -33,7 +30,7 @@ class Login extends React.Component<Props, {}> {
                     <Grid.Row>
                         <Grid.Column width={5} />
                         <Grid.Column width={6}>
-                            <Form as={Segment}>
+                            <Form as={Segment} loading={this.props.isLoading}>
                                 <Header>Logo goes here</Header>
                                 <Divider section horizontal>New game</Divider>
                                 <Form.Field>
