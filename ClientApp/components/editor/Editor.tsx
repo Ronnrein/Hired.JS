@@ -2,12 +2,14 @@ import * as React from "react";
 import * as brace from "brace";
 import AceEditor from "react-ace";
 import "brace/mode/javascript";
+import "brace/ext/language_tools";
 import "brace/theme/monokai";
+import "brace/snippets/javascript";
 import { Segment, Grid, Header, Icon, Item, Feed } from "semantic-ui-react";
 import { Assignment } from "../../store/Assignments";
 import EditorConsole from "./EditorConsole";
 import EditorForm from "./EditorForm";
-import { convertNewLine } from "../../utils";
+import { convertNewLine, beforeEvent } from "../../utils";
 
 type Props = {
     assignment: Assignment;
@@ -23,18 +25,57 @@ type Props = {
 class Editor extends React.Component<Props, {}> {
     state = {
         mounted: false,
+        silent: false
     };
 
     componentDidMount() {
-        this.setState({
-            mounted: true
-        });
         this.props.onValueChange(this.props.value);
+        this.setState({mounted: true});
+    }
+
+    onEditorLoad(editor: any) {
+        editor.keyBinding.addKeyboardHandler(
+            (ace: any, hash: any, keyCode: number) => this.handleEditorInput(ace, hash, keyCode, this.intersectsReadOnlyArea)
+        );
+        beforeEvent(editor, "onPaste", (next: Function) => this.handleEditorCutPaste(next, editor));
+        beforeEvent(editor, "onCut", (next: Function) => this.handleEditorCutPaste(next, editor));
+    }
+
+    handleEditorInput(ace: any, hash: any, keyCode: number, intersectFunc: Function): any {
+        if(hash === -1 || (keyCode <= 40 && keyCode >= 37)) {
+            return false;
+        }
+        if (this.intersectsReadOnlyArea(ace.editor)) {
+            return { command: "null", passEvent: false };
+        }
+        this.props.onValueChange(ace.editor.getValue());
+        return true;
+    }
+
+    handleEditorCutPaste(next: Function, editor: any) {
+        if(this.intersectsReadOnlyArea(editor)) {
+            return;
+        }
+        next();
+    }
+
+    intersectsReadOnlyArea(editor: any) {
+        const lines = editor.session.doc.getAllLines().length;
+        const ranges = { top: {
+            start: { row: 0, column: 0 },
+            end: { row: 1, column: 100 }
+        }, bottom: {
+            start: { row: lines - 1, column: 0 },
+            end: { row: lines, column: 100 }
+        }};
+
+        return editor.getSelectionRange().intersects(ranges.top)
+            || editor.getSelectionRange().intersects(ranges.bottom);
     }
 
     render() {
-        let message = this.props.assignment.messages[0];
-        let image = `/images/workers/${message.author.id}.jpg`;
+        const message = this.props.assignment.messages[0];
+        const image = `/images/workers/${message.author.id}.jpg`;
         return (this.state.mounted ? <div>
             <Header as="h2" attached="top">
                 <Icon name="code" />
@@ -56,8 +97,16 @@ class Editor extends React.Component<Props, {}> {
                                         mode="javascript"
                                         theme="monokai"
                                         name="editor"
-                                        editorProps={{ $blockScrolling: true }}
-                                        onChange={script => this.props.onValueChange(script)}
+                                        editorProps={{
+                                            $blockScrolling: Infinity
+                                        }}
+                                        setOptions={{
+                                            enableBasicAutocompletion: true,
+                                            enableLiveAutocompletion: false,
+                                            enableSnippets: true,
+                                            showLineNumbers: true
+                                        }}
+                                        onLoad={(editor: any) => this.onEditorLoad(editor)}
                                         value={this.props.value}
                                     />
                                 </Segment>
