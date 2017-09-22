@@ -27,13 +27,18 @@ class Editor extends React.Component<Props, {}> {
 
     render() {
         return (
-            <Dropdown item text={this.props.user.userName}>
+            <Dropdown item trigger={<span><Icon name="user" />{this.props.user.userName}</span>}>
                 <Dropdown.Menu onClick={(e: Event) => this.onClick(e)}>
                     <Dropdown.Header content="Update username" />
                     <Input placeholder="Username..." iconPosition="left" loading={this.props.isLoading} action>
                         <Icon name="tag" />
                         <input defaultValue={this.props.user.userName} onChange={(e: any) => this.onUsernameChange(e.target.value)} />
-                        <Button positive icon="checkmark" onClick={() => this.props.onUpdateUsernameClick(this.state.userName)} />
+                        <Button
+                            disabled={this.state.userName === this.props.user.userName}
+                            positive
+                            icon="checkmark"
+                            onClick={() => this.props.onUpdateUsernameClick(this.state.userName)}
+                        />
                     </Input>
                     <Button fluid onClick={() => this.props.onLogoutClick()}>Log out</Button>
                 </Dropdown.Menu>

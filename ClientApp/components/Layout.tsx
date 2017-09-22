@@ -6,11 +6,15 @@ import Home from "../components/Home";
 import Editor from "../containers/Editor";
 import Assignments from "../containers/Assignments";
 
-export default class Layout extends React.Component<{}, {}> {
+type Props = {
+    currentPath: string;
+}
+
+export default class Layout extends React.Component<Props, {}> {
     render() {
         return (
             <div>
-                <NavMenu />
+                <NavMenu currentPath={this.props.currentPath} />
                 <Container>
                     <Route path="/home" component={Home} />
                     <Route path="/editor/:id?" component={Editor} />

@@ -2,7 +2,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="react-app" asp-prerender-module="ClientApp/dist/main-server">Loading...</div>
+<div id="react-app" asp-prerender-module="ClientApp/dist/main-server">
+    <div class="ui active dimmer">
+        <div class="ui big text loader">Loading...</div>
+    </div>
+</div>
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>

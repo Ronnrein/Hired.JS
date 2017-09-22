@@ -39,7 +39,7 @@ class App extends React.Component<AppProps, {}> {
                 {this.props.user === undefined ? (
                     <Login />
                 ) : (
-                    <Layout />
+                    <Layout currentPath={this.props.location.pathname} />
                 )}
             </div>
         );
