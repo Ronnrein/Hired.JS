@@ -165,6 +165,7 @@ const unloadedState: EditorState = {
         function: "func",
         summary: "Here you can freely try different things in the editor!",
         template: "",
+        readOnlyLines: [],
         messages: [{
             author: {
                 id: 0,
@@ -173,6 +174,7 @@ const unloadedState: EditorState = {
             },
             text: ""
         }],
+        completedMessages: [],
         arguments: [{
             description: "Argument list",
             example: "1, \"Hello there!\""

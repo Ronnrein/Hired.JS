@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hiredjs.Models;
 using Hiredjs.ViewModels;
+using Hiredjs.ViewModels.Assignment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

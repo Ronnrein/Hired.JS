@@ -1,4 +1,4 @@
-namespace Hiredjs.ViewModels {
+namespace Hiredjs.ViewModels.Assignment {
     public class AssignmentRunResultVm {
         public string[] Logs { get; set; }
         public string[] Arguments { get; set; }

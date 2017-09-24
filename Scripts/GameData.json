@@ -14,12 +14,19 @@
       "summary": "Create a function that accepts two numbers, and returns the numbers added together.",
       "solution": "function(num1, num2) { return num1 + num2; }",
       "template": "function add(num1, num2) {\n\treturn 0;\n}",
+      "readOnlyLines": [
+        [1, 2], [4, 4]
+      ],
       "messages": [{
         "author": 1,
         "text": "Hi there, welcome to the team! Hope you are settling in nicely to your new surroundings, i have been given the honourable task of getting you up to speed with our development here :)\nFirst of all, as you already have heard, the purpose of this company is to accept small jobs from bigger development teams to make small functions that they need but don't want to spend their resources developing. This can be anything from small math functions to large functions manipulating lists and such, you get the idea :)\nBecause you just arrived, and the fact that ive been told you are new to JavaScript, i am going to go easy on you to begin with. What i want you to do is as follows:\n|sum|\nSounds simple enough? Get cracking! Send me the function when you are done, and then i will forward you a more meaningful task :)"
       }, {
         "author": 4,
         "text": "Why wasn't my first assignment this simple? :("
+      }],
+      "completedMessages": [{
+        "author": 1,
+        "text": "Good job!"
       }],
       "arguments": [
         { "description": "Number", "example": "52" },
@@ -45,6 +52,9 @@
       "summary": "Create a function that accepts two numbers, and returns the avarage (rounded down) of the numbers.",
       "solution": "function(num1, num2, num3) { return Math.floor((num1 + num2) / 2); }",
       "template": "function avarage(num1, num2) {\n\t//Perform stuff here\n\treturn 0;\n}",
+      "readOnlyLines": [
+        [1, 2], [4, 4]
+      ],
       "messages": [{
         "author": 1,
         "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
@@ -52,6 +62,10 @@
         "author": 2,
         "text": "I promise i will make him give you a more exciting assignment after this one, jeez",
         "image": "cat.png"
+      }],
+      "completedMessages": [{
+        "author": 1,
+        "text": "Good job!"
       }],
       "arguments": [
         { "description": "Number", "example": "52" },

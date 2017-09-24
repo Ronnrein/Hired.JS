@@ -4,6 +4,7 @@ using CodenameGenerator;
 using Hiredjs.Data;
 using Hiredjs.Models;
 using Hiredjs.ViewModels;
+using Hiredjs.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

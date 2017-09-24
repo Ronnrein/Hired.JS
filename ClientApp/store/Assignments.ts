@@ -15,7 +15,9 @@ export interface Assignment {
     function: string;
     summary: string;
     template: string;
+    readOnlyLines: number[][];
     messages: Message[];
+    completedMessages: Message[];
     arguments: Argument[];
 }
 

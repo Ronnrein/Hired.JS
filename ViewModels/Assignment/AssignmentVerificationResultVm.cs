@@ -1,4 +1,4 @@
-namespace Hiredjs.ViewModels {
+namespace Hiredjs.ViewModels.Assignment {
     public class AssignmentVerificationResultVm {
         public int Tests { get; set; }
         public int Completed { get; set; }
