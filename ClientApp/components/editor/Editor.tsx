@@ -46,12 +46,6 @@ class Editor extends React.Component<Props, {}> {
             range.end.$insertRight = true;
             editor.session.addMarker(range, "editor-readonly");
             ranges.push(range);
-            for (let i = rangeArr[0] - 1; i < rangeArr[1]; i++) {
-                editor.session.setAnnotations(editor.session.getAnnotations().concat({
-                    row: i, column: 0, text: "Assignment template locked", type: "information"
-                }));
-                console.log(editor.session.$annotations);
-            }
         }
         this.setState({ readOnlyRanges: ranges });
         editor.keyBinding.addKeyboardHandler(this.handleEditorInput);
@@ -122,6 +116,7 @@ class Editor extends React.Component<Props, {}> {
                                         }}
                                         onLoad={(editor: any) => this.onEditorLoad(editor)}
                                         value={this.props.value}
+                                        highlightActiveLine={false}
                                     />
                                 </Segment>
                             </Segment>

@@ -9,7 +9,6 @@ type Props = {
     selectedAssignment?: Assignment;
     isLoading: boolean;
     onAssignmentClick: Function;
-    onLoadAssignmentClick: Function;
 }
 
 class AssignmentList extends React.Component<Props, {}> {
@@ -39,10 +38,7 @@ class AssignmentList extends React.Component<Props, {}> {
                             </Grid.Column>
                             <Grid.Column width={11} className="no-padding">
                                 {this.props.selectedAssignment !== undefined ? (
-                                    <AssignmentComponent
-                                        assignment={this.props.selectedAssignment}
-                                        onLoadAssignmentClick={(a: Assignment) => this.props.onLoadAssignmentClick(a)}
-                                    />
+                                    <AssignmentComponent assignment={this.props.selectedAssignment} />
                                 ) : (
                                     <Header as="h2" icon textAlign="center">
                                         <Icon name="mail" />

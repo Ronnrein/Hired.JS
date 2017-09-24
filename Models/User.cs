@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace Hiredjs.Models {
 
     public class User : IdentityUser {
-
-        // User fields
-
+        public IEnumerable<Script> Scripts { get; set; }
+        public IEnumerable<AssignmentCompletion> AssignmentCompletions { get; set; }
     }
 }

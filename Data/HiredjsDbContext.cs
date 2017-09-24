@@ -6,6 +6,7 @@ namespace Hiredjs.Data {
     public class HiredjsDbContext : IdentityDbContext<User> {
 
         public virtual DbSet<Script> Scripts { get; set; }
+        public virtual DbSet<AssignmentCompletion> AssignmentCompletions { get; set; }
 
         public HiredjsDbContext(DbContextOptions options) : base(options) {}
 

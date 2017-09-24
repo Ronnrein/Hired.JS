@@ -47,12 +47,12 @@ export interface ReceiveAssignmentsAction {
     assignments: Assignment[];
 }
 
-export interface SelectAssignment {
+export interface SelectAssignmentAction {
     type: "SELECT_ASSIGNMENT";
     assignment: Assignment;
 }
 
-type KnownAction = RequestAssignmentsAction | ReceiveAssignmentsAction | SelectAssignment;
+type KnownAction = RequestAssignmentsAction | ReceiveAssignmentsAction | SelectAssignmentAction;
 
 export const actionCreators = {
     requestAssignments: (): AppThunkAction<KnownAction> => (dispatch) => {
@@ -66,7 +66,10 @@ export const actionCreators = {
         addTask(fetchAssignments);
         dispatch({ type: "REQUEST_ASSIGNMENTS" });
     },
-    selectAssignment: (assignment: Assignment): AppThunkAction<KnownAction> => (dispatch) => {
+    selectAssignment: (assignment: Assignment): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        if(assignment === getState().assignments.selectedAssignment) {
+            return;
+        }
         dispatch({ type: "SELECT_ASSIGNMENT", assignment: assignment });
     }
 };

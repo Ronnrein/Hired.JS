@@ -9,7 +9,6 @@ import AssignmentList from "../components/assignments/AssignmentList";
 type AssignmentsProps =
     AssignmentsStore.AssignmentsState
     & typeof AssignmentsStore.actionCreators
-    & typeof editorActions
     & RouteComponentProps<{}>
 
 class Assignments extends React.Component<AssignmentsProps, {}> {
@@ -20,11 +19,6 @@ class Assignments extends React.Component<AssignmentsProps, {}> {
         }
     }
 
-    onLoadAssignmentClick(a: AssignmentsStore.Assignment) {
-        this.props.loadAssignment(a);
-        this.props.history.push("/editor");
-    }
-
     render() {
         return (
             <AssignmentList
@@ -32,7 +26,7 @@ class Assignments extends React.Component<AssignmentsProps, {}> {
                 selectedAssignment={this.props.selectedAssignment}
                 isLoading={this.props.isLoading}
                 onAssignmentClick={(a: AssignmentsStore.Assignment) => this.props.selectAssignment(a)}
-                onLoadAssignmentClick={(a: AssignmentsStore.Assignment) => this.onLoadAssignmentClick(a)}/>
+            />
         );
     }
 
@@ -40,5 +34,5 @@ class Assignments extends React.Component<AssignmentsProps, {}> {
 
 export default connect(
     (state: ApplicationState) => state.assignments,
-    Object.assign(AssignmentsStore.actionCreators, editorActions)
+    AssignmentsStore.actionCreators
 )(Assignments) as typeof Assignments;

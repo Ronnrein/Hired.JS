@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Comment, Segment, Button, Icon, Feed } from "semantic-ui-react";
+import { Comment, Segment, Icon, Feed } from "semantic-ui-react";
 import { Assignment as IAssignment } from "../../store/Assignments";
 import AssignmentMessage from "./AssignmentMessage";
+import Scripts from "../../containers/Scripts";
 
 type Props = {
     assignment: IAssignment;
-    onLoadAssignmentClick: Function;
 }
 
 class Assignment extends React.Component<Props, {}> {
@@ -30,12 +30,7 @@ class Assignment extends React.Component<Props, {}> {
                     })}
                 </Segment>
                 <Segment attached="bottom">
-                    <Button
-                        floated="right"
-                        positive
-                        onClick={() => this.props.onLoadAssignmentClick(this.props.assignment)}>
-                        Go to editor
-                    </Button>
+                    <Scripts />
                 </Segment>
             </div>
         );

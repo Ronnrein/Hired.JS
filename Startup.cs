@@ -7,6 +7,7 @@ using Hiredjs.Data;
 using Hiredjs.Models;
 using Hiredjs.ViewModels.User;
 using Hiredjs.ViewModels.Assignment;
+using Hiredjs.ViewModels.Script;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -68,6 +69,7 @@ namespace Hiredjs {
                 o.CreateMap<GameData.Assignment.Message, AssignmentVm.Message>()
                     .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.Author)));
                 o.CreateMap<User, UserVm>();
+                o.CreateMap<Script, ScriptVm>();
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);

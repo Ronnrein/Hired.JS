@@ -35,6 +35,7 @@
     "react-redux": "5.0.5",
     "react-router-dom": "4.1.1",
     "react-router-redux": "5.0.0-alpha.6",
+    "react-timeago": "^3.4.3",
     "redux": "3.7.1",
     "redux-thunk": "2.2.0",
     "semantic-ui-react": "^0.72.0",

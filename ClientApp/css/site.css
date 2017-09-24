@@ -166,3 +166,7 @@
     display: block;
     padding-right: 10px;
 }
+
+.underlined {
+    text-decoration: underline;
+}

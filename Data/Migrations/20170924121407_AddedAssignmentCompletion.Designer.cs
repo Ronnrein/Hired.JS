@@ -11,9 +11,10 @@ using System;
 namespace Hiredjs.Data.Migrations
 {
     [DbContext(typeof(HiredjsDbContext))]
-    partial class HiredjsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170924121407_AddedAssignmentCompletion")]
+    partial class AddedAssignmentCompletion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +45,6 @@ namespace Hiredjs.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AssignmentId");
-
-                    b.Property<DateTime>("ModifiedOn");
 
                     b.Property<string>("Name");
 

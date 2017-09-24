@@ -1,18 +1,14 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hiredjs.Models {
+namespace Hiredjs.ViewModels.Script {
 
-    public class Script {
+    public class ScriptVm {
         public int Id { get; set; }
         public int AssignmentId { get; set; }
         public string Name { get; set; }
         public string Text { get; set; }
         public DateTime? VerifiedOn { get; set; }
+        public bool IsVerified => VerifiedOn != null;
         public DateTime ModifiedOn { get; set; }
-        
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public User User { get; set; }
     }
 }
