@@ -147,3 +147,22 @@
 .ui.icon.button > i {
     padding: 0 !important;
 }
+
+.editor-readonly {
+    background-color: blue;
+    background: rgba(0, 0, 255, 0.1);
+    width: 100% !important;
+    position: absolute;
+    font-family: Icons;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.editor-readonly:after {
+    content: "\f023";
+    background: 0 0 !important;
+    width: 100%;
+    text-align: right;
+    display: block;
+    padding-right: 10px;
+}

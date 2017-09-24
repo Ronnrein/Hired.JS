@@ -25,23 +25,42 @@ type Props = {
 class Editor extends React.Component<Props, {}> {
     state = {
         mounted: false,
-        silent: false
+        silent: false,
+        readOnlyRanges: Array()
     };
 
     componentDidMount() {
         this.props.onValueChange(this.props.value);
-        this.setState({mounted: true});
+        this.setState({ mounted: true });
+        this.intersectsReadOnlyArea = this.intersectsReadOnlyArea.bind(this);
+        this.handleEditorInput = this.handleEditorInput.bind(this);
     }
 
     onEditorLoad(editor: any) {
-        editor.keyBinding.addKeyboardHandler(
-            (ace: any, hash: any, keyCode: number) => this.handleEditorInput(ace, hash, keyCode, this.intersectsReadOnlyArea)
-        );
+        const { Range } = brace.acequire("ace/range");
+        let ranges: Object[] = [];
+        for (let rangeArr of this.props.assignment.readOnlyLines) {
+            const range = new Range(rangeArr[0] - 1, 0, rangeArr[1] - 1, 100);
+            range.start = editor.session.doc.createAnchor(range.start);
+            range.end = editor.session.doc.createAnchor(range.end);
+            range.end.$insertRight = true;
+            editor.session.addMarker(range, "editor-readonly");
+            ranges.push(range);
+            for (let i = rangeArr[0] - 1; i < rangeArr[1]; i++) {
+                editor.session.setAnnotations(editor.session.getAnnotations().concat({
+                    row: i, column: 0, text: "Assignment template locked", type: "information"
+                }));
+                console.log(editor.session.$annotations);
+            }
+        }
+        this.setState({ readOnlyRanges: ranges });
+        editor.keyBinding.addKeyboardHandler(this.handleEditorInput);
         beforeEvent(editor, "onPaste", (next: Function) => this.handleEditorCutPaste(next, editor));
         beforeEvent(editor, "onCut", (next: Function) => this.handleEditorCutPaste(next, editor));
     }
 
-    handleEditorInput(ace: any, hash: any, keyCode: number, intersectFunc: Function): any {
+    handleEditorInput(ace: any, hash: any, key: string, keyCode: number): any {
+        console.log(ace.editor.session.getAnnotations());
         if(hash === -1 || (keyCode <= 40 && keyCode >= 37)) {
             return false;
         }
@@ -53,24 +72,19 @@ class Editor extends React.Component<Props, {}> {
     }
 
     handleEditorCutPaste(next: Function, editor: any) {
-        if(this.intersectsReadOnlyArea(editor)) {
-            return;
+        if(!this.intersectsReadOnlyArea(editor)) {
+            next();
         }
-        next();
     }
 
     intersectsReadOnlyArea(editor: any) {
-        const lines = editor.session.doc.getAllLines().length;
-        const ranges = { top: {
-            start: { row: 0, column: 0 },
-            end: { row: 1, column: 100 }
-        }, bottom: {
-            start: { row: lines - 1, column: 0 },
-            end: { row: lines, column: 100 }
-        }};
-
-        return editor.getSelectionRange().intersects(ranges.top)
-            || editor.getSelectionRange().intersects(ranges.bottom);
+        for (let range of this.state.readOnlyRanges) {
+            console.log(range);
+            if(editor.getSelectionRange().intersects(range)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     render() {
