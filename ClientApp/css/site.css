@@ -170,3 +170,12 @@
 .underlined {
     text-decoration: underline;
 }
+
+.splash .image {
+    width: 300px;
+    margin-bottom: 100px;
+}
+
+.splash .loader {
+    margin-top: 100px;
+}

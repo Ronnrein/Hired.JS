@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { ApplicationState } from "../store";
 import { connect } from "react-redux";
-import { Dimmer, Loader } from "semantic-ui-react";
+import { Dimmer, Loader, Image } from "semantic-ui-react";
 import Login from "../containers/Login";
 import Layout from "../components/Layout";
 import * as UserStore from "../store/User";
@@ -33,7 +33,8 @@ class App extends React.Component<AppProps, {}> {
     render() {
         return (
             <div>
-                <Dimmer active={this.props.isInitializing}>
+                <Dimmer active={this.props.isInitializing} className="splash">
+                    <Image src="/images/splash.png" centered />
                     <Loader size="big">Loading...</Loader>
                 </Dimmer>
                 {this.props.user === undefined ? (
