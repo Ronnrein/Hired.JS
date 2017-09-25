@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import * as brace from "brace";
 import AceEditor from "react-ace";
 import "brace/mode/javascript";
@@ -94,8 +95,10 @@ class ScriptSelector extends React.Component<Props, {}> {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button
+                        as={Link}
+                        to="/editor"
                         positive
-                        onClick={() => this.props.onLoadAssignmentClick(this.props.assignment)}
+                        onClick={() => this.props.onLoadAssignmentClick()}
                         disabled={this.props.isLoading}>
                         <Icon name="checkmark" />
                         Go to editor

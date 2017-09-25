@@ -2,10 +2,11 @@ import { fetch, addTask } from "domain-task";
 import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
 import { Assignment } from "./Assignments";
+import { Script, SaveScriptCompleteAction } from "./Scripts";
 
 export interface EditorState {
     assignment: Assignment;
-    value: string;
+    script: Script;
     console: string;
     isLoading: boolean;
     result?: RunResult | VerificationResult;
@@ -29,6 +30,7 @@ export interface VerificationResult extends RunResult {
 export interface LoadAssignmentAction {
     type: "LOAD_ASSIGNMENT";
     assignment: Assignment;
+    script: Script;
 }
 
 export interface RequestScriptRunAction {
@@ -60,11 +62,12 @@ export interface ConsoleChange {
 }
 
 type KnownAction = RequestScriptRunAction | ReceiveScriptRunAction | RequestScriptVerificationAction
-                 | ReceiveScriptVerificationAction | LoadAssignmentAction | ValueChange | ConsoleChange; 
+    | ReceiveScriptVerificationAction | LoadAssignmentAction | ValueChange | ConsoleChange
+    | SaveScriptCompleteAction; 
 
 export const actionCreators = {
-    loadAssignment: (assignment: Assignment): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: "LOAD_ASSIGNMENT", assignment: assignment });
+    loadAssignment: (assignment: Assignment, script: Script): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: "LOAD_ASSIGNMENT", assignment: assignment, script: script });
     },
     runScript: (args: string[]): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let id = getState().editor.assignment.id;
@@ -76,7 +79,7 @@ export const actionCreators = {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                script: getState().editor.value,
+                script: getState().editor.script,
                 arguments: id !== 0 ? args : args[0].replace(/\s/g, "").split(",")
             })
         }).then(response => response.json() as Promise<RunResult>).then(data => {
@@ -118,7 +121,7 @@ export const actionCreators = {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                script: getState().editor.value
+                script: getState().editor.script
             })
         }).then(
             response => response.json() as Promise<VerificationResult>
@@ -157,7 +160,6 @@ export const actionCreators = {
 };
 
 const unloadedState: EditorState = {
-    value: "// Define your function here\nfunction func(args, here) {\n\treturn args + here;\n}",
     assignment: {
         id: 0,
         name: "Free play",
@@ -180,6 +182,15 @@ const unloadedState: EditorState = {
             example: "1, \"Hello there!\""
         }]
     },
+    script: {
+        id: 0,
+        assignmentId: 0,
+        name: "Free play",
+        text: "// Define your function here\nfunction func(args, here) {\n\treturn args + here;\n}",
+        verifiedOn: "",
+        isVerified: false,
+        modifiedOn: new Date().toLocaleString()
+    },
     console: "Hired.JS Internal System v2.04\nLoading system...\nLoading complete",
     isLoading: false
 }
@@ -190,7 +201,7 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
         case "LOAD_ASSIGNMENT":
             return Object.assign({}, state, {
                 assignment: action.assignment,
-                value: action.assignment.template,
+                script: action.script,
                 console: `${state.console}\nLoaded assignment ${action.assignment.id}`
             });
         case "REQUEST_SCRIPT_RUN":
@@ -209,12 +220,18 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
                 result: action.result
             });
         case "VALUE_CHANGE":
+            const script = Object.assign({}, state.script);
+            script.text = action.value;
             return Object.assign({}, state, {
-                value: action.value
+                script: script
             });
         case "CONSOLE_CHANGE":
             return Object.assign({}, state, {
                 console: action.value
+            });
+        case "SAVE_SCRIPT_COMPLETE":
+            return Object.assign({}, state, {
+                script: action.script
             });
         default:
             const exhaustiveCheck: never = action;

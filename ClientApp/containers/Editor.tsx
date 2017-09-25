@@ -3,10 +3,17 @@ import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
 import * as EditorStore from "../store/Editor";
+import { actionCreators as scriptsActions } from "../store/Scripts";
 import { default as EditorComponent } from "../components/editor/Editor";
+
+type ImportedProps = {
+    saveScript: Function;
+    isSaving: boolean;
+}
 
 type EditorProps =
     EditorStore.EditorState
+    & ImportedProps
     & typeof EditorStore.actionCreators
     & RouteComponentProps<{ id: string }>;
 
@@ -16,12 +23,14 @@ class Editor extends React.Component<EditorProps, {}> {
             <EditorComponent
                 assignment={this.props.assignment}
                 isLoading={this.props.isLoading}
+                isSaving={this.props.isSaving}
                 console={this.props.console}
-                value={this.props.value}
+                script={this.props.script}
                 addToConsole={(s: string) => this.props.addToConsole(s)}
                 onValueChange={(v: string) => this.props.valueChange(v)}
                 onRunClick={(args: string[]) => this.props.runScript(args)}
                 onVerifyClick={() => this.props.verifyScript()}
+                onSaveClick={() => this.props.saveScript(this.props.script)}
             />
         );
 
@@ -29,6 +38,10 @@ class Editor extends React.Component<EditorProps, {}> {
 }
 
 export default connect(
-    (state: ApplicationState) => state.editor,
-    EditorStore.actionCreators
+    (state: ApplicationState) => ({...state.editor, ...{
+        isSaving: state.scripts.isSaving
+    }}),
+    Object.assign(EditorStore.actionCreators, {
+        saveScript: scriptsActions.saveScript
+    })
 )(Editor) as typeof Editor;

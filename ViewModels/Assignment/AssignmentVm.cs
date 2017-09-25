@@ -9,7 +9,7 @@ namespace Hiredjs.ViewModels.Assignment {
         public string Function { get; set; }
         public string Summary { get; set; }
         public string Template { get; set; }
-        public int[,] ReadOnlyLines { get; set; }
+        public int[] ReadOnlyLines { get; set; }
         public Message[] Messages { get; set; }
         public Message[] CompletedMessages { get; set; }
         public GameData.Assignment.Argument[] Arguments { get; set; }

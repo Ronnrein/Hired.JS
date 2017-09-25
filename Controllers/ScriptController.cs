@@ -33,8 +33,8 @@ namespace Hiredjs.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ScriptVm s) {
-            GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == s.AssignmentId);
+        public async Task<IActionResult> Create([FromBody] ScriptVm scriptVm) {
+            GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == scriptVm.AssignmentId);
             if (assignment == null) {
                 return NotFound();
             }
@@ -42,7 +42,7 @@ namespace Hiredjs.Controllers {
                 UserId = _userManager.GetUserId(User),
                 AssignmentId = assignment.Id,
                 ModifiedOn = DateTime.Now,
-                Name = s.Name,
+                Name = scriptVm.Name,
                 Text = assignment.Template
             };
             await _db.Scripts.AddAsync(script);
@@ -62,6 +62,21 @@ namespace Hiredjs.Controllers {
             _db.Scripts.Remove(script);
             await _db.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(int id, [FromBody] ScriptVm scriptVm) {
+            Script script = await _db.Scripts.SingleOrDefaultAsync(s => s.Id == id);
+            if (script == null) {
+                return NotFound();
+            }
+            if (script.UserId != _userManager.GetUserId(User)) {
+                return Unauthorized();
+            }
+            script.Text = scriptVm.Text;
+            script.ModifiedOn = DateTime.Now;
+            await _db.SaveChangesAsync();
+            return Json(_mapper.Map<Script, ScriptVm>(script));
         }
 
     }

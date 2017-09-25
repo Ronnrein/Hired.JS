@@ -2,7 +2,6 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { ApplicationState } from "../store";
 import { connect } from "react-redux";
-import { Assignment } from "../store/Assignments";
 import { actionCreators as editorActions } from "../store/Editor";
 import * as AssignmentsStore from "../store/Assignments";
 import * as ScriptsStore from "../store/Scripts";
@@ -22,9 +21,8 @@ type ScriptsProps =
 
 class Scripts extends React.Component<ScriptsProps, {}> {
 
-    onLoadAssignmentClick(a: AssignmentsStore.Assignment) {
-        this.props.loadAssignment(a);
-        this.props.history.push("/editor");
+    onLoadAssignmentClick() {
+        this.props.loadAssignment(this.props.selectedAssignment, this.props.selectedScript);
     }
 
     render() {
@@ -38,7 +36,7 @@ class Scripts extends React.Component<ScriptsProps, {}> {
                 selectedScript={this.props.selectedScript}
                 isLoading={this.props.isLoading}
                 isSaving={this.props.isSaving}
-                onLoadAssignmentClick={(a: Assignment) => this.onLoadAssignmentClick(a)}
+                onLoadAssignmentClick={() => this.onLoadAssignmentClick()}
                 onCreateClick={(n: string) => this.props.createScript(n, this.props.selectedAssignment.id)}
                 onDeleteClick={(s: ScriptsStore.Script) => this.props.deleteScript(s)}
                 onModalOpen={() => this.props.requestScripts()}

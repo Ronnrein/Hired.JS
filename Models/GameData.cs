@@ -12,7 +12,7 @@ namespace Hiredjs.Models {
             public string Summary { get; set; }
             public string Solution { get; set; }
             public string Template { get; set; }
-            public int [,] ReadOnlyLines { get; set; }
+            public int [] ReadOnlyLines { get; set; }
             public Message[] Messages { get; set; }
             public Message[] CompletedMessages { get; set; }
             public Argument[] Arguments { get; set; }

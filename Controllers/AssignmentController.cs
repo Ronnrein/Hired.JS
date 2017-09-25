@@ -54,7 +54,7 @@ namespace Hiredjs.Controllers {
             }
             AssignmentRunResultVm results = await _nodeServices.InvokeAsync<AssignmentRunResultVm>(
                 "Scripts/Run.js",
-                model.Script,
+                model.Script.Text,
                 assignment.Solution,
                 model.Arguments
             );
@@ -69,7 +69,7 @@ namespace Hiredjs.Controllers {
             }
             AssignmentVerificationResultVm results = await _nodeServices.InvokeAsync<AssignmentVerificationResultVm>(
                 "Scripts/Verify.js",
-                model.Script,
+                model.Script.Text,
                 assignment.Solution,
                 assignment.Tests
             );
