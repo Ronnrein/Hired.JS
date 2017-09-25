@@ -130,21 +130,21 @@ export const reducer: Reducer<ScriptsState> = (state: ScriptsState, incomingActi
     let scripts: any, script: any;
     switch (action.type) {
         case "REQUEST_SCRIPTS":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: true,
                 scripts: []
-            });
+            }};
         case "RECEIVE_SCRIPTS":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 scripts: action.scripts,
                 isLoading: false,
                 isSaving: false,
                 selectedScript: action.scripts[0]
-            });
+            }};
         case "SAVE_SCRIPT":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isSaving: true
-            });
+            }};
         case "SAVE_SCRIPT_COMPLETE":
             scripts = state.scripts.slice();
             script = scripts.find((s: Script) => s.id === action.script.id);
@@ -153,22 +153,22 @@ export const reducer: Reducer<ScriptsState> = (state: ScriptsState, incomingActi
             } else {
                 scripts.push(action.script);
             }
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isSaving: false,
                 scripts: scripts,
                 selectedScript: action.script
-            });
+            }};
         case "DELETE_SCRIPT":
             scripts = state.scripts.slice();
             scripts.splice(state.scripts.indexOf(action.script), 1);
-            return Object.assign({}, state, {
+            return {...state, ...{
                 scripts: scripts,
                 selectedScript: state.selectedScript === action.script ? undefined : state.selectedScript 
-            });
+            }};
         case "SELECT_SCRIPT":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 selectedScript: action.script
-            });
+            }};
         default:
             const exhaustiveCheck: never = action;
     }

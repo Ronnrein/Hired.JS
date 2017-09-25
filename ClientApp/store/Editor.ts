@@ -199,40 +199,40 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case "LOAD_ASSIGNMENT":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 assignment: action.assignment,
                 script: action.script,
                 console: `${state.console}\nLoaded assignment ${action.assignment.id}`
-            });
+            }};
         case "REQUEST_SCRIPT_RUN":
         case "REQUEST_SCRIPT_VERIFICATION":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: true
-            });
+            }};
         case "RECEIVE_SCRIPT_RUN":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: false,
                 result: action.result
-            });
+            }};
         case "RECEIVE_SCRIPT_VERIFICATION":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: false,
                 result: action.result
-            });
+            }};
         case "VALUE_CHANGE":
-            const script = Object.assign({}, state.script);
+            const script = {...state.script};
             script.text = action.value;
-            return Object.assign({}, state, {
+            return {...state, ...{
                 script: script
-            });
+            }};
         case "CONSOLE_CHANGE":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 console: action.value
-            });
+            }};
         case "SAVE_SCRIPT_COMPLETE":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 script: action.script
-            });
+            }};
         default:
             const exhaustiveCheck: never = action;
     }

@@ -152,32 +152,32 @@ export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Ac
         case "REQUEST_USER":
         case "REQUEST_LOGIN":
         case "REQUEST_REGISTER":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: true,
                 loadingText: action.loadingText
-            });
+            }};
         case "REQUEST_USERNAME_UPDATE":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: true
-            });
+            }};
         case "RECEIVE_USER_SUCCESS":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: false,
                 isInitializing: false,
                 user: action.user,
                 message: action.message
-            });
+            }};
         case "USER_REQUEST_FAILED":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: false,
                 isInitializing: false,
                 message: action.message
-            });
+            }};
         case "LOGOUT":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 message: action.message,
                 user: undefined
-            });
+            }};
         default:
             const exhaustiveCheck: never = action;
     }

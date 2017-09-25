@@ -8,7 +8,6 @@ import * as ScriptsStore from "../store/Scripts";
 import ScriptSelector from "../components/scripts/ScriptSelector";
 
 type ImportedProps = {
-    selectedScript: ScriptsStore.Script;
     selectedAssignment: AssignmentsStore.Assignment;
     loadAssignment: Function;
 }
@@ -48,14 +47,10 @@ class Scripts extends React.Component<ScriptsProps, {}> {
 }
 
 export default connect(
-    (state: ApplicationState) => ({
-        scripts: state.scripts.scripts,
-        selectedScript: state.scripts.selectedScript,
-        isLoading: state.scripts.isLoading,
-        isSaving: state.scripts.isSaving,
-        selectedAssignment: state.assignments.selectedAssignment
-    }),
-    Object.assign(ScriptsStore.actionCreators, {
+    (state: ApplicationState) => ({...state.scripts, ...{
+        selectedAssignment: state.assignments.selectedAssignment,
+    }}),
+    ({...ScriptsStore.actionCreators, ...{
         loadAssignment: editorActions.loadAssignment
-    })
+    }})
 )(Scripts);

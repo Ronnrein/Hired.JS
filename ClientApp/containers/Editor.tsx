@@ -41,7 +41,7 @@ export default connect(
     (state: ApplicationState) => ({...state.editor, ...{
         isSaving: state.scripts.isSaving
     }}),
-    Object.assign(EditorStore.actionCreators, {
+    ({...EditorStore.actionCreators, ...{
         saveScript: scriptsActions.saveScript
-    })
+    }})
 )(Editor) as typeof Editor;

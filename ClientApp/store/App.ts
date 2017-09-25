@@ -46,9 +46,11 @@ export const reducer: Reducer<AppState> = (state: AppState, incomingAction: Acti
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case "ADD_NOTIFICATION":
-            return Object.assign({}, state, {
-                notifications: state.notifications.push(action.notification)
-            });
+            const notifications = { ...state.notifications };
+            notifications.push(action.notification);
+            return {...state, ...{
+                notifications: notifications
+            }};
         default:
             // const exhaustiveCheck: never = action;
     }

@@ -83,21 +83,21 @@ export const reducer: Reducer<AssignmentsState> = (state: AssignmentsState, inco
     const action = incomingAction as KnownAction;
     switch (action.type) {
         case "REQUEST_ASSIGNMENTS":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 isLoading: true
-            });
+            }};
         case "RECEIVE_ASSIGNMENTS":
             if (action.assignments !== state.assignments) {
-                return Object.assign({}, state, {
+                return {...state, ...{
                     assignments: action.assignments,
                     isLoading: false
-                });
+                }};
             }
             break;
         case "SELECT_ASSIGNMENT":
-            return Object.assign({}, state, {
+            return {...state, ...{
                 selectedAssignment: action.assignment
-            });
+            }};
         default:
             const exhaustiveCheck: never = action;
     }

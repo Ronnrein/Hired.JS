@@ -48,12 +48,11 @@ class App extends React.Component<AppProps, {}> {
 }
 
 export default connect(
-    (state: ApplicationState) => ({
+    (state: ApplicationState) => ({...state.app, ...{
         user: state.user.user,
         isInitializing: state.user.isInitializing,
-        notifications: state.app.notifications
-    }),
-    Object.assign(UserStore.actionCreators, {
+    }}),
+    ({...AppStore.actionCreators, ...{
         requestAssignments: assignmentsActions.requestAssignments
-    })
+    }})
 )(App) as typeof App;
