@@ -9,7 +9,7 @@ export interface EditorState {
     script: Script;
     console: string;
     isLoading: boolean;
-    result?: RunResult | VerificationResult;
+    result?: VerificationResult;
 }
 
 export interface RunResult {
@@ -21,10 +21,11 @@ export interface RunResult {
     correct: string;
 }
 
-export interface VerificationResult extends RunResult {
+export interface VerificationResult {
     tests: number;
     completed: number;
     failed?: RunResult;
+    script?: Script;
 }
 
 export interface LoadAssignmentAction {
@@ -71,7 +72,7 @@ export const actionCreators = {
     },
     runScript: (args: string[]): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let id = getState().editor.assignment.id;
-        let fetchAssignment = fetch(`api/assignment/run/${id}`, {
+        let fetchAssignment = fetch(`api/script/run`, {
             credentials: "same-origin",
             method: "POST",
             headers: {
@@ -113,7 +114,7 @@ export const actionCreators = {
     },
     verifyScript: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let id = getState().editor.assignment.id;
-        let fetchAssignment = fetch(`api/assignment/verify/${id}`, {
+        let fetchAssignment = fetch(`api/script/verify`, {
             credentials: "same-origin",
             method: "POST",
             headers: {
@@ -166,6 +167,8 @@ const unloadedState: EditorState = {
         title: "",
         function: "func",
         summary: "Here you can freely try different things in the editor!",
+        completed: false,
+        completedOn: undefined,
         template: "",
         readOnlyLines: [],
         messages: [{
@@ -207,17 +210,18 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
         case "REQUEST_SCRIPT_RUN":
         case "REQUEST_SCRIPT_VERIFICATION":
             return {...state, ...{
-                isLoading: true
+                isLoading: true,
+                result: undefined
             }};
         case "RECEIVE_SCRIPT_RUN":
             return {...state, ...{
-                isLoading: false,
-                result: action.result
+                isLoading: false
             }};
         case "RECEIVE_SCRIPT_VERIFICATION":
-            return {...state, ...{
+            return { ...state, ...{
                 isLoading: false,
-                result: action.result
+                result: action.result,
+                script: action.result.script != undefined ? action.result.script : state.script
             }};
         case "VALUE_CHANGE":
             const script = {...state.script};

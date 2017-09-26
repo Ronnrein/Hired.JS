@@ -1,3 +1,4 @@
+using System;
 using Hiredjs.Models;
 
 namespace Hiredjs.ViewModels.Assignment {
@@ -9,6 +10,8 @@ namespace Hiredjs.ViewModels.Assignment {
         public string Function { get; set; }
         public string Summary { get; set; }
         public string Template { get; set; }
+        public DateTime? CompletedOn { get; set; }
+        public bool Completed => CompletedOn != null;
         public int[] ReadOnlyLines { get; set; }
         public Message[] Messages { get; set; }
         public Message[] CompletedMessages { get; set; }

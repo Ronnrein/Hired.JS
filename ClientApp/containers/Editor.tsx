@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import { ApplicationState } from "../store";
 import * as EditorStore from "../store/Editor";
 import { actionCreators as scriptsActions } from "../store/Scripts";
+import { actionCreators as assignmentsActions } from "../store/Assignments";
 import { default as EditorComponent } from "../components/editor/Editor";
 
 type ImportedProps = {
     saveScript: Function;
+    requestAssignments: Function;
     isSaving: boolean;
 }
 
@@ -18,9 +20,16 @@ type EditorProps =
     & RouteComponentProps<{ id: string }>;
 
 class Editor extends React.Component<EditorProps, {}> {
+    componentWillReceiveProps(next: EditorProps) {
+        if(this.props.result === undefined && next.result !== undefined) {
+            this.props.requestAssignments();
+        }
+    }
+
     public render() {
         return (
             <EditorComponent
+                result={this.props.result}
                 assignment={this.props.assignment}
                 isLoading={this.props.isLoading}
                 isSaving={this.props.isSaving}
@@ -42,6 +51,7 @@ export default connect(
         isSaving: state.scripts.isSaving
     }}),
     ({...EditorStore.actionCreators, ...{
-        saveScript: scriptsActions.saveScript
+        saveScript: scriptsActions.saveScript,
+        requestAssignments: assignmentsActions.requestAssignments
     }})
 )(Editor) as typeof Editor;

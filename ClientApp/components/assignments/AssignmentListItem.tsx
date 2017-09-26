@@ -17,7 +17,9 @@ class AssignmentListItem extends React.Component<Props, {}> {
                 <Item.Image src={image} size="tiny" shape="circular" />
                 <Item.Content>
                     <Item.Header>
-                        <Icon name="checkmark" color="green" />
+                        {this.props.assignment.completed &&
+                            <Icon name="checkmark" color="green" />
+                        }
                         <span className="assignment-list-header">{assignment.title}</span>
                         {this.props.selected &&
                             <Icon name="angle double right" />

@@ -2,14 +2,17 @@ import * as React from "react";
 import { Segment, Grid, Header, Icon, Item, Feed } from "semantic-ui-react";
 import { Assignment } from "../../store/Assignments";
 import { Script } from "../../store/Scripts";
+import { VerificationResult } from "../../store/editor";
 import EditorConsole from "./EditorConsole";
 import EditorForm from "./EditorForm";
 import EditorToolbar from "./EditorToolbar";
 import EditorAce from "./EditorAce";
+import EditorSuccess from "./EditorSuccess";
 import { convertNewLine } from "../../utils";
 
 type Props = {
     assignment: Assignment;
+    result?: VerificationResult;
     isLoading: boolean;
     isSaving: boolean;
     onValueChange: Function;
@@ -27,6 +30,7 @@ class Editor extends React.Component<Props, {}> {
         const image = `/images/workers/${message.author.id}.jpg`;
         return (
             <div>
+                <EditorSuccess result={this.props.result} />
                 <Header as="h2" attached="top">
                     <Icon name="code" />
                     <Header.Content>
@@ -78,7 +82,7 @@ class Editor extends React.Component<Props, {}> {
                                     assignment={this.props.assignment}
                                     addToConsole={(s: string) => this.props.addToConsole(s)}
                                     onRunClick={(args: string[]) => this.props.onRunClick(args)}
-                                    onVerifyClick={() => this.props.onVerifyClick}
+                                    onVerifyClick={() => this.props.onVerifyClick()}
                                 />
                             </Grid.Column>
                         </Grid.Row>

@@ -1,7 +1,6 @@
 using System;
 
 namespace Hiredjs.ViewModels.Script {
-
     public class ScriptVm {
         public int Id { get; set; }
         public int AssignmentId { get; set; }
