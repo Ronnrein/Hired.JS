@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Grid, Segment, Form, Button, Header, Input, Divider, Message } from "semantic-ui-react";
+import { Container, Grid, Segment, Form, Button, Header, Input, Divider, Message, Image } from "semantic-ui-react";
 
 type Props = {
     message?: string;
@@ -31,7 +31,7 @@ class Login extends React.Component<Props, {}> {
                         <Grid.Column width={5} />
                         <Grid.Column width={6}>
                             <Form as={Segment} loading={this.props.isLoading}>
-                                <Header>Logo goes here</Header>
+                                <Image src="/images/logo.png" fluid />
                                 <Divider section horizontal>New game</Divider>
                                 <Form.Field>
                                     <Button size="huge" fluid positive onClick={() => this.props.onPlayClick()}>Play!</Button>
