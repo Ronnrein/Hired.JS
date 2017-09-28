@@ -29,7 +29,7 @@ class EditorAce extends React.Component<Props, {}> {
         const { Range } = brace.acequire("ace/range");
         const lines = editor.session.doc.getAllLines().length;
         const readOnlyLines = this.props.readOnlyLines;
-        let ranges: any[] = [
+        let ranges: any[] = readOnlyLines.length === 0 ? [] : [
             new Range(0, 0, readOnlyLines[0] - 1, 100),
             new Range(lines - readOnlyLines[1], 0, lines, 100)
         ];
