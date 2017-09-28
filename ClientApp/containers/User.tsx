@@ -18,7 +18,10 @@ class User extends React.Component<UserProps, {}> {
         return (<UserComponent
             user={this.props.user}
             isLoading={this.props.isLoading}
+            isUpdatingUsername={this.props.isUpdatingUsername}
+            isUpdatingPassword={this.props.isUpdatingPassword}
             onUpdateUsernameClick={(un: string) => this.props.updateUsername(un)}
+            onUpdatePasswordClick={(pw: string) => this.props.updatePassword(pw)}
             onLogoutClick={() => this.props.logout()}
         />);
     }

@@ -4,24 +4,16 @@ import { Container, Grid, Segment, Form, Button, Header, Input, Divider, Message
 type Props = {
     message?: string;
     isLoading: boolean;
+    isPasswordRequired: boolean;
     onPlayClick: Function;
     onLoginClick: Function;
 }
 
 class Login extends React.Component<Props, {}> {
     state = {
-        login: {
-            userName: ""
-        }
+        username: "",
+        password: ""
     };
-
-    onUsernameChange(value: string) {
-        this.setState({
-            login: Object.assign(this.state.login, {
-                userName: value
-            })
-        });
-    }
 
     render() {
         return (
@@ -46,11 +38,24 @@ class Login extends React.Component<Props, {}> {
                                     />
                                 }
                                 <Form.Field>
-                                    <Input type="text" placeholder="Username" action>
-                                        <input onChange={(e: any) => this.onUsernameChange(e.target.value)} />
-                                        <Button primary onClick={() => this.props.onLoginClick(this.state.login)}>Load</Button>
-                                    </Input> 
+                                    <Input
+                                        type="text"
+                                        placeholder="Username"
+                                        action
+                                        onChange={(e: any) => this.setState({ username: e.target.value })}
+                                    />
                                 </Form.Field>
+                                {this.props.isPasswordRequired &&
+                                    <Form.Field>
+                                        <Input
+                                            type="password"
+                                            placeholder="Password"
+                                            action
+                                            onChange={(e: any) => this.setState({ password: e.target.value })}
+                                        />
+                                    </Form.Field>
+                                }
+                                <Button primary fluid onClick={() => this.props.onLoginClick(this.state.username, this.state.password)}>Load</Button>
                             </Form>
                         </Grid.Column>
                         <Grid.Column width={5} />

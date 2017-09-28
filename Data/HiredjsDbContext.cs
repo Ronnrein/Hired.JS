@@ -18,7 +18,6 @@ namespace Hiredjs.Data {
                 .Ignore(u => u.NormalizedEmail)
                 .Ignore(u => u.PhoneNumber)
                 .Ignore(u => u.PhoneNumberConfirmed)
-                .Ignore(u => u.PasswordHash)
                 .Ignore(u => u.TwoFactorEnabled)
                 .Ignore(u => u.AccessFailedCount)
                 .Ignore(u => u.LockoutEnabled)

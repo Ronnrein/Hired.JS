@@ -20,8 +20,9 @@ class Login extends React.Component<LoginProps, {}> {
         return (
             <LoginComponent
                 isLoading={this.props.isLoading}
+                isPasswordRequired={this.props.isPasswordRequired}
                 onPlayClick={() => this.props.register()}
-                onLoginClick={(login: UserStore.LoginFields) => this.props.login(login)}
+                onLoginClick={(un: string, pw: string) => this.props.login(un, pw)}
                 message={this.props.message}
             />
         );

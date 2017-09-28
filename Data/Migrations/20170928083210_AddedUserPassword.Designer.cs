@@ -11,9 +11,10 @@ using System;
 namespace Hiredjs.Data.Migrations
 {
     [DbContext(typeof(HiredjsDbContext))]
-    partial class HiredjsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170928083210_AddedUserPassword")]
+    partial class AddedUserPassword
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

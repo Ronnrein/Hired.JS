@@ -1,38 +1,59 @@
 import * as React from "react";
 import { User } from "../store/User";
-import { Dropdown, Input, Button, Icon } from "semantic-ui-react";
+import { Input, Button, Icon, Checkbox, Popup, Menu, Divider, Header, Modal } from "semantic-ui-react";
 
 type Props = {
     user: User;
     isLoading: boolean;
+    isUpdatingUsername: boolean;
+    isUpdatingPassword: boolean;
     onUpdateUsernameClick: Function;
+    onUpdatePasswordClick: Function;
     onLogoutClick: Function;
 }
 
 class Editor extends React.Component<Props, {}> {
     state = {
-        userName: this.props.user.userName
+        userName: this.props.user.userName,
+        password: "",
+        passwordEnabled: this.props.user.isPasswordEnabled,
+        passwordDisableModal: false
     }
 
-    // Workaround for semantic bug regarding dropdown click
-    onClick(e: Event) {
-        e.stopPropagation();
+    onPasswordToggle(data: any) {
+        if(this.props.user.isPasswordEnabled && !data.checked) {
+            this.setState({passwordDisableModal: true });
+        } else {
+            this.setState({passwordEnabled: data.checked});
+        }
     }
 
-    onUsernameChange(value: string) {
+    onPasswordUpdateClick() {
+        this.setState({password: ""});
+        this.props.onUpdatePasswordClick(this.state.password);
+    }
+
+    onPasswordDisableClick() {
         this.setState({
-            userName: value
+            passwordEnabled: false,
+            passwordDisableModal: false,
+            password: "",
         });
+        this.props.onUpdatePasswordClick(null);
     }
 
     render() {
         return (
-            <Dropdown item trigger={<span><Icon name="user" />{this.props.user.userName}</span>}>
-                <Dropdown.Menu onClick={(e: Event) => this.onClick(e)}>
-                    <Dropdown.Header content="Update username" />
-                    <Input placeholder="Username..." iconPosition="left" loading={this.props.isLoading} action>
+            <span>
+                <Popup
+                    trigger={<Menu.Item><Icon name="user" />{this.props.user.userName}<Icon name="dropdown" /></Menu.Item>}
+                    on="click"
+                    position="bottom left"
+                >
+                    <Header>Update username</Header>
+                    <Input placeholder="Username..." iconPosition="left" loading={this.props.isUpdatingUsername} action>
                         <Icon name="tag" />
-                        <input defaultValue={this.props.user.userName} onChange={(e: any) => this.onUsernameChange(e.target.value)} />
+                        <input defaultValue={this.props.user.userName} onChange={(e: any) => this.setState({userName: e.target.value})} />
                         <Button
                             disabled={this.state.userName === this.props.user.userName}
                             positive
@@ -40,9 +61,49 @@ class Editor extends React.Component<Props, {}> {
                             onClick={() => this.props.onUpdateUsernameClick(this.state.userName)}
                         />
                     </Input>
+                    <Divider />
+                    <Header>
+                        Password protection
+                        <Checkbox
+                            toggle
+                            onChange={(e: any, data: any) => this.onPasswordToggle(data)}
+                            className="float-right"
+                            checked={this.state.passwordEnabled}
+                        />
+                    </Header>
+                    <Input
+                        placeholder="Update password..."
+                        iconPosition="left"
+                        loading={this.props.isUpdatingPassword}
+                        action
+                        disabled={!this.state.passwordEnabled}
+                        value={this.state.password}
+                    >
+                        <Icon name="key" />
+                        <input type="password" onChange={(e: any) => this.setState({password: e.target.value})} />
+                        <Button
+                            disabled={this.state.userName === ""}
+                            positive
+                            icon="checkmark"
+                            onClick={() => this.onPasswordUpdateClick()}
+                        />
+                    </Input>
+                    <Divider />
                     <Button fluid onClick={() => this.props.onLogoutClick()}>Log out</Button>
-                </Dropdown.Menu>
-            </Dropdown>
+                </Popup>
+                <Modal open={this.state.passwordDisableModal}>
+                    <Header icon="trash" content="Disable password protection?" />
+                    <Modal.Content>Do you want to disable password protection for your profile?</Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={() => this.setState({passwordDisableModal: false})}>
+                            <Icon name="cancel" /> Cancel
+                        </Button>
+                        <Button onClick={() => this.onPasswordDisableClick()} color="red">
+                            <Icon name="trash" /> Disable
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+            </span>
         );
     }
 }

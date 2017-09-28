@@ -46,6 +46,10 @@ namespace Hiredjs {
                     c.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
+                o.Events.OnRedirectToAccessDenied = (c) => {
+                    c.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
                 o.ExpireTimeSpan = TimeSpan.FromDays(365);
             });
 
@@ -68,7 +72,8 @@ namespace Hiredjs {
                     }));
                 o.CreateMap<GameData.Assignment.Message, AssignmentVm.Message>()
                     .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.Author)));
-                o.CreateMap<User, UserVm>();
+                o.CreateMap<User, UserVm>()
+                    .ForMember(d => d.IsPasswordEnabled, opt => opt.MapFrom(s => !string.IsNullOrEmpty(s.PasswordHash)));
                 o.CreateMap<Script, ScriptVm>();
             });
             IMapper mapper = config.CreateMapper();
