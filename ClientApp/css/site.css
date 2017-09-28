@@ -183,3 +183,7 @@
 .float-right {
     float: right;
 }
+
+#user-modal {
+    z-index: 1000;
+}

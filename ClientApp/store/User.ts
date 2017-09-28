@@ -2,6 +2,7 @@ import { fetch, addTask } from "domain-task";
 import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
 import { checkFetchStatus } from "../utils";
+import { Message, MessageStatus } from "./App";
 
 export interface UserState {
     user?: User;
@@ -11,7 +12,7 @@ export interface UserState {
     isInitializing: boolean;
     isPasswordRequired: boolean;
     loadingText?: string;
-    message?: string;
+    message?: Message;
 }
 
 export interface User {
@@ -19,19 +20,18 @@ export interface User {
     isPasswordEnabled: boolean;
 }
 
-export interface RequestUserAction { type: "REQUEST_USER"; loadingText: string; }
-export interface RequestLoginAction { type: "REQUEST_LOGIN"; loadingText: string; }
-export interface RequestRegisterAction { type: "REQUEST_REGISTER"; loadingText: string; }
+export interface RequestUserAction { type: "REQUEST_USER"; }
 export interface RequestUsernameUpdateAction { type: "REQUEST_USERNAME_UPDATE"; }
 export interface RequestPasswordUpdateAction { type: "REQUEST_PASSWORD_UPDATE"; }
-export interface LogoutAction { type: "LOGOUT"; message: string; }
-export interface ReceiveUserSuccessAction { type: "RECEIVE_USER_SUCCESS"; user: User; message?: string; }
+export interface LogoutAction { type: "LOGOUT"; }
+export interface ReceiveUserAction { type: "RECEIVE_USER"; user: User; message?: Message; }
 export interface UserRequestPasswordRequiredAction { type: "USER_REQUEST_PASSWORD_REQUIRED"; }
-export interface UserRequestFailedAction { type: "USER_REQUEST_FAILED"; message?: string; }
+export interface UserRequestFailedAction { type: "USER_REQUEST_FAILED"; message?: Message; }
+export interface ResetMessageAction { type: "RESET_MESSAGE"; }
 
-type KnownAction = RequestUserAction | ReceiveUserSuccessAction | RequestLoginAction
-    | RequestRegisterAction | LogoutAction | RequestUsernameUpdateAction | UserRequestFailedAction
-    | RequestPasswordUpdateAction | UserRequestPasswordRequiredAction;
+type KnownAction = RequestUserAction | ReceiveUserAction | LogoutAction
+    | RequestUsernameUpdateAction | UserRequestFailedAction | RequestPasswordUpdateAction
+    | UserRequestPasswordRequiredAction | ResetMessageAction;
 
 export const actionCreators = {
     fetchUser: (): AppThunkAction<KnownAction> => (dispatch) => {
@@ -40,14 +40,14 @@ export const actionCreators = {
         }).then(checkFetchStatus).then(
             response => response.json() as Promise<User>
         ).then(data => {
-            dispatch({ type: "RECEIVE_USER_SUCCESS", user: data });
+            dispatch({ type: "RECEIVE_USER", user: data });
         }).catch(e => {
             if(e.response.status === 401) {
                 dispatch({ type: "USER_REQUEST_FAILED" });
             }
         });
         addTask(fetchUser);
-        dispatch({ type: "REQUEST_USER", loadingText: "Loading..." });
+        dispatch({ type: "REQUEST_USER" });
     },
     login: (userName: string, password: string): AppThunkAction<KnownAction> => (dispatch) => {
         let fetchLogin = fetch("api/user/login", {
@@ -64,11 +64,24 @@ export const actionCreators = {
         }).then(checkFetchStatus).then(
             response => response.json() as Promise<User>
         ).then(data => {
-            dispatch({ type: "RECEIVE_USER_SUCCESS", user: data });
+            dispatch({ type: "RECEIVE_USER", user: data });
         }).catch(e => {
             switch(e.response.status) {
                 case 404:
-                    dispatch({ type: "USER_REQUEST_FAILED", message: "Profile not found!" });
+                    dispatch({ type: "USER_REQUEST_FAILED", message: {
+                        title: "Not found",
+                        text: "This profile was not found",
+                        icon: "user",
+                        status: MessageStatus.Error
+                    }});
+                    break;
+                case 401:
+                    dispatch({ type: "USER_REQUEST_FAILED", message: {
+                        title: "Wrong password",
+                        text: "Password is incorrect",
+                        icon: "key",
+                        status: MessageStatus.Error
+                    }});
                     break;
                 case 403:
                     dispatch({ type: "USER_REQUEST_PASSWORD_REQUIRED" });
@@ -76,7 +89,7 @@ export const actionCreators = {
             }
         });
         addTask(fetchLogin);
-        dispatch({ type: "REQUEST_LOGIN", loadingText: "Logging in..." });
+        dispatch({ type: "REQUEST_USER" });
     },
     register: (): AppThunkAction<KnownAction> => (dispatch) => {
         let register = fetch("api/user/register", {
@@ -85,10 +98,10 @@ export const actionCreators = {
         }).then(
             response => response.json() as Promise<User>
         ).then(data => {
-            dispatch({ type: "RECEIVE_USER_SUCCESS", user: data });
+            dispatch({ type: "RECEIVE_USER", user: data });
         });
         addTask(register);
-        dispatch({ type: "REQUEST_REGISTER", loadingText: "Creating profile..." });
+        dispatch({ type: "REQUEST_USER" });
     },
     updateUsername: (userName: string): AppThunkAction<KnownAction> => (dispatch) => {
         let update = fetch("api/user/updateUserName", {
@@ -104,10 +117,20 @@ export const actionCreators = {
         }).then(checkFetchStatus).then(
             response => response.json() as Promise<User>
         ).then(data => {
-            dispatch({ type: "RECEIVE_USER_SUCCESS", user: data, message: "Changed username!" });
+            dispatch({ type: "RECEIVE_USER", user: data, message: {
+                title: "Updated",
+                text: "Username has been updated",
+                icon: "tag",
+                status: MessageStatus.Success
+            }});
         }).catch(e => {
             if (e.response.status === 409) {
-                dispatch({ type: "USER_REQUEST_FAILED", message: "Username already exists!" });
+                dispatch({ type: "USER_REQUEST_FAILED", message: {
+                    title: "Already exists",
+                    text: "This username has already been taken",
+                    icon: "tag",
+                    status: MessageStatus.Error
+                }});
             }
         });
         addTask(update);
@@ -127,7 +150,12 @@ export const actionCreators = {
         }).then(checkFetchStatus).then(
             response => response.json() as Promise<User>
         ).then(data => {
-            dispatch({ type: "RECEIVE_USER_SUCCESS", user: data, message: "Changed password!" });
+            dispatch({ type: "RECEIVE_USER", user: data, message: {
+                title: "Updated",
+                text: "Your password was updated",
+                icon: "key",
+                status: MessageStatus.Success
+            }});
         }).catch(e => {
             
         });
@@ -139,8 +167,11 @@ export const actionCreators = {
             credentials: "same-origin",
             method: "POST"
         });
-        dispatch({ type: "LOGOUT", message: "Successfully logged out" });
+        dispatch({ type: "LOGOUT" });
     },
+    resetMessage: (): AppThunkAction<KnownAction> => (dispatch) => {
+        dispatch({ type: "RESET_MESSAGE" });
+    }
 }
 
 const unloadedState: UserState = {
@@ -148,19 +179,15 @@ const unloadedState: UserState = {
     isUpdatingUsername: false,
     isUpdatingPassword: false,
     isPasswordRequired: false,
-    isInitializing: true,
-    loadingText: "Loading..."
+    isInitializing: true
 };
 
 export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Action) => {
     const action = incomingAction as KnownAction;
     switch(action.type) {
         case "REQUEST_USER":
-        case "REQUEST_LOGIN":
-        case "REQUEST_REGISTER":
             return {...state, ...{
-                isLoading: true,
-                loadingText: action.loadingText
+                isLoading: true
             }};
         case "REQUEST_USERNAME_UPDATE":
             return {...state, ...{
@@ -170,7 +197,7 @@ export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Ac
             return {...state, ...{
                 isUpdatingPassword: true
             }};
-        case "RECEIVE_USER_SUCCESS":
+        case "RECEIVE_USER":
             return {...state, ...{
                 isLoading: false,
                 isUpdatingUsername: false,
@@ -191,12 +218,26 @@ export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Ac
             return {...state, ...{
                 isLoading: false,
                 isPasswordRequired: true,
-                message: "This profile is password protected, please enter password"
+                message: {
+                    title: "Protected",
+                    text: "This profile is password protected, please enter your password",
+                    icon: "key",
+                    status: MessageStatus.Info
+                }
             }};
         case "LOGOUT":
             return {...state, ...{
-                message: action.message,
-                user: undefined
+                user: undefined,
+                message: {
+                    title: "Logged out",
+                    text: "You were successfully logged out",
+                    icon: "lock",
+                    status: MessageStatus.Success
+                }
+            }};
+        case "RESET_MESSAGE":
+            return {...state, ...{
+                message: undefined
             }};
         default:
             const exhaustiveCheck: never = action;

@@ -1,8 +1,10 @@
 import * as React from "react";
-import { Container, Grid, Segment, Form, Button, Header, Input, Divider, Message, Image } from "semantic-ui-react";
+import { Container, Grid, Segment, Form, Button, Header, Input, Divider, Image } from "semantic-ui-react";
+import { Message } from "../store/App";
+import StatusMessage from "./shared/StatusMessage";
 
 type Props = {
-    message?: string;
+    message?: Message;
     isLoading: boolean;
     isPasswordRequired: boolean;
     onPlayClick: Function;
@@ -30,12 +32,7 @@ class Login extends React.Component<Props, {}> {
                                 </Form.Field>
                                 <Divider section horizontal>Load profile</Divider>
                                 {this.props.message !== undefined &&
-                                    <Message
-                                        size="tiny"
-                                        icon="privacy"
-                                        header="Could not load"
-                                        content={this.props.message}
-                                    />
+                                    <StatusMessage message={this.props.message} />
                                 }
                                 <Form.Field>
                                     <Input

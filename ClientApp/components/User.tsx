@@ -1,9 +1,12 @@
 import * as React from "react";
 import { User } from "../store/User";
 import { Input, Button, Icon, Checkbox, Popup, Menu, Divider, Header, Modal } from "semantic-ui-react";
+import { Message } from "../store/App";
+import StatusMessage from "./shared/StatusMessage";
 
 type Props = {
     user: User;
+    message?: Message;
     isLoading: boolean;
     isUpdatingUsername: boolean;
     isUpdatingPassword: boolean;
@@ -49,7 +52,11 @@ class Editor extends React.Component<Props, {}> {
                     trigger={<Menu.Item><Icon name="user" />{this.props.user.userName}<Icon name="dropdown" /></Menu.Item>}
                     on="click"
                     position="bottom left"
+                    id="user-modal"
                 >
+                    {this.props.message !== undefined &&
+                        <StatusMessage message={this.props.message} />
+                    }
                     <Header>Update username</Header>
                     <Input placeholder="Username..." iconPosition="left" loading={this.props.isUpdatingUsername} action>
                         <Icon name="tag" />

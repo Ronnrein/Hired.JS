@@ -11,6 +11,15 @@ type LoginProps =
     & RouteComponentProps<{}>;
 
 class Login extends React.Component<LoginProps, {}> {
+    state = { message: this.props.message }
+
+    componentWillReceiveProps(next: LoginProps) {
+        if (next.message === undefined) {
+            return;
+        }
+        this.setState({ message: next.message });
+        this.props.resetMessage();
+    }
 
     componentDidMount() {
         this.props.fetchUser();
@@ -23,7 +32,7 @@ class Login extends React.Component<LoginProps, {}> {
                 isPasswordRequired={this.props.isPasswordRequired}
                 onPlayClick={() => this.props.register()}
                 onLoginClick={(un: string, pw: string) => this.props.login(un, pw)}
-                message={this.props.message}
+                message={this.state.message}
             />
         );
     }

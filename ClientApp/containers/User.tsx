@@ -11,12 +11,23 @@ type UserProps =
     & RouteComponentProps<{ id: string }>;
 
 class User extends React.Component<UserProps, {}> {
+    state = {message: this.props.message}
+
+    componentWillReceiveProps(next: UserProps) {
+        if(next.message === undefined) {
+            return;
+        }
+        this.setState({message: next.message});
+        this.props.resetMessage();
+    }
+
     render() {
         if(this.props.user === undefined) {
             return null;
         }
         return (<UserComponent
             user={this.props.user}
+            message={this.state.message}
             isLoading={this.props.isLoading}
             isUpdatingUsername={this.props.isUpdatingUsername}
             isUpdatingPassword={this.props.isUpdatingPassword}

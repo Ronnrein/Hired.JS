@@ -12,12 +12,14 @@ export interface Notification {
     icon: string;
 }
 
-enum MessageStatus {
-    Success, Info, Error
+export enum MessageStatus {
+    Success = "success", Info = "info", Error = "error"
 }
 
 export interface Message {
-    message: string;
+    title: string;
+    text: string;
+    icon: string;
     status: MessageStatus;
 }
 
