@@ -38,7 +38,8 @@ namespace Hiredjs.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Scripts(int id) {
+        public IActionResult Assignment(int id) {
+            Console.Write("LOL");
             GameData.Assignment assignment = _gameData.Threads.SingleOrDefault(t => t.AssignmentId == id)?.Assignment;
             if (assignment == null) {
                 return NotFound();

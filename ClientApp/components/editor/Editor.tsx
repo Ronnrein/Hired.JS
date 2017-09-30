@@ -40,7 +40,7 @@ class Editor extends React.Component<Props, {}> {
                     <Grid celled stackable className="no-margin">
                         <Grid.Row>
                             <Grid.Column width={11} className="no-padding">
-                                <Segment id="assignment-body" loading={this.props.isLoading}>
+                                <Segment id="thread-body" loading={this.props.isLoading}>
                                     <Segment attached="top" className="no-padding">
                                         <EditorToolbar
                                             script={this.props.script}

@@ -37,7 +37,7 @@ class EditorSuccess extends React.Component<Props, {}> {
                     <p>Completed {this.props.result.completed} of {this.props.result.tests} tests</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button as={Link} to="/assignments" positive>
+                    <Button as={Link} to="/threads" positive>
                         <Icon name="file text" />
                         Go to assignments
                     </Button>

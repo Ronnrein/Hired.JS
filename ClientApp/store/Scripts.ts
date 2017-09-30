@@ -56,7 +56,7 @@ export const actionCreators = {
         if(!t || !t.assignment) {
             return;
         }
-        const fetchScripts = fetch(`api/assignment/scripts/${t.assignment.id}`, {
+        const fetchScripts = fetch(`api/script/assignment/${t.assignment.id}`, {
             credentials: "same-origin" 
         }).then(
             response => response.json() as Promise<Script[]>
