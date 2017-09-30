@@ -16,10 +16,10 @@ export default class Threads extends React.Component<Props, {}> {
         return (
             <div>
                 <Header as="h2" attached="top">
-                    <Icon name="file text" />
+                    <Icon name="mail" />
                     <Header.Content>
-                        Threads
-                        <Header.Subheader>Your threads and conversations</Header.Subheader>
+                        Inbox
+                        <Header.Subheader>Your threads and assignments</Header.Subheader>
                     </Header.Content>
                 </Header>
                 <Segment attached className="no-padding" loading={this.props.isLoading}>
@@ -43,7 +43,7 @@ export default class Threads extends React.Component<Props, {}> {
                                     <Header as="h2" icon textAlign="center">
                                         <Icon name="mail" />
                                         Messages
-                                        <Header.Subheader>Select a message to view</Header.Subheader>
+                                        <Header.Subheader>Select a thread to view</Header.Subheader>
                                     </Header>
                                 )}
                             </Grid.Column>

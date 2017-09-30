@@ -14,35 +14,31 @@
     cursor: pointer !important;
 }
 
-#selected-assignment .assignment-list-header {
-    text-decoration: underline;
-}
-
-#assignment-body {
+#thread-body {
     display: flex !important;
     flex-direction: column !important;
     min-height: 400px !important;
     height: 100%;
 }
 
-#assignment-body > div.segment {
+#thread-body > div.segment {
     border-radius: 0 !important;
 }
 
-#assignment-body > div.top, #assignment-body > div.bottom {
+#thread-body > div.top, #thread-body > div.bottom {
     border-top: 0;
 }
 
-#assignment-body > div.bottom {
+#thread-body > div.bottom {
     border-bottom: 0;
 }
 
-#assignment-body > div.attached:not(.top):not(.bottom) {
+#thread-body > div.attached:not(.top):not(.bottom) {
     flex: 1 !important;
     border-top: initial;
 }
 
-#assignment-body .icon.avatar {
+#thread-body .icon.avatar {
     width: 1.18em !important;
 }
 
@@ -94,7 +90,7 @@
     width: 20px;
 }
 
-#assignment-body.segment {
+#thread-body.segment {
     padding: 0;
     border: 0;
 }
@@ -186,4 +182,11 @@
 
 #user-modal {
     z-index: 1000;
+}
+
+.message-ai {
+    background-color: aliceblue !important;
+    padding: 1em !important;
+    margin: 1em -1em !important;
+    width: calc(100% + 2em) !important;
 }

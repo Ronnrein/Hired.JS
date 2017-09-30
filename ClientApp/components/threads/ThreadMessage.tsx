@@ -4,14 +4,19 @@ import { Message } from "../../store/Threads";
 import { convertNewLine } from "../../utils";
 
 type Props = {
-    message: Message
+    message: Message;
+    ai?: boolean;
 }
 
 export default class ThreadMessage extends React.Component<Props, {}> {
+    static defaultProps: Partial<Props> = {
+        ai: false
+    }
+
     render() {
         let image = `/images/workers/${this.props.message.author.id}.jpg`;
         return (
-            <Feed.Event>
+            <Feed.Event className={this.props.ai ? "message-ai" : undefined}>
                 <Feed.Label image={image} />
                 <Feed.Content>
                     <Feed.Summary>

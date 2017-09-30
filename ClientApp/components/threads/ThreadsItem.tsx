@@ -12,14 +12,13 @@ export default class ThreadsItem extends React.Component<Props, {}> {
         render() {
         let thread = this.props.thread;
         let image = `/images/workers/${thread.messages[0].author.id}.jpg`;
+        let icon = !thread.assignment ? "talk" : thread.assignment.completed ? "checkmark" : "file text";
         return (
             <Item onClick={(e: Event) => this.props.onClick(e)} className="cursor-pointer" id={this.props.selected ? "selected-thread" : ""}>
                 <Item.Image src={image} size="tiny" shape="circular" />
                 <Item.Content>
                     <Item.Header>
-                        {(thread.assignment && thread.assignment.completed) &&
-                            <Icon name="checkmark" color="green" />
-                        }
+                        <Icon name={icon} color={icon === "checkmark" ? "green" : undefined} />
                         <span className="thread-list-header">{thread.title}</span>
                         {this.props.selected &&
                             <Icon name="angle double right" />
