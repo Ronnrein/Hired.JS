@@ -15,7 +15,7 @@ export default class NavMenu extends React.Component<Props, {}> {
                     <Icon name="home" />
                     Home
                 </Menu.Item>
-                <Menu.Item as={Link} to="/assignments" active={this.props.currentPath === "/assignments"}>
+                <Menu.Item as={Link} to="/threads" active={this.props.currentPath === "/threads"}>
                     <Icon name="file text" />
                     Assignments
                 </Menu.Item>

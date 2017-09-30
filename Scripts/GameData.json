@@ -6,27 +6,29 @@
     { "id": 4, "name": "Maja Dürr", "position": "Intern" },
     { "id": 5, "name": "Phil Andrews", "position": "CEO" }
   ],
-  "assignments": [{
+  "threads": [{
+    "id": 1,
+    "title": "Another one",
+    "precursors": [],
+    "messages": [{
+      "authorId": 1,
+      "text": "Hi there, welcome to the team! Hope you are settling in nicely to your new surroundings, i have been given the honourable task of getting you up to speed with our development here :)\nFirst of all, as you already have heard, the purpose of this company is to accept small jobs from bigger development teams to make small functions that they need but don't want to spend their resources developing. This can be anything from small math functions to large functions manipulating lists and such, you get the idea :)\nBecause you just arrived, and the fact that ive been told you are new to JavaScript, i am going to go easy on you to begin with. What i want you to do is as follows:\n|sum|\nSounds simple enough? Get cracking! Send me the function when you are done, and then i will forward you a more meaningful task :)"
+    }, {
+      "authorId": 4,
+      "text": "Why wasn't my first assignment this simple? :("
+    }],
+    "completedMessages": [{
+      "authorId": 1,
+      "text": "Good job!"
+    }],
+    "assignment": {
       "id": 1,
       "name": "Basic addition",
-      "title": "Welcome!",
       "function": "add",
       "summary": "Create a function that accepts two numbers, and returns the numbers added together.",
       "solution": "function(num1, num2) { return num1 + num2; }",
       "template": "function add(num1, num2) {\n\treturn 0;\n}",
       "readOnlyLines": [1, 1],
-      "precursors": [],
-      "messages": [{
-        "author": 1,
-        "text": "Hi there, welcome to the team! Hope you are settling in nicely to your new surroundings, i have been given the honourable task of getting you up to speed with our development here :)\nFirst of all, as you already have heard, the purpose of this company is to accept small jobs from bigger development teams to make small functions that they need but don't want to spend their resources developing. This can be anything from small math functions to large functions manipulating lists and such, you get the idea :)\nBecause you just arrived, and the fact that ive been told you are new to JavaScript, i am going to go easy on you to begin with. What i want you to do is as follows:\n|sum|\nSounds simple enough? Get cracking! Send me the function when you are done, and then i will forward you a more meaningful task :)"
-      }, {
-        "author": 4,
-        "text": "Why wasn't my first assignment this simple? :("
-      }],
-      "completedMessages": [{
-        "author": 1,
-        "text": "Good job!"
-      }],
       "arguments": [
         { "description": "Number", "example": "52" },
         { "description": "Number", "example": "24" }
@@ -43,28 +45,31 @@
         { "arguments": [ 85, 72 ], "result": 157 },
         { "arguments": [ 99, 99 ], "result": 198 }
       ]
-    },{
+    }
+  },{
+    "id": 2,
+    "title": "Welcome!",
+    "precursors": [1],
+    "messages": [{
+      "authorId": 1,
+      "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
+    }, {
+      "authorId": 2,
+      "text": "I promise i will make him give you a more exciting assignment after this one, jeez",
+      "image": "cat.png"
+    }],
+    "completedMessages": [{
+      "authorId": 1,
+      "text": "Good job!"
+    }],
+    "assignment": {
       "id": 2,
       "name": "Avarage of two numbers",
-      "title": "Another one",
       "function": "avarage",
       "summary": "Create a function that accepts two numbers, and returns the avarage (rounded down) of the numbers.",
       "solution": "function(num1, num2, num3) { return Math.floor((num1 + num2) / 2); }",
       "template": "function avarage(num1, num2) {\n\t//Perform stuff here\n\treturn 0;\n}",
       "readOnlyLines": [2, 1],
-      "precursors": [1],
-      "messages": [{
-        "author": 1,
-        "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
-      }, {
-        "author": 2,
-        "text": "I promise i will make him give you a more exciting assignment after this one, jeez",
-        "image": "cat.png"
-      }],
-      "completedMessages": [{
-        "author": 1,
-        "text": "Good job!"
-      }],
       "arguments": [
         { "description": "Number", "example": "52" },
         { "description": "Number", "example": "24" }
@@ -80,6 +85,17 @@
         { "arguments": [  1,  1 ], "result":   1 },
         { "arguments": [972, 931], "result": 951 },
         { "arguments": [ 99, 98 ], "result": 98 }]
-    }
-  ]
+      }
+  },{
+    "id": 3,
+    "title": "Sidenote!",
+    "precursors": [1],
+    "messages": [{
+      "authorId": 1,
+      "text": "Testing non-assignment messages"
+    }, {
+      "authorId": 2,
+      "text": "Hi there lol"
+    }]
+  }]
 }

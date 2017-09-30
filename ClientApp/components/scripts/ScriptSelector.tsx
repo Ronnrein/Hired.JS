@@ -5,7 +5,7 @@ import AceEditor from "react-ace";
 import "brace/mode/javascript";
 import "brace/theme/monokai";
 import { Modal, Button, Header, Icon, Grid, Segment, List, Input } from "semantic-ui-react";
-import { Assignment } from "../../store/Assignments";
+import { Assignment } from "../../store/Threads";
 import { Script } from "../../store/Scripts";
 import ScriptItem from "./ScriptItem";
 
@@ -84,7 +84,7 @@ class ScriptSelector extends React.Component<Props, {}> {
                                         setOptions={{
                                             showLineNumbers: true
                                         }}
-                                        value={this.props.selectedScript !== undefined ? this.props.selectedScript.text : ""}
+                                        value={this.props.selectedScript ? this.props.selectedScript.text : ""}
                                         readOnly
                                         highlightActiveLine={false}
                                     />

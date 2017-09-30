@@ -14,7 +14,7 @@ class Login extends React.Component<LoginProps, {}> {
     state = { message: this.props.message }
 
     componentWillReceiveProps(next: LoginProps) {
-        if (next.message === undefined) {
+        if (!next.message) {
             return;
         }
         this.setState({ message: next.message });

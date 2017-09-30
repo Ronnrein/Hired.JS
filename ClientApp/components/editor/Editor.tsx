@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Segment, Grid, Header, Icon, Item, Feed } from "semantic-ui-react";
-import { Assignment } from "../../store/Assignments";
+import { Assignment } from "../../store/Threads";
 import { Script } from "../../store/Scripts";
 import { VerificationResult } from "../../store/editor";
 import EditorConsole from "./EditorConsole";
@@ -26,8 +26,6 @@ type Props = {
 
 class Editor extends React.Component<Props, {}> {
     render() {
-        const message = this.props.assignment.messages[0];
-        const image = `/images/workers/${message.author.id}.jpg`;
         return (
             <div>
                 <EditorSuccess result={this.props.result} />
@@ -61,16 +59,13 @@ class Editor extends React.Component<Props, {}> {
                             <Grid.Column width={5}>
                                 <Item.Group as={Feed} divided>
                                     <Feed.Event>
-                                        <Feed.Label image={image} />
+                                        <Feed.Label image="/images/workers/0.jpg" />
                                         <Feed.Content>
                                             <Feed.Summary>
-                                                <Feed.User as="span">{message.author.name}</Feed.User>
-                                                <Feed.Date>{message.author.position}</Feed.Date>
+                                                <Feed.User as="span">Hired.JS</Feed.User>
+                                                <Feed.Date>AI</Feed.Date>
                                             </Feed.Summary>
                                             <Feed.Extra text>{convertNewLine(this.props.assignment.summary)}</Feed.Extra>
-                                            {message.image !== null &&
-                                                <Feed.Extra images><img src={`/images/attachments/${message.image}`} /></Feed.Extra>
-                                            }
                                         </Feed.Content>
                                     </Feed.Event>
                                 </Item.Group>

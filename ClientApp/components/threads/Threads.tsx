@@ -1,25 +1,25 @@
 import * as React from "react";
 import { Grid, Segment, Item, Header, Icon } from "semantic-ui-react";
-import { Assignment } from "../../store/Assignments";
-import AssignmentListItem from "./AssignmentListItem";
-import { default as AssignmentComponent } from "./Assignment";
+import { Thread as Thread } from "../../store/Threads";
+import ThreadsItem from "./ThreadsItem";
+import { default as ThreadComponent } from "./Thread";
 
 type Props = {
-    assignments: Assignment[];
-    selectedAssignment?: Assignment;
+    threads: Thread[];
+    selectedThread?: Thread;
     isLoading: boolean;
-    onAssignmentClick: Function;
+    onThreadClick: Function;
 }
 
-class AssignmentList extends React.Component<Props, {}> {
+export default class Threads extends React.Component<Props, {}> {
     render() {
         return (
             <div>
                 <Header as="h2" attached="top">
                     <Icon name="file text" />
                     <Header.Content>
-                        Assignments
-                        <Header.Subheader>Your assignments and conversations</Header.Subheader>
+                        Threads
+                        <Header.Subheader>Your threads and conversations</Header.Subheader>
                     </Header.Content>
                 </Header>
                 <Segment attached className="no-padding" loading={this.props.isLoading}>
@@ -27,18 +27,18 @@ class AssignmentList extends React.Component<Props, {}> {
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <Item.Group divided>
-                                    {this.props.assignments.map(assignment =>
-                                        <AssignmentListItem
-                                            key={assignment.id}
-                                            assignment={assignment}
-                                            onClick={() => this.props.onAssignmentClick(assignment)}
-                                            selected={this.props.selectedAssignment !== undefined && this.props.selectedAssignment.id === assignment.id} />
+                                    {this.props.threads.map(thread =>
+                                        <ThreadsItem
+                                            key={thread.id}
+                                            thread={thread}
+                                            onClick={() => this.props.onThreadClick(thread)}
+                                            selected={!!this.props.selectedThread && this.props.selectedThread.id === thread.id} />
                                     )}
                                 </Item.Group>
                             </Grid.Column>
                             <Grid.Column width={11} className="no-padding">
-                                {this.props.selectedAssignment !== undefined ? (
-                                    <AssignmentComponent assignment={this.props.selectedAssignment} />
+                                {this.props.selectedThread ? (
+                                    <ThreadComponent thread={this.props.selectedThread} />
                                 ) : (
                                     <Header as="h2" icon textAlign="center">
                                         <Icon name="mail" />
@@ -57,5 +57,3 @@ class AssignmentList extends React.Component<Props, {}> {
         );
     }
 }
-
-export default AssignmentList;

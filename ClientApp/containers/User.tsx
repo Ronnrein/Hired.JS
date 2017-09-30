@@ -14,7 +14,7 @@ class User extends React.Component<UserProps, {}> {
     state = {message: this.props.message}
 
     componentWillReceiveProps(next: UserProps) {
-        if(next.message === undefined) {
+        if(!next.message) {
             return;
         }
         this.setState({message: next.message});
@@ -22,7 +22,7 @@ class User extends React.Component<UserProps, {}> {
     }
 
     render() {
-        if(this.props.user === undefined) {
+        if(!this.props.user) {
             return null;
         }
         return (<UserComponent

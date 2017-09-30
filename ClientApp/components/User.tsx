@@ -54,7 +54,7 @@ class Editor extends React.Component<Props, {}> {
                     position="bottom left"
                     id="user-modal"
                 >
-                    {this.props.message !== undefined &&
+                    {this.props.message &&
                         <StatusMessage message={this.props.message} />
                     }
                     <Header>Update username</Header>

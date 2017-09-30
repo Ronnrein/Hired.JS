@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Label, Button, Popup, Input } from "semantic-ui-react";
-import { Assignment } from "../../store/Assignments";
+import { Assignment } from "../../store/Threads";
 
 type Props = {
     assignment: Assignment;

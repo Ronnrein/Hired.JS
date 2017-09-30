@@ -4,7 +4,7 @@ import { Container } from "semantic-ui-react";
 import NavMenu from "./NavMenu";
 import Home from "../components/Home";
 import Editor from "../containers/Editor";
-import Assignments from "../containers/Assignments";
+import Threads from "../containers/Threads";
 
 type Props = {
     currentPath: string;
@@ -18,7 +18,7 @@ export default class Layout extends React.Component<Props, {}> {
                 <Container>
                     <Route path="/home" component={Home} />
                     <Route path="/editor/:id?" component={Editor} />
-                    <Route path="/assignments" component={Assignments} />
+                    <Route path="/threads" component={Threads} />
                 </Container>
             </div>
         );

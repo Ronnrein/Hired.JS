@@ -40,7 +40,7 @@ namespace Hiredjs {
             services.AddDbContext<HiredjsDbContext>(o => o.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<HiredjsDbContext>();
 
-            // Only return 401 code without redirect on unauthorized
+            // Only return status codes without redirect
             services.ConfigureApplicationCookie(o => {
                 o.Events.OnRedirectToLogin = (c) => {
                     c.Response.StatusCode = 401;
@@ -65,13 +65,14 @@ namespace Hiredjs {
 
             // Add automapper
             MapperConfiguration config = new MapperConfiguration(o => {
-                o.CreateMap<GameData.Assignment, AssignmentVm>()
-                    .AfterMap((a, avm) => avm.Messages.All(m => {
-                        m.Text = m.Text.Replace("|sum|", a.Summary);
+                o.CreateMap<GameData.Thread, ThreadVm>()
+                    .AfterMap((t, tvm) => tvm.Messages.First(m => {
+                        m.Text = m.Text.Replace("|sum|", t.Assignment?.Summary ?? "");
                         return true;
                     }));
-                o.CreateMap<GameData.Assignment.Message, AssignmentVm.Message>()
-                    .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.Author)));
+                o.CreateMap<GameData.Assignment, ThreadVm.AssignmentVm>();
+                o.CreateMap<GameData.Message, ThreadVm.MessageVm>()
+                    .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.AuthorId)));
                 o.CreateMap<User, UserVm>()
                     .ForMember(d => d.IsPasswordEnabled, opt => opt.MapFrom(s => !string.IsNullOrEmpty(s.PasswordHash)));
                 o.CreateMap<Script, ScriptVm>();

@@ -13,7 +13,7 @@ class EditorSuccess extends React.Component<Props, {}> {
     }
 
     componentWillReceiveProps(next: Props) {
-        if(this.props.result === undefined && next.result !== undefined) {
+        if(!this.props.result && next.result) {
             this.setState({ closed: false });
         }
     }
@@ -23,7 +23,7 @@ class EditorSuccess extends React.Component<Props, {}> {
     }
 
     render() {
-        if(this.props.result === undefined) {
+        if(!this.props.result) {
             return null;
         }
         return (

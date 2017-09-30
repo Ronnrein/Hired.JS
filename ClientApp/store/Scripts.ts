@@ -52,11 +52,11 @@ type KnownAction = RequestScriptsAction | ReceiveScriptsAction | SaveScriptActio
 
 export const actionCreators = {
     requestScripts: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        const a = getState().assignments.selectedAssignment;
-        if(a === undefined) {
+        const t = getState().threads.selectedThread;
+        if(!t || !t.assignment) {
             return;
         }
-        const fetchScripts = fetch(`api/assignment/scripts/${a.id}`, {
+        const fetchScripts = fetch(`api/assignment/scripts/${t.assignment.id}`, {
             credentials: "same-origin" 
         }).then(
             response => response.json() as Promise<Script[]>

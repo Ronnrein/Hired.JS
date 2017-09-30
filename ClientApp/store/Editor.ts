@@ -1,7 +1,7 @@
 import { fetch, addTask } from "domain-task";
 import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
-import { Assignment } from "./Assignments";
+import { Assignment } from "./Threads";
 import { Script, SaveScriptCompleteAction } from "./Scripts";
 
 export interface EditorState {
@@ -67,7 +67,7 @@ type KnownAction = RequestScriptRunAction | ReceiveScriptRunAction | RequestScri
     | SaveScriptCompleteAction; 
 
 export const actionCreators = {
-    loadAssignment: (assignment: Assignment, script: Script): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    loadAssignment: (assignment: Assignment, script: Script): AppThunkAction<KnownAction> => (dispatch) => {
         dispatch({ type: "LOAD_ASSIGNMENT", assignment: assignment, script: script });
     },
     runScript: (args: string[]): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -113,7 +113,6 @@ export const actionCreators = {
         dispatch({ type: "REQUEST_SCRIPT_RUN" });
     },
     verifyScript: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let id = getState().editor.assignment.id;
         let fetchAssignment = fetch(`api/script/verify`, {
             credentials: "same-origin",
             method: "POST",
@@ -164,22 +163,12 @@ const unloadedState: EditorState = {
     assignment: {
         id: 0,
         name: "Free play",
-        title: "",
         function: "func",
         summary: "Here you can freely try different things in the editor!",
         completed: false,
         completedOn: undefined,
         template: "",
         readOnlyLines: [],
-        messages: [{
-            author: {
-                id: 0,
-                name: "Hired.JS",
-                position: "Admin"
-            },
-            text: ""
-        }],
-        completedMessages: [],
         arguments: [{
             description: "Argument list",
             example: "1, \"Hello there!\""

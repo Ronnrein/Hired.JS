@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Feed } from "semantic-ui-react";
-import { Message } from "../../store/Assignments";
+import { Message } from "../../store/Threads";
 import { convertNewLine } from "../../utils";
 
 type Props = {
     message: Message
 }
 
-class AssignmentMessage extends React.Component<Props, {}> {
+export default class ThreadMessage extends React.Component<Props, {}> {
     render() {
         let image = `/images/workers/${this.props.message.author.id}.jpg`;
         return (
@@ -27,5 +27,3 @@ class AssignmentMessage extends React.Component<Props, {}> {
         );
     }
 }
-
-export default AssignmentMessage;

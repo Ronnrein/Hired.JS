@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -36,9 +37,21 @@ namespace Hiredjs.Controllers {
             _db = db;
         }
 
+        [HttpGet]
+        public IActionResult Scripts(int id) {
+            GameData.Assignment assignment = _gameData.Threads.SingleOrDefault(t => t.AssignmentId == id)?.Assignment;
+            if (assignment == null) {
+                return NotFound();
+            }
+            IEnumerable<Script> scripts = _db.Scripts.Where(
+                s => s.UserId == _userManager.GetUserId(User) && s.AssignmentId == id
+            );
+            return Json(_mapper.Map<IEnumerable<Script>, IEnumerable<ScriptVm>>(scripts));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Run([FromBody] ScriptRunVm model) {
-            GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == model.Script.AssignmentId);
+            GameData.Assignment assignment = _gameData.Threads.SingleOrDefault(t => t.AssignmentId == model.Script.AssignmentId)?.Assignment;
             if (model.Script.AssignmentId == 0) {
                 assignment = new GameData.Assignment { Solution = null };
             }
@@ -56,7 +69,7 @@ namespace Hiredjs.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> Verify([FromBody] ScriptRunVm model) {
-            GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == model.Script.AssignmentId);
+            GameData.Assignment assignment = _gameData.Threads.SingleOrDefault(t => t.AssignmentId == model.Script.AssignmentId)?.Assignment;
             Script script = await _db.Scripts.SingleOrDefaultAsync(s => s.Id == model.Script.Id);
             string userId = _userManager.GetUserId(User);
             if (assignment == null || script == null) {
@@ -65,6 +78,7 @@ namespace Hiredjs.Controllers {
             if (script.UserId != userId) {
                 return Forbid();
             }
+            // TODO: Add check for precursors
             ScriptVerificationResultVm results = await _nodeServices.InvokeAsync<ScriptVerificationResultVm>(
                 "Scripts/Verify.js",
                 model.Script.Text,
@@ -90,7 +104,7 @@ namespace Hiredjs.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ScriptVm scriptVm) {
-            GameData.Assignment assignment = _gameData.Assignments.SingleOrDefault(t => t.Id == scriptVm.AssignmentId);
+            GameData.Assignment assignment = _gameData.Threads.SingleOrDefault(t => t.AssignmentId == scriptVm.AssignmentId)?.Assignment;
             if (assignment == null) {
                 return NotFound();
             }

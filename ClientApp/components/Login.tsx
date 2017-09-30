@@ -31,7 +31,7 @@ class Login extends React.Component<Props, {}> {
                                     <Button size="huge" fluid positive onClick={() => this.props.onPlayClick()}>Play!</Button>
                                 </Form.Field>
                                 <Divider section horizontal>Load profile</Divider>
-                                {this.props.message !== undefined &&
+                                {this.props.message &&
                                     <StatusMessage message={this.props.message} />
                                 }
                                 <Form.Field>

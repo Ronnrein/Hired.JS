@@ -7,10 +7,10 @@ import Login from "../containers/Login";
 import Layout from "../components/Layout";
 import * as UserStore from "../store/User";
 import * as AppStore from "../store/App";
-import { actionCreators as assignmentsActions } from "../store/Assignments";
+import { actionCreators as threadsActions } from "../store/Threads";
 
 type ImportedProps = {
-    requestAssignments: Function;
+    requestThreads: Function;
     user: UserStore.User;
     isInitializing: boolean;
 }
@@ -23,10 +23,10 @@ type AppProps =
 
 class App extends React.Component<AppProps, {}> {
 
-    // Load assignments once user is logged in
+    // Load threads once user is logged in
     componentWillReceiveProps(next: AppProps) {
-        if (this.props.user === undefined && next.user !== undefined) {
-            this.props.requestAssignments();
+        if (!this.props.user && next.user) {
+            this.props.requestThreads();
         }
     }
 
@@ -37,7 +37,7 @@ class App extends React.Component<AppProps, {}> {
                     <Image src="/images/splash.png" centered />
                     <Loader size="big">Loading...</Loader>
                 </Dimmer>
-                {this.props.user === undefined ? (
+                {!this.props.user ? (
                     <Login />
                 ) : (
                     <Layout currentPath={this.props.location.pathname} />
@@ -54,6 +54,6 @@ export default connect(
         isInitializing: state.user.isInitializing,
     }}),
     ({...AppStore.actionCreators, ...{
-        requestAssignments: assignmentsActions.requestAssignments
+        requestThreads: threadsActions.requestThreads
     }})
 )(App) as typeof App;
