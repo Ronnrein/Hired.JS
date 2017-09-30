@@ -27,14 +27,27 @@ export default class Thread extends React.Component<Props, {}> {
                     </Comment.Group>
                 </Segment>
                 <Segment as={Feed} attached>
-                    {thread.messages.map((message, i) => {
-                        return <ThreadMessage key={i} message={message}/>;
-                    })}
+                    {this.getMessages()}
                 </Segment>
                 <Segment attached="bottom" clearing>
                     <Scripts />
                 </Segment>
             </div>
         );
+    }
+
+    getMessages() {
+        let messages: JSX.Element[] = [];
+        this.props.thread.messages.map((message, i) => {
+            messages.push(<ThreadMessage key={i} message={message}/>);
+        });
+        if (this.props.thread.assignment && this.props.thread.assignment.completed) {
+            let i = messages.length;
+            messages.push(<ThreadMessage key={i++} message={{ author: { id: 0, name: "Hired.JS", position: "AI" }, text: "Assignment complete" }} />);
+            this.props.thread.completedMessages.map((message, j) => {
+                messages.push(<ThreadMessage key={i+j} message={message}/>);
+            });
+        }
+        return messages;
     }
 }

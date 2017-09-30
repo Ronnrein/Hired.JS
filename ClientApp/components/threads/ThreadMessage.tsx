@@ -19,7 +19,7 @@ export default class ThreadMessage extends React.Component<Props, {}> {
                         <Feed.Date>{this.props.message.author.position}</Feed.Date>
                     </Feed.Summary>
                     <Feed.Extra text>{convertNewLine(this.props.message.text)}</Feed.Extra>
-                    {this.props.message.image !== null &&
+                    {this.props.message.image &&
                         <Feed.Extra images><img src={`/images/attachments/${this.props.message.image}`} /></Feed.Extra>
                     }
                 </Feed.Content>
