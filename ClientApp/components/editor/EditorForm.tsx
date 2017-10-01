@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Label, Button, Popup, Input } from "semantic-ui-react";
 import { Assignment } from "../../store/Threads";
+import { ConsoleEntryStatus } from "../../store/Console";
 
 type Props = {
     assignment: Assignment;
     onRunClick: Function;
     onVerifyClick: Function;
-    addToConsole: Function;
+    consoleAppend: Function;
 }
 
 class EditorForm extends React.Component<Props, {}> {
@@ -30,7 +31,9 @@ class EditorForm extends React.Component<Props, {}> {
 
     onRunClick() {
         if (this.state.arguments.indexOf("") !== -1) {
-            this.props.addToConsole("Please set arguments to run function");
+            this.props.consoleAppend(
+                { icon: "text cursor", status: ConsoleEntryStatus.Error, title: "Argument missing", text: "Please fill in all arguments to run" }
+            );
             return;
         }
 

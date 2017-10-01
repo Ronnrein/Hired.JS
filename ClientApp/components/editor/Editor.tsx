@@ -3,11 +3,12 @@ import { Segment, Grid, Header, Icon, Item, Feed } from "semantic-ui-react";
 import { Assignment } from "../../store/Threads";
 import { Script } from "../../store/Scripts";
 import { VerificationResult } from "../../store/editor";
-import EditorConsole from "./EditorConsole";
+import { ConsoleEntry } from "../../store/console";
 import EditorForm from "./EditorForm";
 import EditorToolbar from "./EditorToolbar";
 import EditorAce from "./EditorAce";
 import EditorSuccess from "./EditorSuccess";
+import { default as ConsoleComponent } from "../../containers/Console";
 import { convertNewLine } from "../../utils";
 
 type Props = {
@@ -17,8 +18,7 @@ type Props = {
     isSaving: boolean;
     onValueChange: Function;
     script: Script;
-    console: string;
-    addToConsole: Function;
+    consoleAppend: Function;
     onRunClick: Function;
     onVerifyClick: Function;
     onSaveClick: Function;
@@ -75,7 +75,7 @@ class Editor extends React.Component<Props, {}> {
                             <Grid.Column>
                                 <EditorForm
                                     assignment={this.props.assignment}
-                                    addToConsole={(s: string) => this.props.addToConsole(s)}
+                                    consoleAppend={(c: ConsoleEntry) => this.props.consoleAppend(c)}
                                     onRunClick={(args: string[]) => this.props.onRunClick(args)}
                                     onVerifyClick={() => this.props.onVerifyClick()}
                                 />
@@ -83,7 +83,7 @@ class Editor extends React.Component<Props, {}> {
                         </Grid.Row>
                     </Grid>
                 </Segment>
-                <EditorConsole value={this.props.console} />
+                <ConsoleComponent />
             </div>
         );
     }

@@ -5,11 +5,13 @@ import { ApplicationState } from "../store";
 import * as EditorStore from "../store/Editor";
 import { actionCreators as scriptsActions } from "../store/Scripts";
 import { actionCreators as threadsActions } from "../store/Threads";
+import { actionCreators as consoleActions, ConsoleEntry } from "../store/Console";
 import { default as EditorComponent } from "../components/editor/Editor";
 
 type ImportedProps = {
     saveScript: Function;
     requestThreads: Function;
+    consoleAppend: Function;
     isSaving: boolean;
 }
 
@@ -33,9 +35,8 @@ class Editor extends React.Component<EditorProps, {}> {
                 assignment={this.props.assignment}
                 isLoading={this.props.isLoading}
                 isSaving={this.props.isSaving}
-                console={this.props.console}
                 script={this.props.script}
-                addToConsole={(s: string) => this.props.addToConsole(s)}
+                consoleAppend={(c: ConsoleEntry) => this.props.consoleAppend(c)}
                 onValueChange={(v: string) => this.props.valueChange(v)}
                 onRunClick={(args: string[]) => this.props.runScript(args)}
                 onVerifyClick={() => this.props.verifyScript()}
@@ -52,6 +53,7 @@ export default connect(
     }}),
     ({...EditorStore.actionCreators, ...{
         saveScript: scriptsActions.saveScript,
-        requestThreads: threadsActions.requestThreads
+        requestThreads: threadsActions.requestThreads,
+        consoleAppend: consoleActions.consoleAppend
     }})
 )(Editor) as typeof Editor;

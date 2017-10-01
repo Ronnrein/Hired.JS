@@ -3,11 +3,11 @@ import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
 import { Assignment } from "./Threads";
 import { Script, SaveScriptCompleteAction } from "./Scripts";
+import { ConsoleEntryStatus, ConsoleAppendAction } from "./Console";
 
 export interface EditorState {
     assignment: Assignment;
     script: Script;
-    console: string;
     isLoading: boolean;
     result?: VerificationResult;
 }
@@ -57,14 +57,9 @@ export interface ValueChange {
     value: string;
 }
 
-export interface ConsoleChange {
-    type: "CONSOLE_CHANGE";
-    value: string;
-}
-
 type KnownAction = RequestScriptRunAction | ReceiveScriptRunAction | RequestScriptVerificationAction
-    | ReceiveScriptVerificationAction | LoadAssignmentAction | ValueChange | ConsoleChange
-    | SaveScriptCompleteAction; 
+    | ReceiveScriptVerificationAction | LoadAssignmentAction | ValueChange | SaveScriptCompleteAction
+    | ConsoleAppendAction;
 
 export const actionCreators = {
     loadAssignment: (assignment: Assignment, script: Script): AppThunkAction<KnownAction> => (dispatch) => {
@@ -85,31 +80,46 @@ export const actionCreators = {
             })
         }).then(response => response.json() as Promise<RunResult>).then(data => {
             dispatch({ type: "RECEIVE_SCRIPT_RUN", result: data });
-            let message: string;
-            let logs = data.logs.map((l) => {
-                return `console.log: ${l}`;
+            let entries = data.logs.map((l) => {
+                return {
+                    icon: "announcement",
+                    status: ConsoleEntryStatus.Log,
+                    title: "Console.log",
+                    text: l
+                };
             });
-            let log = logs.length !== 0 ? `\n${logs.join("\n")}\n` : "\n";
             if (data.error != undefined) {
-                message = `Error (${data.error})`;
+                entries.push({
+                    icon: "bug",
+                    status: ConsoleEntryStatus.Error,
+                    title: "Error",
+                    text: data.error
+                });
             }
             else if (data.correct === null) {
-                message = `Function output: ${data.result}`;
+                entries.push({
+                    icon: "terminal",
+                    status: ConsoleEntryStatus.Success,
+                    title: "Output",
+                    text: data.result
+                });
             } else {
-                message = `${data.success ? "Success!" : "Incorrect"}`;
-                message += ` (Expected ${data.correct}, got ${data.result})`;
+                entries.push({
+                    icon: "code",
+                    status: data.success ? ConsoleEntryStatus.Success : ConsoleEntryStatus.Error,
+                    title: `${data.success ? "Success" : "Incorrect"}`,
+                    text: `Expected ${data.correct}, got ${data.result}`
+                });
             }
-            dispatch({
-                type: "CONSOLE_CHANGE",
-                value: `${getState().editor.console}${log}Result: ${message}`
-            });
+            dispatch({ type: "CONSOLE_APPEND", entries: entries });
         });
         addTask(fetchAssignment);
-        let console = `Running assignment ${getState().editor.assignment.id} with arguments (${args.join(", ")})`;
-        dispatch({
-            type: "CONSOLE_CHANGE",
-            value: `${getState().editor.console}\n${console}`
-        });
+        dispatch({ type: "CONSOLE_APPEND", entries: [{
+            icon: "server",
+            status: ConsoleEntryStatus.Info,
+            title: "Running",
+            text: `Assignment ${getState().editor.assignment.id} with arguments (${args.join(", ")})`
+        }]});
         dispatch({ type: "REQUEST_SCRIPT_RUN" });
     },
     verifyScript: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -127,35 +137,43 @@ export const actionCreators = {
             response => response.json() as Promise<VerificationResult>
         ).then(data => {
             dispatch({ type: "RECEIVE_SCRIPT_VERIFICATION", result: data });
-            let message: string;
             if (data.failed == undefined) {
-                message = `Success! Completed ${data.completed} of ${data.tests} runs`;
+                dispatch({ type: "CONSOLE_APPEND", entries: [{
+                    icon: "checkmark",
+                    status: ConsoleEntryStatus.Success,
+                    title: "Success",
+                    text: `Completed ${data.completed} of ${data.tests} runs`
+                }]});
             }
             else if (data.failed.error != undefined) {
-                message = `Error (${data.failed.error})`;
+                dispatch({ type: "CONSOLE_APPEND", entries: [{
+                    icon: "bug",
+                    status: ConsoleEntryStatus.Error,
+                    title: "Error",
+                    text: `${data.failed.error }`
+                }]});
             }
             else {
                 let r = data.failed;
-                message = `Incorrect (Expected ${r.correct}, got ${r.result} with arguments ${r.arguments.join(", ")})`;
+                dispatch({ type: "CONSOLE_APPEND", entries: [{
+                    icon: "code",
+                    status: ConsoleEntryStatus.Error,
+                    title: "Incorrect",
+                    text: `Expected ${r.correct}, got ${r.result} with arguments ${r.arguments.join(", ")}`
+                }]});
             }
-            dispatch({
-                type: "CONSOLE_CHANGE",
-                value: `${getState().editor.console}\n"Result: ${message}`
-            });
         });
         addTask(fetchAssignment);
-        let console = `Running verification for assignment ${getState().editor.assignment.id}`;
-        dispatch({
-            type: "CONSOLE_CHANGE",
-            value: `${getState().editor.console}\n${console}`
-        });
+        dispatch({ type: "CONSOLE_APPEND", entries: [{
+            icon: "file text",
+            status: ConsoleEntryStatus.Info,
+            title: "Running verification",
+            text: `Assignment ${getState().editor.assignment.id}`
+        }]});
         dispatch({ type: "REQUEST_SCRIPT_VERIFICATION" });
     },
     valueChange: (value: string): AppThunkAction<KnownAction> => (dispatch) => {
         dispatch({ type: "VALUE_CHANGE", value: value });
-    },
-    addToConsole: (value: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: "CONSOLE_CHANGE", value: getState().editor.console + "\n" + value });
     }
 };
 
@@ -183,7 +201,6 @@ const unloadedState: EditorState = {
         isVerified: false,
         modifiedOn: "2017-09-28T16:11:46.9697872+02:00"
     },
-    console: "Hired.JS Internal System v2.04\nLoading system...\nLoading complete",
     isLoading: false
 }
 
@@ -193,8 +210,7 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
         case "LOAD_ASSIGNMENT":
             return {...state, ...{
                 assignment: action.assignment,
-                script: action.script,
-                console: `${state.console}\nLoaded assignment ${action.assignment.id}`
+                script: action.script
             }};
         case "REQUEST_SCRIPT_RUN":
         case "REQUEST_SCRIPT_VERIFICATION":
@@ -218,14 +234,12 @@ export const reducer: Reducer<EditorState> = (state: EditorState, incomingAction
             return {...state, ...{
                 script: script
             }};
-        case "CONSOLE_CHANGE":
-            return {...state, ...{
-                console: action.value
-            }};
         case "SAVE_SCRIPT_COMPLETE":
             return {...state, ...{
                 script: action.script
             }};
+        case "CONSOLE_APPEND":
+            break;
         default:
             const exhaustiveCheck: never = action;
     }

@@ -95,46 +95,6 @@
     border: 0;
 }
 
-#editor-console {
-    position: relative;
-    background-color: #272822;
-}
-
-#editor-console-messages {
-    overflow-y: scroll;
-    height: 200px;
-}
-
-#editor-console-shadow {
-    box-shadow: inset 0 80px 90px -80px black;
-    position: absolute;
-    width: 100%;
-    height: 40px;
-    left: 0;
-    top: 0;
-}
-
-#editor-console p {
-    margin: 0 !important;
-    font-family: "Lucida Console", Monaco, monospace;
-    color: green;
-    font-size: 0.9em;
-}
-
-#editor-console p:before {
-    content: ">";
-    margin-right: 5px;
-}
-
-#editor-console p:last-of-type {
-    color: greenyellow;
-}
-
-#editor-console p:last-of-type:before {
-    content: "\00bb";
-    color: greenyellow;
-}
-
 #login {
     padding-top: 100px;
 }
@@ -189,4 +149,54 @@
     padding: 1em !important;
     margin: 1em -1em !important;
     width: calc(100% + 2em) !important;
+}
+
+#console {
+    position: relative;
+    background-color: #272822;
+}
+
+#console-messages {
+    overflow-y: scroll;
+    height: 200px;
+    font-family: "Lucida Console", Monaco, monospace !important;
+    font-size: 0.9em;
+}
+
+#console-shadow {
+    box-shadow: inset 0 80px 90px -80px black;
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    left: 0;
+    top: 0;
+}
+
+#console-messages i {
+    color: darkorange;
+    width: 16px;
+}
+
+#console-messages .item {
+    opacity: 0.7;
+}
+
+#console-messages .item:last-of-type {
+    opacity: 1;
+}
+
+#console-messages .success {
+    color: green;
+}
+
+#console-messages .info {
+    color: lightgray;
+}
+
+#console-messages .error {
+    color: red;
+}
+
+#console-messages .log {
+    color: aqua;
 }
