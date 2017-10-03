@@ -1,6 +1,7 @@
 import * as React from "react";
+import * as _ from "lodash";
 import { Grid, Segment, Item, Header, Icon } from "semantic-ui-react";
-import { Thread as Thread } from "../../store/Threads";
+import { Thread as Thread, Message } from "../../store/Threads";
 import ThreadsItem from "./ThreadsItem";
 import { default as ThreadComponent } from "./Thread";
 
@@ -12,6 +13,34 @@ type Props = {
 }
 
 export default class Threads extends React.Component<Props, {}> {
+    state = {
+        threads: [] as Thread[],
+        timers: [] as number[]
+    }
+
+    componentDidMount() {
+        this.scheduleMessages(this.props.threads);
+    }
+
+    componentWillReceiveProps(next: Props) {
+        if(this.props.threads.length === next.threads.length) {
+            return;
+        }
+        this.clearTimers();
+        this.scheduleMessages(next.threads);
+    }
+
+    componentWillUnmount() {
+        this.clearTimers();
+    }
+
+    clearTimers() {
+        for (let i = 0; i < this.state.timers.length; i++) {
+            clearTimeout(this.state.timers[i]);
+        }
+        this.setState({ timers: [] as number[] });
+    }
+    
     render() {
         return (
             <div>
@@ -27,9 +56,9 @@ export default class Threads extends React.Component<Props, {}> {
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <Item.Group divided>
-                                    {this.props.threads.map(thread =>
+                                    {this.state.threads.map((thread, i) =>
                                         <ThreadsItem
-                                            key={thread.id}
+                                            key={i}
                                             thread={thread}
                                             onClick={() => this.props.onThreadClick(thread)}
                                             selected={!!this.props.selectedThread && this.props.selectedThread.id === thread.id} />
@@ -38,7 +67,7 @@ export default class Threads extends React.Component<Props, {}> {
                             </Grid.Column>
                             <Grid.Column width={11} className="no-padding">
                                 {this.props.selectedThread ? (
-                                    <ThreadComponent thread={this.props.selectedThread} />
+                                    <ThreadComponent thread={_.find(this.state.threads, { "id": this.props.selectedThread.id}) || this.props.selectedThread} />
                                 ) : (
                                     <Header as="h2" icon textAlign="center">
                                         <Icon name="mail" />
@@ -55,5 +84,31 @@ export default class Threads extends React.Component<Props, {}> {
                 </Segment>
             </div>
         );
+    }
+
+    scheduleMessages(t: Thread[]) {
+        console.log(t);
+        let timers: number[] = [];
+        let threads = t.map((thread, i) => {
+            thread.messages = thread.messages.filter((message) => {
+                if (message.receivedOn < new Date()) {
+                    return true;
+                }
+                let diff = message.receivedOn.getTime() - new Date().getTime();
+                timers.push(setTimeout(() => {
+                    let stateThreads = [...this.state.threads];
+                    stateThreads[i].messages.push(message);
+                    this.setState({
+                        threads: stateThreads
+                    });
+                }, diff));
+                return false;
+            });
+            return thread;
+        });
+        this.setState({
+            threads: threads,
+            timers: timers
+        });
     }
 }

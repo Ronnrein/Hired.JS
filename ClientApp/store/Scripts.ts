@@ -14,9 +14,9 @@ export interface Script {
     assignmentId: number;
     name: string;
     text: string;
-    verifiedOn: string;
+    verifiedOn: Date;
     isVerified: boolean;
-    modifiedOn: string;
+    modifiedOn: Date;
 }
 
 export interface RequestScriptsAction {

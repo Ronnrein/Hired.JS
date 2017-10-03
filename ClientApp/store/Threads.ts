@@ -12,7 +12,6 @@ export interface Thread {
     id: number;
     title: string;
     messages: Message[];
-    completedMessages: Message[];
     assignment?: Assignment;
 }
 
@@ -24,12 +23,13 @@ export interface Assignment {
     template: string;
     readOnlyLines: number[];
     completed: boolean;
-    completedOn?: string;
+    completedOn?: Date;
     arguments: Argument[];
 }
 
 export interface Message {
     author: Worker;
+    receivedOn: Date;
     text: string;
     image?: string;
 }
@@ -68,6 +68,11 @@ export const actionCreators = {
         }).then(
             response => response.json() as Promise<Thread[]>
         ).then(data => {
+
+            // Convert date strings to dates
+            data.map(thread => thread.messages.map(message => {
+                message.receivedOn = new Date(message.receivedOn);
+            }));
             dispatch({ type: "RECEIVE_THREADS", threads: data });
         });
         addTask(fetchThreads);

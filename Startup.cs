@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,11 +67,44 @@ namespace Hiredjs {
             // Add automapper
             MapperConfiguration config = new MapperConfiguration(o => {
                 o.CreateMap<GameData.Thread, ThreadVm>()
-                    .AfterMap((t, tvm) => tvm.Messages.First(m => {
-                        m.Text = m.Text.Replace("|sum|", t.Assignment?.Summary ?? "");
-                        return true;
-                    }));
-                o.CreateMap<GameData.Assignment, ThreadVm.AssignmentVm>();
+                    .AfterMap((t, tvm, c) => {
+
+                        List<ThreadVm.MessageVm> messages = tvm.Messages.ToList();
+
+                        // Replace summary tag with assignment summary
+                        messages.First(m => {
+                            m.Text = m.Text.Replace("|sum|", t.Assignment?.Summary ?? "");
+                            return true;
+                        });
+
+                        // Assign initial date
+                        messages.First().ReceivedOn = t.ReceivedOn;
+
+                        // If assignment is completed, add assignment complete message and following messages
+                        if (tvm.Assignment?.CompletedOn != null) {
+                            int tests = t.Assignment.Tests.Count();
+                            messages.Add(new ThreadVm.MessageVm {
+                                Text = "Assignment completed! "+tests+" of "+tests+" tests completed.",
+                                ReceivedOn = (DateTime) tvm.Assignment.CompletedOn,
+                                Author = gameData.Workers.SingleOrDefault(w => w.Id == 0)
+                            });
+                            List<ThreadVm.MessageVm> mvms = c.Mapper.Map<List<GameData.Message>, List<ThreadVm.MessageVm>>(t.CompletedMessages.ToList());
+                            messages.AddRange(mvms);
+                        }
+
+                        // Apply delay to messages
+                        for(int i = 1; i < messages.Count; i++) {
+                            ThreadVm.MessageVm message = messages.ElementAt(i);
+                            if (message.ReceivedOn == DateTime.MinValue) {
+                                message.ReceivedOn = messages.ElementAt(i - 1).ReceivedOn + TimeSpan.FromSeconds(message.Delay);
+                            }
+                        }
+
+                        tvm.Messages = messages;
+
+                    });
+                o.CreateMap<GameData.Assignment, ThreadVm.AssignmentVm>()
+                    .ForMember(d => d.CompletedOn, opt => opt.MapFrom(s => s.Completion.CompletedOn));
                 o.CreateMap<GameData.Message, ThreadVm.MessageVm>()
                     .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.AuthorId)));
                 o.CreateMap<User, UserVm>()

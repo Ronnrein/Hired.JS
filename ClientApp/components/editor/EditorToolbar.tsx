@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Menu, Icon } from "semantic-ui-react";
 import { Script } from "../../store/Scripts";
-import TimeAgo from "react-timeago";
+import TimeAgo from "../shared/TimeAgo";
 
 type Props = {
     script: Script;

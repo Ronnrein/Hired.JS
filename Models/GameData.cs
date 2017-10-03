@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
+
 namespace Hiredjs.Models {
 
     public class GameData {
-        public Thread[] Threads { get; set; }
-        public Worker[] Workers { get; set; }
+        public IEnumerable<Thread> Threads { get; set; }
+        public IEnumerable<Worker> Workers { get; set; }
 
         public class Worker {
             public int Id { get; set; }
@@ -13,9 +16,10 @@ namespace Hiredjs.Models {
         public class Thread {
             public int Id { get; set; }
             public string Title { get; set; }
-            public int[] Precursors { get; set; }
-            public Message[] Messages { get; set; }
-            public Message[] CompletedMessages { get; set; }
+            public IEnumerable<int> Precursors { get; set; }
+            public IEnumerable<Message> Messages { get; set; }
+            public IEnumerable<Message> CompletedMessages { get; set; }
+            public DateTime ReceivedOn { get; set; }
             public Assignment Assignment { get; set; }
             public int AssignmentId => Assignment?.Id ?? 0;
         }
@@ -27,14 +31,16 @@ namespace Hiredjs.Models {
             public string Summary { get; set; }
             public string Solution { get; set; }
             public string Template { get; set; }
-            public int[] ReadOnlyLines { get; set; }
-            public Argument[] Arguments { get; set; }
-            public Test[] Tests { get; set; }
+            public AssignmentCompletion Completion { get; set; }
+            public IEnumerable<int> ReadOnlyLines { get; set; }
+            public IEnumerable<Argument> Arguments { get; set; }
+            public IEnumerable<Test> Tests { get; set; }
         }
 
         public class Message {
             public int AuthorId { get; set; }
             public Worker Author { get; set; }
+            public int Delay { get; set; }
             public string Text { get; set; }
             public string Image { get; set; }
         }
@@ -45,7 +51,7 @@ namespace Hiredjs.Models {
         }
 
         public class Test {
-            public string[] Arguments { get; set; }
+            public IEnumerable<string> Arguments { get; set; }
             public string Result { get; set; }
         }
 

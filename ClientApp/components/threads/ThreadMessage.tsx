@@ -2,6 +2,7 @@ import * as React from "react";
 import { Feed } from "semantic-ui-react";
 import { Message } from "../../store/Threads";
 import { convertNewLine } from "../../utils";
+import TimeAgo from "../shared/TimeAgo";
 
 type Props = {
     message: Message;
@@ -21,7 +22,7 @@ export default class ThreadMessage extends React.Component<Props, {}> {
                 <Feed.Content>
                     <Feed.Summary>
                         <Feed.User as="span">{this.props.message.author.name}</Feed.User>
-                        <Feed.Date>{this.props.message.author.position}</Feed.Date>
+                        <Feed.Date>{this.props.message.author.position} | <TimeAgo date={this.props.message.receivedOn} /></Feed.Date>
                     </Feed.Summary>
                     <Feed.Extra text>{convertNewLine(this.props.message.text)}</Feed.Extra>
                     {this.props.message.image &&

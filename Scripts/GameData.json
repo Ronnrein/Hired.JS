@@ -1,5 +1,6 @@
 {
   "workers": [
+    { "id": 0, "name": "Hired.JS", "position": "AI" },
     { "id": 1, "name": "Paul Cleverley", "position": "Senior developer" },
     { "id": 2, "name": "Sandra Cowie", "position": "Developer" },
     { "id": 3, "name": "Nkondo Adui", "position": "Developer" },
@@ -8,17 +9,19 @@
   ],
   "threads": [{
     "id": 1,
-    "title": "Another one",
+    "title": "Welcome!",
     "precursors": [],
     "messages": [{
       "authorId": 1,
       "text": "Hi there, welcome to the team! Hope you are settling in nicely to your new surroundings, i have been given the honourable task of getting you up to speed with our development here :)\nFirst of all, as you already have heard, the purpose of this company is to accept small jobs from bigger development teams to make small functions that they need but don't want to spend their resources developing. This can be anything from small math functions to large functions manipulating lists and such, you get the idea :)\nBecause you just arrived, and the fact that ive been told you are new to JavaScript, i am going to go easy on you to begin with. What i want you to do is as follows:\n|sum|\nSounds simple enough? Get cracking! Send me the function when you are done, and then i will forward you a more meaningful task :)"
     }, {
       "authorId": 4,
+      "delay": 3,
       "text": "Why wasn't my first assignment this simple? :("
     }],
     "completedMessages": [{
       "authorId": 1,
+      "delay": 2,
       "text": "Good job!"
     }],
     "assignment": {
@@ -48,18 +51,21 @@
     }
   },{
     "id": 2,
-    "title": "Welcome!",
+    "title": "Another one",
     "precursors": [1],
     "messages": [{
       "authorId": 1,
+      "delay":  2, 
       "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
     }, {
       "authorId": 2,
+      "delay": 3,
       "text": "I promise i will make him give you a more exciting assignment after this one, jeez",
       "image": "cat.png"
     }],
     "completedMessages": [{
       "authorId": 1,
+      "delay": 2,
       "text": "Good job!"
     }],
     "assignment": {
@@ -88,13 +94,15 @@
       }
   },{
     "id": 3,
-    "title": "Sidenote!",
+    "title": "Sidenote",
     "precursors": [1],
     "messages": [{
       "authorId": 1,
+      "delay": 5,
       "text": "Testing non-assignment messages"
     }, {
       "authorId": 2,
+      "delay": 4,
       "text": "Hi there lol"
     }]
   }]

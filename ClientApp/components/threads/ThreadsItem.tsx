@@ -9,7 +9,10 @@ type Props = {
 }
 
 export default class ThreadsItem extends React.Component<Props, {}> {
-        render() {
+    render() {
+        if(this.props.thread.messages.length === 0) {
+            return null;
+        }
         let thread = this.props.thread;
         let image = `/images/workers/${thread.messages[0].author.id}.jpg`;
         let icon = !thread.assignment ? "talk" : thread.assignment.completed ? "checkmark" : "file text";

@@ -16,8 +16,6 @@ namespace Hiredjs.Controllers {
     public class UserController : Controller {
 
         private readonly IMapper _mapper;
-        private readonly GameData _gameData;
-        private readonly HiredjsDbContext _db;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
@@ -29,8 +27,6 @@ namespace Hiredjs.Controllers {
             SignInManager<User> signInManager
         ) {
             _mapper = mapper;
-            _gameData = gameData;
-            _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -43,7 +39,6 @@ namespace Hiredjs.Controllers {
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLoginVm login) {
-            Console.WriteLine("TEST");
             User user = await _userManager.FindByNameAsync(login.UserName);
             if (user == null) {
                 return NotFound();
@@ -53,7 +48,6 @@ namespace Hiredjs.Controllers {
                 return Json(_mapper.Map<User, UserVm>(user));
             }
             if (string.IsNullOrEmpty(login.Password)) {
-                Console.WriteLine("DENIED LOL");
                 return Forbid();
             }
             SignInResult result = await _signInManager.PasswordSignInAsync(user, login.Password, true, false);
@@ -78,8 +72,10 @@ namespace Hiredjs.Controllers {
                 userName = g.Generate();
                 existingUser = await _userManager.FindByNameAsync(userName);
             }
-
-            User user = new User {UserName = userName};
+            User user = new User {
+                UserName = userName,
+                CreatedOn = DateTime.Now
+            };
             await _userManager.CreateAsync(user);
             await _signInManager.SignInAsync(user, true);
             return Json(_mapper.Map<User, UserVm>(user));

@@ -197,9 +197,9 @@ const unloadedState: EditorState = {
         assignmentId: 0,
         name: "Free play",
         text: "// Define your function here\nfunction func(args, here) {\n\treturn args + here;\n}",
-        verifiedOn: "2017-09-28T16:11:46.9697872+02:00",
+        verifiedOn: new Date(),
         isVerified: false,
-        modifiedOn: "2017-09-28T16:11:46.9697872+02:00"
+        modifiedOn: new Date()
     },
     isLoading: false
 }
