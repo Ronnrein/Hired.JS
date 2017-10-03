@@ -7,7 +7,6 @@ import { ConsoleEntry } from "../../store/console";
 import EditorForm from "./EditorForm";
 import EditorToolbar from "./EditorToolbar";
 import EditorAce from "./EditorAce";
-import EditorSuccess from "./EditorSuccess";
 import { default as ConsoleComponent } from "../../containers/Console";
 import { convertNewLine } from "../../utils";
 
@@ -28,7 +27,6 @@ class Editor extends React.Component<Props, {}> {
     render() {
         return (
             <div>
-                <EditorSuccess result={this.props.result} />
                 <Header as="h2" attached="top">
                     <Icon name="code" />
                     <Header.Content>

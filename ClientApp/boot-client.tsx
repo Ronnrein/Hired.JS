@@ -22,7 +22,7 @@ function renderApp() {
         <AppContainer>
             <Provider store={ store }>
                 <ConnectedRouter history={history}>
-                    <Route path="/" component={App} />
+                    <Route path="/"  component={App} />
                 </ConnectedRouter>
             </Provider>
         </AppContainer>,

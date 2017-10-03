@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Comment, Segment, Feed } from "semantic-ui-react";
-import { Thread as IThread, Message } from "../../store/Threads";
+import { Thread as IThread } from "../../store/Threads";
 import ThreadMessage from "./ThreadMessage";
 import Scripts from "../../containers/Scripts";
 

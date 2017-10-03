@@ -19,12 +19,13 @@ type EditorProps =
     EditorStore.EditorState
     & ImportedProps
     & typeof EditorStore.actionCreators
-    & RouteComponentProps<{ id: string }>;
+    & RouteComponentProps<{}>;
 
 class Editor extends React.Component<EditorProps, {}> {
     componentWillReceiveProps(next: EditorProps) {
         if(!this.props.result && next.result) {
             this.props.requestThreads();
+            this.props.history.push("/threads");
         }
     }
 
