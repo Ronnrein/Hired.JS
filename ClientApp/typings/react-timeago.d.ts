@@ -10,6 +10,7 @@ declare module "react-timeago" {
         live?: boolean;
         formatter?: Formatter;
         component?: string;
+        title?: string;
     }
  
     export default class TimeAgo extends React.Component<TimeAgoProps, any> {

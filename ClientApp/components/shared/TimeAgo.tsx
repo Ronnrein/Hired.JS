@@ -10,8 +10,9 @@ export default class TimeAgo extends React.Component<Props, {}> {
     render() {
         return (
             <Popup
-                trigger={<TimeAgoComponent date={this.props.date} component="span" />}
+                trigger={<TimeAgoComponent date={this.props.date} component="span" title="" />}
                 content={new Date(this.props.date).toLocaleString()}
+                size="tiny"
             />
         );
     }

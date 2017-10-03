@@ -23,7 +23,7 @@ type EditorProps =
 
 class Editor extends React.Component<EditorProps, {}> {
     componentWillReceiveProps(next: EditorProps) {
-        if(!this.props.result && next.result) {
+        if(!this.props.result && next.result && next.result.completed === next.result.tests) {
             this.props.requestThreads();
             this.props.history.push("/threads");
         }
