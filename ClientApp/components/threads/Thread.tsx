@@ -2,6 +2,7 @@ import * as React from "react";
 import { Comment, Segment, Feed } from "semantic-ui-react";
 import { Thread as IThread } from "../../store/Threads";
 import ThreadMessage from "./ThreadMessage";
+import ThreadScoreSummary from "./ThreadScoreSummary";
 import Scripts from "../../containers/Scripts";
 
 type Props = {
@@ -28,6 +29,9 @@ export default class Thread extends React.Component<Props, {}> {
                 </Segment>
                 <Segment as={Feed} attached>
                     {this.props.thread.messages.map((message, i) => {
+                        if (message.author.id === 0 && thread.assignment && thread.assignment.scoreSummary) {
+                            return <ThreadScoreSummary key={i} message={message} scoreSummary={thread.assignment.scoreSummary} />;
+                        }
                         return <ThreadMessage key={i} message={message}/>;
                     })}
                 </Segment>

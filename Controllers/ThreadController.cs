@@ -6,6 +6,7 @@ using AutoMapper;
 using Hiredjs.Data;
 using Hiredjs.Models;
 using Hiredjs.ViewModels.Assignment;
+using Hiredjs.ViewModels.Script;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -55,57 +56,19 @@ namespace Hiredjs.Controllers {
                     (completions.SingleOrDefault(c => c.AssignmentId == thread.Precursors.FirstOrDefault())?.CompletedOn ??
                     user.CreatedOn) + TimeSpan.FromSeconds(thread.Messages.First().Delay);
             }
-            return Json(_mapper.Map<IEnumerable<GameData.Thread>, IEnumerable<ThreadVm>>(threads));
+
+            // Assign verified scripts
+            IEnumerable<ThreadVm> threadVms = _mapper.Map<IEnumerable<GameData.Thread>, IEnumerable<ThreadVm>>(threads);
+            threadVms.Where(t => t.Assignment != null && t.Assignment.Completed).Select(t => t.Assignment).ToList().ForEach(a => {
+                IEnumerable<Script> scripts = _db.Scripts.Where(s => s.VerifiedOn != null && s.AssignmentId == a.Id);
+                a.ScoreSummary = new ScriptScoreSummaryVm(
+                    _mapper.Map<Script, ScriptVm>(scripts.Where(s => s.UserId == user.Id).OrderByDescending(s => s.Score).First()),
+                    scripts.Select(s => s.Score),
+                    a.Score
+                );
+            });
+            return Json(threadVms);
         }
-
-        /*private IEnumerable<ThreadVm> MapThreads(
-            IReadOnlyCollection<GameData.Thread> threads,
-            IReadOnlyCollection<AssignmentCompletion> completions,
-            User user
-        ) {
-
-            // Store vms
-            List<ThreadVm> vms = new List<ThreadVm>();
-
-            foreach (GameData.Thread thread in threads) {
-
-                // Set completed-on for completed assignments
-                ThreadVm vm = _mapper.Map<GameData.Thread, ThreadVm>(thread);
-                if (vm.Assignment != null) {
-                    AssignmentCompletion completion = completions.SingleOrDefault(c => c.AssignmentId == vm.Assignment.Id);
-                    if (completion != null) {
-                        vm.Assignment.CompletedOn = completion.CompletedOn;
-                    }
-                }
-
-                // Set date for normal messages
-                DateTime time = !thread.Precursors.Any()
-                    ? user.CreatedOn
-                    : completions.SingleOrDefault(c => c.AssignmentId == thread.Precursors.First()).CompletedOn;
-                vm.Messages = vm.Messages.Zip(thread.Messages, (mvm, m) => {
-                    mvm.ReceivedOn = time += TimeSpan.FromSeconds(m.Delay ? 2 : 0);
-                    return mvm;
-                }).ToArray();
-
-                // Set date for assignment and completed messages
-                if (vm.Assignment != null) {
-                    AssignmentCompletion completion = completions.SingleOrDefault(c => c.AssignmentId == vm.Assignment.Id);
-                    if (completion != null) {
-                        vm.Assignment.CompletedOn = completion.CompletedOn;
-                        time = completion.CompletedOn;
-                        vm.CompletedMessages = vm.CompletedMessages.Zip(thread.CompletedMessages, (mvm, m) => {
-                            mvm.ReceivedOn = time += TimeSpan.FromSeconds(m.Delay ? 2 : 0);
-                            return mvm;
-                        }).ToArray();
-                    }
-                }
-
-                // Add to vms
-                vms.Add(vm);
-            }
-
-            return vms;
-        }*/
 
     }
 }

@@ -199,7 +199,8 @@ const unloadedState: EditorState = {
         text: "// Define your function here\nfunction func(args, here) {\n\treturn args + here;\n}",
         verifiedOn: new Date(),
         isVerified: false,
-        modifiedOn: new Date()
+        modifiedOn: new Date(),
+        score: 0
     },
     isLoading: false
 }

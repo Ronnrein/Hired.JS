@@ -8,6 +8,7 @@ namespace Hiredjs.Models {
         public int AssignmentId { get; set; }
         public string Name { get; set; }
         public string Text { get; set; }
+        public int Score { get; set; }
         public DateTime? VerifiedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
         

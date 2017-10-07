@@ -12,6 +12,7 @@ using Hiredjs.ViewModels.Script;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.NodeServices;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,7 +85,7 @@ namespace Hiredjs {
                         if (tvm.Assignment?.CompletedOn != null) {
                             int tests = t.Assignment.Tests.Count();
                             messages.Add(new ThreadVm.MessageVm {
-                                Text = "Assignment completed! "+tests+" of "+tests+" tests completed.",
+                                Text = "Assignment complete! "+tests+" of "+tests+" tests completed.",
                                 ReceivedOn = (DateTime) tvm.Assignment.CompletedOn,
                                 Author = gameData.Workers.SingleOrDefault(w => w.Id == 0)
                             });
@@ -116,7 +117,11 @@ namespace Hiredjs {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, GameData gameData, INodeServices node) {
+
+            // Calculate score for solution for each assignment
+            gameData.Threads.Where(t => t.Assignment != null).Select(t => t.Assignment).ToList().ForEach(a => a.CalculateAssignmentScore(node));
+
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {

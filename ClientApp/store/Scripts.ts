@@ -17,6 +17,7 @@ export interface Script {
     verifiedOn: Date;
     isVerified: boolean;
     modifiedOn: Date;
+    score: number;
 }
 
 export interface RequestScriptsAction {

@@ -1,4 +1,5 @@
 const { VM } = require("vm2");
+const escomplex = require("escomplex");
 
 module.exports = function(callback, script, solution, tests) {
 
@@ -66,6 +67,7 @@ module.exports = function(callback, script, solution, tests) {
     callback(null, {
         failed: o.error !== null || !o.success ? o : null,
         tests: tests.length,
-        completed: i
+        completed: i,
+        score: i === tests.length ? parseInt(escomplex.analyse(script, {}).aggregate.halstead.volume) : 0
     });
 }

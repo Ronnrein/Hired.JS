@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Hiredjs.Models;
+using Hiredjs.ViewModels.Script;
 
 namespace Hiredjs.ViewModels.Assignment {
 
@@ -16,8 +17,10 @@ namespace Hiredjs.ViewModels.Assignment {
             public string Function { get; set; }
             public string Summary { get; set; }
             public string Template { get; set; }
+            public int Score { get; set; }
             public DateTime? CompletedOn { get; set; }
             public bool Completed => CompletedOn != null;
+            public ScriptScoreSummaryVm ScoreSummary { get; set; }
             public IEnumerable<int> ReadOnlyLines { get; set; }
             public IEnumerable<GameData.Argument> Arguments { get; set; }
         }

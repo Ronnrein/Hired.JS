@@ -87,7 +87,6 @@ export default class Threads extends React.Component<Props, {}> {
     }
 
     scheduleMessages(t: Thread[]) {
-        console.log(t);
         let timers: number[] = [];
         let threads = t.map((thread, i) => {
             thread.messages = thread.messages.filter((message) => {

@@ -1,6 +1,7 @@
 import { fetch, addTask } from "domain-task";
 import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
+import { Script } from "./Scripts";
 
 export interface ThreadsState {
     threads: Thread[];
@@ -25,6 +26,16 @@ export interface Assignment {
     completed: boolean;
     completedOn?: Date;
     arguments: Argument[];
+    scoreSummary?: ScoreSummary;
+}
+
+export interface ScoreSummary {
+    script: Script;
+    scores: number[];
+    lowest: number;
+    highest: number;
+    solutionScore: number;
+    labels: string[];
 }
 
 export interface Message {

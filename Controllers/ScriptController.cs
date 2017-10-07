@@ -96,6 +96,7 @@ namespace Hiredjs.Controllers {
                 script.Text = model.Script.Text;
                 script.VerifiedOn = DateTime.Now;
                 script.ModifiedOn = DateTime.Now;
+                script.Score = results.Score;
                 _db.Scripts.Update(script);
                 await _db.SaveChangesAsync();
                 results.Script = _mapper.Map<Script, ScriptVm>(script);

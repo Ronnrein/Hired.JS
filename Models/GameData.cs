@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using Hiredjs.ViewModels.Script;
+using Microsoft.AspNetCore.NodeServices;
 
 namespace Hiredjs.Models {
 
@@ -31,10 +34,18 @@ namespace Hiredjs.Models {
             public string Summary { get; set; }
             public string Solution { get; set; }
             public string Template { get; set; }
+            public int Score { get; set; }
             public AssignmentCompletion Completion { get; set; }
             public IEnumerable<int> ReadOnlyLines { get; set; }
             public IEnumerable<Argument> Arguments { get; set; }
             public IEnumerable<Test> Tests { get; set; }
+
+            public async void CalculateAssignmentScore(INodeServices node) {
+                Score = (int) double.Parse((await node.InvokeAsync<string>(
+                    "Scripts/CalculateScore.js",
+                    Solution
+                )).Replace('.', ','));
+            }
         }
 
         public class Message {
