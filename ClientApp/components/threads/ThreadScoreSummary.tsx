@@ -1,9 +1,7 @@
 import * as React from "react";
-import * as _ from "lodash";
-import { Feed } from "semantic-ui-react";
-import { Line, ChartData } from "react-chartjs-2";
+import { Feed, Popup, Icon } from "semantic-ui-react";
+import { Line } from "react-chartjs-2";
 import { Message, ScoreSummary } from "../../store/Threads";
-import { convertNewLine } from "../../utils";
 import TimeAgo from "../shared/TimeAgo";
 
 declare var Chart: any;
@@ -25,6 +23,7 @@ export default class ThreadScoreSummary extends React.Component<Props, {}> {
         let script = sum.script;
         let width = chart.chartArea.right - chart.chartArea.left;
         ctx.save();
+        ctx.globalAlpha = 0.5;
         ctx.fillStyle = "blue";
         let scorePercentage = this.calculateScorePercentage(this.state.scoreSummary.solutionScore);
         let pos = scorePercentage * width;
@@ -37,6 +36,7 @@ export default class ThreadScoreSummary extends React.Component<Props, {}> {
         ctx.textAlign = scorePercentage < 0.25 ? "left" : scorePercentage > 0.75 ? "right" : "center";
         ctx.fillRect(chart.chartArea.left + pos - 1, chart.chartArea.top, 2, chart.chartArea.bottom - chart.chartArea.top + (ctx.textAlign === "center" ? 30 : 43));
         ctx.fillText(`  Your best: ${script.score} (${script.name})  `, chart.chartArea.left + pos, chart.chartArea.bottom - chart.chartArea.top + 70);
+        ctx.restore();
     }}
 
     state = {
@@ -71,7 +71,10 @@ export default class ThreadScoreSummary extends React.Component<Props, {}> {
                         <Feed.User as="span">{this.props.message.author.name}</Feed.User>
                         <Feed.Date>{this.props.message.author.position} | <TimeAgo date={this.props.message.receivedOn} /></Feed.Date>
                     </Feed.Summary>
-                    <Feed.Extra text>{convertNewLine(this.props.message.text)}</Feed.Extra>
+                    <Feed.Extra text>
+                        {this.props.message.text}&nbsp;
+                        <Popup trigger={<Icon name="question circle" />} content="To improve your score you might blablabla" basic />
+                    </Feed.Extra>
                     <Feed.Extra images>
                         <Line data={{
                             labels: this.props.scoreSummary.labels,
