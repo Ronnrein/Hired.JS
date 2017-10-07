@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as _ from "lodash";
 import { Feed } from "semantic-ui-react";
 import { Line, ChartData } from "react-chartjs-2";
 import { Message, ScoreSummary } from "../../store/Threads";
@@ -13,7 +14,33 @@ type Props = {
 }
 
 export default class ThreadScoreSummary extends React.Component<Props, {}> {
+
+    private plugin = {afterDraw: (chart: Chart) => {
+        let canvas = chart.canvas;
+        let ctx = chart.ctx;
+        if (!ctx || !canvas) {
+            return;
+        }
+        let sum = this.state.scoreSummary;
+        let script = sum.script;
+        let width = chart.chartArea.right - chart.chartArea.left;
+        ctx.save();
+        ctx.fillStyle = "blue";
+        let scorePercentage = this.calculateScorePercentage(this.state.scoreSummary.solutionScore);
+        let pos = scorePercentage * width;
+        ctx.textAlign = scorePercentage < 0.25 ? "left" : scorePercentage > 0.75 ? "right" : "center";
+        ctx.fillRect(chart.chartArea.left + pos - 1, chart.chartArea.top, 2, chart.chartArea.bottom - chart.chartArea.top + (ctx.textAlign === "center" ? 50 : 63));
+        ctx.fillText(`  AI best: ${this.state.scoreSummary.solutionScore}  `, chart.chartArea.left + pos, chart.chartArea.bottom - chart.chartArea.top + 90);
+        ctx.fillStyle = "green";
+        scorePercentage = this.calculateScorePercentage(script.score);
+        pos = scorePercentage * width;
+        ctx.textAlign = scorePercentage < 0.25 ? "left" : scorePercentage > 0.75 ? "right" : "center";
+        ctx.fillRect(chart.chartArea.left + pos - 1, chart.chartArea.top, 2, chart.chartArea.bottom - chart.chartArea.top + (ctx.textAlign === "center" ? 30 : 43));
+        ctx.fillText(`  Your best: ${script.score} (${script.name})  `, chart.chartArea.left + pos, chart.chartArea.bottom - chart.chartArea.top + 70);
+    }}
+
     state = {
+        // Need to store in state to ensure proper rendering with context
         scoreSummary: this.props.scoreSummary
     }
 
@@ -23,41 +50,15 @@ export default class ThreadScoreSummary extends React.Component<Props, {}> {
         let global: any = Chart.defaults.global;
         global.layout.padding = { bottom: 40 };
 
-        // Register plugin
-        Chart.pluginService.register({
-            afterDraw: (chart: Chart) => {
-                let canvas = chart.canvas;
-                let ctx = chart.ctx;
-                if (!ctx || !canvas) {
-                    return;
-                }
-                let sum = this.state.scoreSummary;
-                let script = sum.script;
-                let width = chart.chartArea.right - chart.chartArea.left;
-                ctx.save();
-                ctx.fillStyle = "blue";
-                let scorePercentage = this.calculateScorePercentage(this.state.scoreSummary.solutionScore);
-                let pos = scorePercentage * width;
-                ctx.textAlign = scorePercentage < 0.25 ? "left" : scorePercentage > 0.75 ? "right" : "center";
-                ctx.fillRect(chart.chartArea.left + pos - 1, chart.chartArea.top, 2, chart.chartArea.bottom - chart.chartArea.top + (ctx.textAlign === "center" ? 50 : 63));
-                ctx.fillText(`  AI best: ${this.state.scoreSummary.solutionScore}  `, chart.chartArea.left + pos, chart.chartArea.bottom - chart.chartArea.top + 90);
-                ctx.fillStyle = "green";
-                scorePercentage = this.calculateScorePercentage(script.score);
-                pos = scorePercentage * width;
-                ctx.textAlign = scorePercentage < 0.25 ? "left" : scorePercentage > 0.75 ? "right" : "center";
-                ctx.fillRect(chart.chartArea.left + pos - 1, chart.chartArea.top, 2, chart.chartArea.bottom - chart.chartArea.top + (ctx.textAlign === "center" ? 30 : 43));
-                ctx.fillText(`  Your best: ${script.score} (${script.name})  `, chart.chartArea.left + pos, chart.chartArea.bottom - chart.chartArea.top + 70);
-            }
-        });
+        Chart.pluginService.register(this.plugin);
+    }
+
+    componentWillUnmount() {
+        Chart.pluginService.unregister(this.plugin);
     }
 
     componentWillReceiveProps(next: Props) {
         this.setState({scoreSummary: next.scoreSummary});
-    }
-
-    calculateScorePercentage(score: number) {
-        let sum = this.props.scoreSummary;
-        return (score - sum.lowest) / (sum.highest - sum.lowest);
     }
 
     render() {
@@ -75,7 +76,7 @@ export default class ThreadScoreSummary extends React.Component<Props, {}> {
                         <Line data={{
                             labels: this.props.scoreSummary.labels,
                             datasets: [{
-                                label: "Other users score",
+                                label: "Users score curve",
                                 backgroundColor: "rgba(75,192,192,0.1)",
                                 borderColor: "rgba(75,192,192,0.5)",
                                 borderCapStyle: "butt",
@@ -115,8 +116,9 @@ export default class ThreadScoreSummary extends React.Component<Props, {}> {
         );
     }
 
-    generateLabels() {
-        
+    calculateScorePercentage(score: number) {
+        let sum = this.props.scoreSummary;
+        return (score - sum.lowest) / (sum.highest - sum.lowest);
     }
 
 }
