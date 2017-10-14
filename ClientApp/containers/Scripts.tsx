@@ -28,6 +28,7 @@ class Scripts extends React.Component<ScriptsProps, {}> {
         if(!this.props.selectedThread || !this.props.selectedThread.assignment) {
             return null;
         }
+        let id = this.props.selectedThread.assignment.id;
         return (
             <ScriptSelector
                 assignment={this.props.selectedThread.assignment}
@@ -36,7 +37,7 @@ class Scripts extends React.Component<ScriptsProps, {}> {
                 isLoading={this.props.isLoading}
                 isSaving={this.props.isSaving}
                 onLoadAssignmentClick={() => this.onLoadAssignmentClick()}
-                onCreateClick={(n: string) => this.props.createScript(n, this.props.selectedThread.id)}
+                onCreateClick={(n: string) => this.props.createScript(n, id)}
                 onDeleteClick={(s: ScriptsStore.Script) => this.props.deleteScript(s)}
                 onModalOpen={() => this.props.requestScripts()}
                 onSelectScript={(s: ScriptsStore.Script) => this.props.selectScript(s)}
