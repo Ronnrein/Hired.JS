@@ -1,6 +1,7 @@
 import { fetch, addTask } from "domain-task";
 import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
+import * as _ from "lodash";
 import { Script } from "./Scripts";
 
 export interface ThreadsState {
@@ -110,10 +111,12 @@ export const reducer: Reducer<ThreadsState> = (state: ThreadsState, incomingActi
                 isLoading: true
             }};
         case "RECEIVE_THREADS":
+            let id = state.selectedThread ? state.selectedThread.id : 0;
             if (action.threads !== state.threads) {
                 return {...state, ...{
                     threads: action.threads,
-                    isLoading: false
+                    isLoading: false,
+                    selectedThread: id !== 0 ? _.find(action.threads, (t) => t.id === id) : undefined
                 }};
             }
             break;

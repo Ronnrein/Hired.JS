@@ -1,5 +1,4 @@
 {
-  "scoreMultiplier": 10.25213,
   "workers": [
     { "id": 0, "name": "Hired.JS", "position": "AI" },
     { "id": 1, "name": "Paul Cleverley", "position": "Senior developer" },
@@ -13,98 +12,268 @@
     "title": "Welcome!",
     "precursors": [],
     "messages": [{
-      "authorId": 1,
-      "text": "Hi there, welcome to the team! Hope you are settling in nicely to your new surroundings, i have been given the honourable task of getting you up to speed with our development here :)\nFirst of all, as you already have heard, the purpose of this company is to accept small jobs from bigger development teams to make small functions that they need but don't want to spend their resources developing. This can be anything from small math functions to large functions manipulating lists and such, you get the idea :)\nBecause you just arrived, and the fact that ive been told you are new to JavaScript, i am going to go easy on you to begin with. What i want you to do is as follows:\n|sum|\nSounds simple enough? Get cracking! Send me the function when you are done, and then i will forward you a more meaningful task :)"
+      "authorId": 5,
+      "text": "Hi there, welcome to the team! Hope you are settling in nicely to your new surroundings :) I heard you are new to JavaScript so i have tasked Nkondo with getting you up to speed, he will send you assignments and you will simply send them back to him, when you have completed his tasks you will hear from me again, see you soon!"
+    }, {
+      "authorId": 3,
+      "delay": 4,
+      "text": "Hi! I am sending you your first assignment now :)"
+    }]
+  },{
+    "id": 2,
+    "title": "Up to speed",
+    "precursors": [],
+    "messages": [{
+      "authorId": 3,
+      "delay": 10,
+      "text": "I have been given the honourable task of getting you up to speed with our development here :)\nFirst of all, as you already have heard, the purpose of this company is to accept small jobs from bigger development teams to make small functions that they need but don't want to spend their resources developing. This can be anything from small math functions to large functions manipulating lists and such, you get the idea :)\nBecause you just arrived, and the fact that ive been told you are new to JavaScript, i am going to go easy on you to begin with. What i want you to do is as follows:\n|sum|\nSounds simple enough? Get cracking! Send me the function when you are done, and then i will forward you a more meaningful task :)"
     }, {
       "authorId": 4,
       "delay": 3,
       "text": "Why wasn't my first assignment this simple? :("
     }],
     "completedMessages": [{
-      "authorId": 1,
+      "authorId": 4,
       "delay": 2,
-      "text": "Good job!"
+      "text": "Good job! I am sending you some new assignments now :)"
     }],
     "assignment": {
       "id": 1,
-      "name": "Basic addition",
-      "function": "add",
-      "summary": "Create a function that accepts two numbers, and returns the numbers added together.",
-      "solution": "function add(num1, num2) { return num1 + num2; }",
-      "template": "function add(num1, num2) {\n\treturn 0;\n}",
+      "name": "Variables and functions",
+      "function": "intro",
+      "summary": "Modify the function to add an explemation mark on the end of the supplied parameter.",
+      "solution": "function intro(param) { var str = param+'!'; return str; }",
+      "template": "function intro(param) {\n\tvar str = param /* Add explemation mark here */;\n\treturn str;\n}",
+      "readOnlyLines": [1, 1],
+      "documentation": [{
+        "title": "Variables",
+        "text": "Variables are ways to store values. Variables can be declared and assigned by writing |var variableName = \"Hello World\";|"
+      }, {
+        "title": "Functions",
+        "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing |function| and specifying the parameters in the parantheses |(param1, param2)."
+      }, {
+        "title": "console.log",
+        "text": "console.log is a function that is heavily used in JavaScript development to debug and get more feedback of your running code. For instance, writing |console.log(\"Hello world!\");| will print Hello World in the console."
+      }],
+      "arguments": [
+        { "description": "String", "example": "Hello world", "type": "string" }
+      ],
+      "tests": [
+        { "arguments": [ "A" ], "result": "A!" },
+        { "arguments": [ "C" ], "result": "C!" },
+        { "arguments": [ "E" ], "result": "E!" },
+        { "arguments": [ "H" ], "result": "H!" },
+        { "arguments": [ "O" ], "result": "O!" },
+        { "arguments": [ " " ], "result": " !" },
+        { "arguments": [ "0" ], "result": "0!" },
+        { "arguments": [ "T" ], "result": "T!" },
+        { "arguments": [ "V" ], "result": "V!" },
+        { "arguments": [ "!" ], "result": "!!" }
+      ]
+    }
+  },{
+    "id": 3,
+    "title": "First assignment!",
+    "precursors": [1],
+    "messages": [{
+      "authorId": 3,
+      "delay": 3,
+      "text": "Hi again! For one of our clients projects we need a simple function that does as follows:\n|sum|\nPretty simple! I will also supply some documentation on JavaScript data types for you to learn about :)"
+    }, {
+      "authorId": 2,
+      "delay": 4,
+      "text": "typeof Nkondo === Bossy!"
+    }, {
+      "authorId": 3,
+      "delay": 4,
+      "text": "typeof Sandra === Junior :D"
+    }],
+    "completedMessages": [{
+      "authorId": 4,
+      "delay": 2,
+      "text": "Good job! Next i will send you an assignment about objects in JavaScript"
+    }],
+    "assignment": {
+      "id": 2,
+      "name": "String concatenation",
+      "function": "concat",
+      "summary": "Modify the function to return the two supplied strings concatenated together.",
+      "solution": "function concat(str1, str2) { var result = str1 + str2; return result; }",
+      "template": "function concat(str1, str2) {\n\tvar result = str1 /* Modify to concatenate here */;\n\treturn result;\n}",
+      "readOnlyLines": [1, 1],
+      "documentation": [{
+        "title": "String operations",
+        "text": "While in mathematics adding things together using a + operator will work the same in JavaScript with numbers, using a + operator with strings will in JavaScript add the second string at the end of the first string. For example, |var result = \"Hello\" + \"World\";| will give result the value of HelloWorld"
+      },{
+        "title": "Types",
+        "text": "A variable can have many different types. Examples of types it can have are number, string, object, array, among others. JavaScript has a built-in operator to get the type of any variable. For instance, if you type |var type = typeof 2;|, type will not have a string value of Number"
+      }],
+      "arguments": [
+        { "description": "String", "example": "Hello", "type": "string" },
+        { "description": "String", "example": "World", "type": "string" }
+      ],
+      "tests": [
+        { "arguments": [ "A", "D" ], "result": "AD" },
+        { "arguments": [ "C", "O" ], "result": "CO" },
+        { "arguments": [ "U", "A" ], "result": "UA" },
+        { "arguments": [ "H", "I" ], "result": "HI" },
+        { "arguments": [ ":", ")" ], "result": ":)" },
+        { "arguments": [ " ", " " ], "result": "  " },
+        { "arguments": [ "0", "1" ], "result": "01" },
+        { "arguments": [ "T", "i" ], "result": "Ti" },
+        { "arguments": [ "_", "_" ], "result": "__" },
+        { "arguments": [ "!", "?" ], "result": "!?" }
+      ]
+    }
+  },{
+    "id": 4,
+    "title": "Math",
+    "precursors": [1],
+    "messages": [{
+      "authorId": 1,
+      "delay":  10, 
+      "text": "In addition to the string concatenation assignment, heres another one for you. Here a client is making a game that required a modified add function as follows: |sum|"
+    }],
+    "completedMessages": [{
+      "authorId": 1,
+      "delay": 2,
+      "text": "Good job! As the maths you use in code get more advanced, you'll need to use more advanced functionality such as built-in math functions, i'll forward you an assignment related to that next"
+    }],
+    "assignment": {
+      "id": 3,
+      "name": "Basic math",
+      "function": "sumdiv",
+      "summary": "Modify the function to add the two numbers together, then multiply the resulting number by 0.27.",
+      "solution": "function sumdiv(num1, num2) { var result = num1 + num2; result = result * 0.27; return result; }",
+      "template": "function sumdiv(num1, num2) {\n\tvar result = 0;\n\tresult = 0 * 0;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
       "arguments": [
         { "description": "Number", "example": "52" },
         { "description": "Number", "example": "24" }
       ],
       "tests": [
-        { "arguments": [  4,  9 ], "result":  13 },
-        { "arguments": [ 23, 29 ], "result":  52 },
-        { "arguments": [ -2,  4 ], "result":   2 },
-        { "arguments": [ 89, 82 ], "result": 171 },
-        { "arguments": [ 25, 92 ], "result": 117 },
-        { "arguments": [  9, 21 ], "result":  30 },
-        { "arguments": [ -8, -5 ], "result": -13 },
-        { "arguments": [  1,  1 ], "result":   2 },
-        { "arguments": [ 85, 72 ], "result": 157 },
-        { "arguments": [ 99, 99 ], "result": 198 }
-      ]
-    }
+        { "arguments": [  5,  2 ], "result": 1.8900000000000001 },
+        { "arguments": [ 94, 23 ], "result": 31.590000000000003 },
+        { "arguments": [ 44, 12 ], "result": 15.120000000000001 },
+        { "arguments": [ -3, 57 ], "result": 14.580000000000002 },
+        { "arguments": [-85,-27 ], "result": -30.240000000000002 },
+        { "arguments": [527, 273], "result": 216 },
+        { "arguments": [  2, 282], "result": 76.68 },
+        { "arguments": [  1,  1 ], "result": 0.54 },
+        { "arguments": [972, 931], "result": 513.8100000000001 },
+        { "arguments": [ 99, 98 ], "result": 53.190000000000005 }]
+      }
   },{
-    "id": 2,
-    "title": "Another one",
-    "precursors": [1],
+    "id": 5,
+    "title": "Objects",
+    "precursors": [2],
+    "messages": [{
+      "authorId": 4,
+      "delay":  3, 
+      "text": "Good work on the string assignment! This time i have a client that is a startup that wants us to make a function that generates an email address handle based on their name and title in the company. What i want you to do is as follows: |sum|. I will attach some information about objects and properties that will be useful for this"
+    }],
+    "completedMessages": [{
+      "authorId": 4,
+      "delay": 2,
+      "text": "Great! Forwarding another assignment in a similar vein to this one"
+    }],
+    "assignment": {
+      "id": 4,
+      "name": "Objects and properties",
+      "function": "objname",
+      "summary": "Modify the function to return the concatenated string of the object properties \"name\" and \"title\"",
+      "solution": "function objconcat(obj) { var name = obj.name; var title = obj.title; var result = name + title; return result; }",
+      "template": "function objconcat(obj) {\n\tvar name = \"Paul\";\n\tvar title = \"CEO\";\n\tvar result = name;\n\treturn result;\n}",
+      "readOnlyLines": [1, 1],
+      "arguments": [
+        { "description": "Object with properties \"name\" and \"title\"", "example": "{name: \"Paul\", title: \"CEO\"}" }
+      ],
+      "tests": [
+        { "arguments": [ "{name: \"peter\", title: \"intern\"}"], "result": "peterintern" },
+        { "arguments": [ "{name: \"paul\", title: \"ceo\"}"], "result": "paulceo" },
+        { "arguments": [ "{name: \"kyle\", title: \"cashier\"}"], "result": "kylecashier" },
+        { "arguments": [ "{name: \"lars\", title: \"drummer\"}"], "result": "larsdrummer" },
+        { "arguments": [ "{name: \"sebastian\", title: \"driver\"}"], "result": "sebastiandriver" },
+        { "arguments": [ "{name: \"linus\", title: \"developer\"}"], "result": "linusdeveloper" },
+        { "arguments": [ "{name: \"obi\", title: \"jedi\"}"], "result": "obijedi" },
+        { "arguments": [ "{name: \"elizabeth\", title: \"queen\"}"], "result": "elizabethqueen" },
+        { "arguments": [ "{name: \"trump\", title: \"tweeter\"}"], "result": "trumptweeter" },
+        { "arguments": [ "{name: \"john\", title: \"guitarist\"}"], "result": "johnguitarist" }]
+      }
+  },{
+    "id": 6,
+    "title": "Libraries",
+    "precursors": [3],
     "messages": [{
       "authorId": 1,
       "delay":  3, 
-      "text": "Good job on the last assignment! As a follow up, heres another simple one:\n|sum|"
-    }, {
-      "authorId": 2,
-      "delay": 3,
-      "text": "I promise i will make him give you a more exciting assignment after this one, jeez",
-      "image": "cat.png"
+      "text": "In addition to math operators, JavaScript contains a math library with a collection of functions for you to use. We have a customer who wants to generate random user ids for his employees, and want this to be done as follows: |sum|."
     }],
     "completedMessages": [{
       "authorId": 1,
       "delay": 2,
-      "text": "Good job!"
+      "text": "Great! Forwarding another assignment in a similar vein to this one"
     }],
     "assignment": {
-      "id": 2,
-      "name": "Avarage of two numbers",
-      "function": "avarage",
-      "summary": "Create a function that accepts two numbers, and returns the avarage (rounded down) of the numbers.",
-      "solution": "function avarage(num1, num2, num3) { return Math.floor((num1 + num2) / 2); }",
-      "template": "function avarage(num1, num2) {\n\t//Perform stuff here\n\treturn 0;\n}",
-      "readOnlyLines": [2, 1],
+      "id": 5,
+      "name": "Math library",
+      "function": "powsqrt",
+      "summary": "Modify the function to raise the first parameter to the power of the second, then return the square root of the resulting number",
+      "solution": "function powsqrt(num1, num2) { var pow = Math.pow(num1, num2); var result = Math.sqrt(pow); return result; }",
+      "template": "function powsqrt(num1, num2) {\n\tvar pow = num1 + num2 /* Use Math.pow() /*;\n\tvar result = pow /* Use Math.sqrt();\n\treturn result;\n}",
+      "readOnlyLines": [1, 1],
       "arguments": [
-        { "description": "Number", "example": "52" },
-        { "description": "Number", "example": "24" }
+        { "description": "Number", "example": "2" },
+        { "description": "Number", "example": "4" }
       ],
       "tests": [
-        { "arguments": [  5,  2 ], "result":   3 },
-        { "arguments": [ 94, 23 ], "result":  58 },
-        { "arguments": [ 44, 12 ], "result":  28 },
-        { "arguments": [ -3, 57 ], "result":  27 },
-        { "arguments": [-85,-27 ], "result": -56 },
-        { "arguments": [527, 273], "result": 400 },
-        { "arguments": [  2, 282], "result": 142 },
-        { "arguments": [  1,  1 ], "result":   1 },
-        { "arguments": [972, 931], "result": 951 },
-        { "arguments": [ 99, 98 ], "result": 98 }]
+        { "arguments": [  5,  2 ], "result": 55.90169943749474 },
+        { "arguments": [  4,  3 ], "result": 16 },
+        { "arguments": [  4, 12 ], "result": 16 },
+        { "arguments": [ 10,  1 ], "result": 100000 },
+        { "arguments": [  5,  7 ], "result": 55.90169943749474 },
+        { "arguments": [  4,  2 ], "result": 16 },
+        { "arguments": [  2, 22 ], "result": 2 },
+        { "arguments": [  1,  1 ], "result": 1 },
+        { "arguments": [ 10,  9 ], "result": 100000 },
+        { "arguments": [  9,  8 ], "result": 19683 }]
       }
   },{
-    "id": 3,
-    "title": "Sidenote",
-    "precursors": [1],
+    "id": 5,
+    "title": "Object methods",
+    "precursors": [2],
     "messages": [{
       "authorId": 1,
-      "delay": 5,
-      "text": "Testing non-assignment messages"
-    }, {
-      "authorId": 2,
-      "delay": 4,
-      "text": "Hi there lol"
-    }]
+      "delay":  3, 
+      "text": "Good work on the string assignment! This time i have a client that is a startup that wants us to make a function that generates an email address handle based on their name and title in the company. What i want you to do is as follows: |sum|. I will attach some information about objects and properties that will be useful for this"
+    }],
+    "completedMessages": [{
+      "authorId": 1,
+      "delay": 2,
+      "text": "Great! Forwarding another assignment in a similar vein to this one"
+    }],
+    "assignment": {
+      "id": 6,
+      "name": "Object methods",
+      "function": "objname",
+      "summary": "Modify the function to return the concatenated string of the object properties \"name\" and \"title\"",
+      "solution": "function objconcat(obj) { var name = obj.name; var title = obj.title; var result = name + title; return result; }",
+      "template": "function objconcat(obj) {\n\tvar name = \"Paul\";\n\tvar title = \"CEO\";\n\tvar result = name;\n\treturn result;\n}",
+      "readOnlyLines": [1, 1],
+      "arguments": [
+        { "description": "Object with properties \"name\" and \"title\"", "example": "{name: \"Paul\", title: \"CEO\"}" }
+      ],
+      "tests": [
+        { "arguments": [ "{name: peter, title: intern}" ], "result": "peterintern" },
+        { "arguments": [ "{name: paul, title: ceo}" ], "result": "paulceo" },
+        { "arguments": [ "{name: kyle, title: cashier}" ], "result": "kylecashier" },
+        { "arguments": [ "{name: lars, title: drummer}" ], "result": "larsdrummer" },
+        { "arguments": [ "{name: sebastian, title: driver}" ], "result": "sebastiandriver" },
+        { "arguments": [ "{name: linus, title: developer}" ], "result": "linusdeveloper" },
+        { "arguments": [ "{name: obi, title: jedi}" ], "result": "obijedi" },
+        { "arguments": [ "{name: elizabeth, title: queen}" ], "result": "elizabethqueen" },
+        { "arguments": [ "{name: trump, title: tweeter}" ], "result": "trumptweeter" },
+        { "arguments": [ "{name: john, title: guitarist}" ], "result": "johnguitarist" }]
+      }
   }]
 }

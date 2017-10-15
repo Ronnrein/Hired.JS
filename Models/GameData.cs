@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using Hiredjs.ViewModels.Script;
+using System.Linq;
 using Microsoft.AspNetCore.NodeServices;
 
 namespace Hiredjs.Models {
@@ -38,7 +37,23 @@ namespace Hiredjs.Models {
             public AssignmentCompletion Completion { get; set; }
             public IEnumerable<int> ReadOnlyLines { get; set; }
             public IEnumerable<Argument> Arguments { get; set; }
-            public IEnumerable<Test> Tests { get; set; }
+            public IEnumerable<Test> Tests {
+                get => _tests;
+                set {
+                    foreach (Test test in value) {
+                        string[] args = test.Arguments.ToArray();
+                        for (int i = 0; i<args.Length; i++) {
+                            if (Arguments.ElementAt(i).Type == "string") {
+                                args[i] = $"\"{args[i]}\"";
+                            }
+                        }
+                        test.Arguments = args;
+                    }
+                    _tests = value;
+                }
+            }
+
+            private IEnumerable<Test> _tests;
 
             public async void CalculateAssignmentScore(INodeServices node) {
                 Score = (int) double.Parse((await node.InvokeAsync<string>(
@@ -59,6 +74,7 @@ namespace Hiredjs.Models {
         public class Argument {
             public string Description { get; set; }
             public string Example { get; set; }
+            public string Type { get; set; }
         }
 
         public class Test {

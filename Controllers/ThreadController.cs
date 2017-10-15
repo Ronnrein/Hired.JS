@@ -62,7 +62,7 @@ namespace Hiredjs.Controllers {
             threadVms.Where(t => t.Assignment != null && t.Assignment.Completed).Select(t => t.Assignment).ToList().ForEach(a => {
                 IEnumerable<Script> scripts = _db.Scripts.Where(s => s.VerifiedOn != null && s.AssignmentId == a.Id);
                 a.ScoreSummary = new ScriptScoreSummaryVm(
-                    _mapper.Map<Script, ScriptVm>(scripts.Where(s => s.UserId == user.Id).OrderByDescending(s => s.Score).First()),
+                    _mapper.Map<Script, ScriptVm>(scripts.Where(s => s.UserId == user.Id).OrderBy(s => s.Score).First()),
                     scripts.Select(s => s.Score),
                     a.Score
                 );

@@ -24,7 +24,7 @@ class ScriptItem extends React.Component<Props, {}> {
                 )}
                 <List.Content>
                     <List.Header className={this.props.selected ? "underlined" : ""}>{this.props.script.name}</List.Header>
-                    <List.Description>Last updated <TimeAgo date={this.props.script.modifiedOn} /></List.Description>
+                    <List.Description>Last updated <TimeAgo date={this.props.script.modifiedOn} showTooltip={false} /></List.Description>
                 </List.Content>
             </List.Item>
         );

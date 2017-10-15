@@ -39,7 +39,6 @@ namespace Hiredjs.Controllers {
 
         [HttpGet]
         public IActionResult Assignment(int id) {
-            Console.Write("LOL");
             GameData.Assignment assignment = _gameData.Threads.SingleOrDefault(t => t.AssignmentId == id)?.Assignment;
             if (assignment == null) {
                 return NotFound();
@@ -59,11 +58,17 @@ namespace Hiredjs.Controllers {
             else if (assignment == null) {
                 return NotFound();
             }
+            string[] args = model.Arguments.ToArray();
+            for (int i = 0; i < args.Length; i++) {
+                if (assignment.Arguments.ElementAt(i).Type == "string") {
+                    args[i] = $"\"{args[i]}\"";
+                }
+            }
             ScriptRunResultVm results = await _nodeServices.InvokeAsync<ScriptRunResultVm>(
                 "Scripts/Run.js",
                 model.Script.Text,
                 assignment.Solution,
-                model.Arguments
+                args
             );
             return Json(results);
         }
