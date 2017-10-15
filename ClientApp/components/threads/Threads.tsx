@@ -67,7 +67,7 @@ export default class Threads extends React.Component<Props, {}> {
                             </Grid.Column>
                             <Grid.Column width={11} className="no-padding">
                                 {this.props.selectedThread ? (
-                                    <ThreadComponent thread={_.find(this.state.threads, { "id": this.props.selectedThread.id}) || this.props.selectedThread} />
+                                    <ThreadComponent thread={this.props.selectedThread} />
                                 ) : (
                                     <Header as="h2" icon textAlign="center">
                                         <Icon name="mail" />
