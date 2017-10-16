@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Segment, Grid, Header, Icon, Item, Feed, Divider } from "semantic-ui-react";
+import { Segment, Grid, Header, Icon, Item, Feed, Divider, Accordion } from "semantic-ui-react";
 import { Assignment } from "../../store/Threads";
 import { Script } from "../../store/Scripts";
 import { VerificationResult } from "../../store/editor";
@@ -7,9 +7,8 @@ import { ConsoleEntry } from "../../store/console";
 import EditorForm from "./EditorForm";
 import EditorToolbar from "./EditorToolbar";
 import EditorAce from "./EditorAce";
-import EditorDocumentation from "./EditorDocumentation";
 import { default as ConsoleComponent } from "../../containers/Console";
-import { convertNewLine } from "../../utils";
+import { convertNewLine, convertCode } from "../../utils";
 
 type Props = {
     assignment: Assignment;
@@ -26,6 +25,10 @@ type Props = {
 
 class Editor extends React.Component<Props, {}> {
     render() {
+        const docs = this.props.assignment.documentation.map((doc) => ({ title: doc.title, content: [
+            <p dangerouslySetInnerHTML={{ __html: convertCode(doc.text) }}></p>,
+            <a href={doc.url} target="_blank">Read more</a>
+        ]}));
         return (
             <div>
                 <Header as="h2" attached="top">
@@ -68,9 +71,8 @@ class Editor extends React.Component<Props, {}> {
                                         </Feed.Content>
                                     </Feed.Event>
                                     <Divider />
-                                    {this.props.assignment.documentation.map((doc, i) =>
-                                        <EditorDocumentation key={i} doc={doc} />
-                                    )}
+                                    <Header attached="top">Documentation</Header>
+                                    <Accordion panels={docs} exclusive={false} fluid styled attached />
                                 </Item.Group>
                             </Grid.Column>
                         </Grid.Row>

@@ -9,7 +9,7 @@ export function convertNewLine(str: string) {
 }
 
 export function convertCode(str: string) {
-    return str.replace(/\|(.*?)\|/g, (a, b) => `<p class='code-snippet'>${b}</p>`);
+    return str.replace(/\|(.*?)\|/g, (a, b) => `<code>${b}</code>`);
 }
 
 export function checkFetchStatus(response: any) {
