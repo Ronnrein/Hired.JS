@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Menu, Icon } from "semantic-ui-react";
+import { Menu, Icon, Popup } from "semantic-ui-react";
 import { Script } from "../../store/Scripts";
 import TimeAgo from "../shared/TimeAgo";
 
 type Props = {
     script: Script;
+    hint: string;
     isSaving: boolean;
     onSaveClick: Function;
 }
@@ -35,6 +36,12 @@ class EditorToolbar extends React.Component<Props, {}> {
                     </Menu.Item>
                 }
                 <Menu.Menu position="right">
+                    <Popup
+                        trigger={<Menu.Item icon="idea" content="Hint" />}
+                        content={this.props.hint}
+                        position="bottom right"
+                        wide
+                    />
                     <Menu.Item>
                         Last saved&nbsp;<TimeAgo date={this.props.script.modifiedOn} />
                     </Menu.Item>

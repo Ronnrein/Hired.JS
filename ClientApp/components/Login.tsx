@@ -38,6 +38,8 @@ class Login extends React.Component<Props, {}> {
                                     <Input
                                         type="text"
                                         placeholder="Username"
+                                        icon="user"
+                                        iconPosition="left"
                                         action
                                         onChange={(e: any) => this.setState({ username: e.target.value })}
                                     />
@@ -47,12 +49,14 @@ class Login extends React.Component<Props, {}> {
                                         <Input
                                             type="password"
                                             placeholder="Password"
+                                            icon="key"
+                                            iconPosition="left"
                                             action
                                             onChange={(e: any) => this.setState({ password: e.target.value })}
                                         />
                                     </Form.Field>
                                 }
-                                <Button primary fluid onClick={() => this.props.onLoginClick(this.state.username, this.state.password)}>Load</Button>
+                                <Button primary fluid onClick={() => this.props.onLoginClick(this.state.username, this.state.password)} icon="sign in" content="Load" />
                             </Form>
                         </Grid.Column>
                         <Grid.Column width={5} />

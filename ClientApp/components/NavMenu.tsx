@@ -20,7 +20,7 @@ export default class NavMenu extends React.Component<Props, {}> {
                     Inbox
                 </Menu.Item>
                 <Menu.Item as={Link} to="/editor" active={this.props.currentPath === "/editor"}>
-                    <Icon name="code" />
+                    <Icon name="edit" />
                     Editor
                 </Menu.Item>
                 <Menu.Menu position="right">

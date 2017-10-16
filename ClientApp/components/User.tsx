@@ -96,7 +96,7 @@ class Editor extends React.Component<Props, {}> {
                         />
                     </Input>
                     <Divider />
-                    <Button fluid onClick={() => this.props.onLogoutClick()}>Log out</Button>
+                    <Button fluid onClick={() => this.props.onLogoutClick()} icon="log out" content="Log out" />
                 </Popup>
                 <Modal open={this.state.passwordDisableModal}>
                     <Header icon="trash" content="Disable password protection?" />

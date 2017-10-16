@@ -46,9 +46,9 @@ class EditorForm extends React.Component<Props, {}> {
                 <Label size="large">console.log({this.props.assignment.function}(</Label>
                 {this.generateFields()}
                 <Label size="large">));</Label>
-                <Button positive onClick={() => this.onRunClick()}>Run</Button>
+                <Button positive onClick={() => this.onRunClick()} icon="cube" content="Test" />
                 {this.props.assignment.id !== 0 &&
-                    <Button primary onClick={() => this.props.onVerifyClick()}>Verify script</Button>
+                    <Button primary onClick={() => this.props.onVerifyClick()} icon="cubes" content="Verify" />
                 }
             </div>
         );

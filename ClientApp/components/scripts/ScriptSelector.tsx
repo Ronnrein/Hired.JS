@@ -37,7 +37,7 @@ class ScriptSelector extends React.Component<Props, {}> {
     render() {
         return (
             <Modal trigger={
-                <Button positive floated="right" onClick={() => this.props.onModalOpen()}>Go to editor</Button>
+                <Button positive floated="right" onClick={() => this.props.onModalOpen()} icon="edit" content="Go to editor" />
             } closeIcon>
                 <Header
                     icon="file text"
@@ -100,7 +100,7 @@ class ScriptSelector extends React.Component<Props, {}> {
                         positive
                         onClick={() => this.props.onLoadAssignmentClick()}
                         disabled={this.props.isLoading}>
-                        <Icon name="checkmark" />
+                        <Icon name="edit" />
                         Go to editor
                     </Button>
                 </Modal.Actions>

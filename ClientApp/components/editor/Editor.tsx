@@ -32,7 +32,7 @@ class Editor extends React.Component<Props, {}> {
         return (
             <div>
                 <Header as="h2" attached="top">
-                    <Icon name="code" />
+                    <Icon name="edit" />
                     <Header.Content>
                         Editor
                         <Header.Subheader>{this.props.assignment.name}</Header.Subheader>
@@ -46,6 +46,7 @@ class Editor extends React.Component<Props, {}> {
                                     <Segment attached="top" className="no-padding">
                                         <EditorToolbar
                                             script={this.props.script}
+                                            hint={this.props.assignment.hint}
                                             isSaving={this.props.isSaving}
                                             onSaveClick={() => this.props.onSaveClick()} />
                                     </Segment>
@@ -71,7 +72,7 @@ class Editor extends React.Component<Props, {}> {
                                         </Feed.Content>
                                     </Feed.Event>
                                     <Divider />
-                                    <Header attached="top">Documentation</Header>
+                                    <Header icon="archive" content="Documentation" attached="top" />
                                     <Accordion panels={docs} exclusive={false} fluid styled attached />
                                 </Item.Group>
                             </Grid.Column>

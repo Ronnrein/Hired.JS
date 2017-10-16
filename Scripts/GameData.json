@@ -47,11 +47,11 @@
       "readOnlyLines": [1, 1],
       "documentation": [{
         "title": "Variables",
-        "text": "Variables are ways to store values. Variables can be declared and assigned by writing |var variableName = \"Hello World\";|",
+        "text": "Variables are ways to store values. Variables can be declared and assigned by writing|var varName = \"Hello World\";|",
         "url": "https://www.w3schools.com/js/js_variables.asp"
       }, {
         "title": "Functions",
-        "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing |function| and specifying the parameters in the parantheses |(param1, param2)|.",
+        "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing|function name(param1, param2) {|where param1 and param2 are variables you can use in your functions",
         "url": "https://www.w3schools.com/js/js_functions.asp"
       }, {
         "title": "console.log",
@@ -77,7 +77,7 @@
     }
   },{
     "id": 3,
-    "title": "First assignment!",
+    "title": "1st assignment!",
     "precursors": [1],
     "messages": [{
       "authorId": 3,
@@ -163,7 +163,7 @@
         "text": "Just as in math, math operations resolve in a particular order. For instance, if you write |2 * 5 + 2|, it will first do the multiplication, then do the addition. To work around this, you can surround the operation you wish to do first with parantheses. For instance, if you wished to do the addition first in the previous example, you could do |2 * (5 + 2)|",
         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence"
       }],
-      "hint": "Variable result equals number one plus number 2, then result equals result times 0.27, then return result",
+      "hint": "Variable result equals parameters num1 plus num2, then result equals result times 0.27, then return result",
       "arguments": [
         { "description": "Number", "example": "52" },
         { "description": "Number", "example": "24" }
