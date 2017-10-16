@@ -43,7 +43,7 @@
     "react-timeago": "^3.4.3",
     "redux": "3.7.1",
     "redux-thunk": "2.2.0",
-    "semantic-ui-react": "^0.74.0",
+    "semantic-ui-react": "^0.75.0",
     "style-loader": "0.18.2",
     "typescript": "2.4.1",
     "url-loader": "0.5.9",

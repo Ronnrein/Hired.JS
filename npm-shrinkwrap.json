@@ -2596,9 +2596,9 @@
       }
     },
     "semantic-ui-react": {
-      "version": "0.74.0",
-      "from": "semantic-ui-react@0.74.0",
-      "resolved": "https://registry.npmjs.org/semantic-ui-react/-/semantic-ui-react-0.74.0.tgz",
+      "version": "0.75.0",
+      "from": "semantic-ui-react@0.75.0",
+      "resolved": "https://registry.npmjs.org/semantic-ui-react/-/semantic-ui-react-0.75.0.tgz",
       "dependencies": {
         "babel-runtime": {
           "version": "6.26.0",
