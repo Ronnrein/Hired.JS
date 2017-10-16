@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
-import { Grid, Segment, Item, Header, Icon } from "semantic-ui-react";
+import { Grid, Segment, Item, Header, Icon, Transition } from "semantic-ui-react";
 import { Thread as Thread, Message } from "../../store/Threads";
 import ThreadsItem from "./ThreadsItem";
 import { default as ThreadComponent } from "./Thread";
@@ -55,15 +55,19 @@ export default class Threads extends React.Component<Props, {}> {
                     <Grid celled stackable className="no-margin">
                         <Grid.Row>
                             <Grid.Column width={5}>
-                                <Item.Group divided>
-                                    {this.state.threads.map((thread, i) =>
-                                        <ThreadsItem
+                                <Transition.Group as={Item.Group} className="threads-items" divided>
+                                    {this.state.threads.map((thread, i) => {
+                                        let selected = !!this.props.selectedThread && this.props.selectedThread.id === thread.id;
+                                        return <Item
                                             key={i}
-                                            thread={thread}
                                             onClick={() => this.props.onThreadClick(thread)}
-                                            selected={!!this.props.selectedThread && this.props.selectedThread.id === thread.id} />
+                                            className="cursor-pointer" id={selected ? "selected-thread" : ""}
+                                        >
+                                            <ThreadsItem thread={thread} selected={selected}/>
+                                        </Item>
+                                        }
                                     )}
-                                </Item.Group>
+                                </Transition.Group>
                             </Grid.Column>
                             <Grid.Column width={11} className="no-padding">
                                 {this.props.selectedThread ? (
@@ -94,7 +98,7 @@ export default class Threads extends React.Component<Props, {}> {
                     return true;
                 }
                 let diff = message.receivedOn.getTime() - new Date().getTime();
-                timers.push(setTimeout(() => {
+                timers.push(window.setTimeout(() => {
                     let stateThreads = [...this.state.threads];
                     stateThreads[i].messages.push(message);
                     this.setState({

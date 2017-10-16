@@ -200,3 +200,16 @@
 #console-messages .log {
     color: aqua;
 }
+
+.threads-items .image {
+    float: left !important;
+    margin-right: 10px !important;
+}
+
+.code-snippet {
+    background-color: ghostwhite;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    padding: 2px 8px;
+    margin: 5px 0 !important;
+}

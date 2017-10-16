@@ -5,9 +5,11 @@ class FetchError extends Error {
 }
 
 export function convertNewLine(str: string) {
-    return str.split("\n").map((i, k) => {
-        return <p key={k}>{i}</p>;
-    });
+    return str.split("\n").map((i, k) => <p key={k}>{i}</p>);
+}
+
+export function convertCode(str: string) {
+    return str.replace(/\|(.*?)\|/g, (a, b) => `<p class='code-snippet'>${b}</p>`);
 }
 
 export function checkFetchStatus(response: any) {

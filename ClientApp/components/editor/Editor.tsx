@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Segment, Grid, Header, Icon, Item, Feed } from "semantic-ui-react";
+import { Segment, Grid, Header, Icon, Item, Feed, Divider } from "semantic-ui-react";
 import { Assignment } from "../../store/Threads";
 import { Script } from "../../store/Scripts";
 import { VerificationResult } from "../../store/editor";
@@ -7,6 +7,7 @@ import { ConsoleEntry } from "../../store/console";
 import EditorForm from "./EditorForm";
 import EditorToolbar from "./EditorToolbar";
 import EditorAce from "./EditorAce";
+import EditorDocumentation from "./EditorDocumentation";
 import { default as ConsoleComponent } from "../../containers/Console";
 import { convertNewLine } from "../../utils";
 
@@ -66,6 +67,10 @@ class Editor extends React.Component<Props, {}> {
                                             <Feed.Extra text>{convertNewLine(this.props.assignment.summary)}</Feed.Extra>
                                         </Feed.Content>
                                     </Feed.Event>
+                                    <Divider />
+                                    {this.props.assignment.documentation.map((doc, i) =>
+                                        <EditorDocumentation key={i} doc={doc} />
+                                    )}
                                 </Item.Group>
                             </Grid.Column>
                         </Grid.Row>

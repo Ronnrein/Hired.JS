@@ -21,6 +21,8 @@ namespace Hiredjs.ViewModels.Assignment {
             public DateTime? CompletedOn { get; set; }
             public bool Completed => CompletedOn != null;
             public ScriptScoreSummaryVm ScoreSummary { get; set; }
+            public string Hint { get; set; }
+            public IEnumerable<GameData.Documentation> Documentation { get; set; }
             public IEnumerable<int> ReadOnlyLines { get; set; }
             public IEnumerable<GameData.Argument> Arguments { get; set; }
         }

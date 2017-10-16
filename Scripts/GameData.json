@@ -33,7 +33,7 @@
       "text": "Why wasn't my first assignment this simple? :("
     }],
     "completedMessages": [{
-      "authorId": 4,
+      "authorId": 3,
       "delay": 2,
       "text": "Good job! I am sending you some new assignments now :)"
     }],
@@ -41,20 +41,24 @@
       "id": 1,
       "name": "Variables and functions",
       "function": "intro",
-      "summary": "Modify the function to add an explemation mark on the end of the supplied parameter.",
-      "solution": "function intro(param) { var str = param+'!'; return str; }",
-      "template": "function intro(param) {\n\tvar str = param /* Add explemation mark here */;\n\treturn str;\n}",
+      "summary": "Modify the function to add an exclamation mark on the end of the supplied parameter.",
+      "solution": "function intro(str) { var result = str+'!'; return result; }",
+      "template": "function intro(str) {\n\tvar result = str /* Add exclamation mark here */;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
       "documentation": [{
         "title": "Variables",
-        "text": "Variables are ways to store values. Variables can be declared and assigned by writing |var variableName = \"Hello World\";|"
+        "text": "Variables are ways to store values. Variables can be declared and assigned by writing |var variableName = \"Hello World\";|",
+        "url": "https://www.w3schools.com/js/js_variables.asp"
       }, {
         "title": "Functions",
-        "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing |function| and specifying the parameters in the parantheses |(param1, param2)."
+        "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing |function| and specifying the parameters in the parantheses |(param1, param2)|.",
+        "url": "https://www.w3schools.com/js/js_functions.asp"
       }, {
         "title": "console.log",
-        "text": "console.log is a function that is heavily used in JavaScript development to debug and get more feedback of your running code. For instance, writing |console.log(\"Hello world!\");| will print Hello World in the console."
+        "text": "console.log is a function that is heavily used in JavaScript development to debug and get more feedback of your running code. For instance, writing |console.log(\"Hello world!\");| will print Hello World in the console.",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Console/log"
       }],
+      "hint": "Variable result equals parameter plus exclamation mark, then return str",
       "arguments": [
         { "description": "String", "example": "Hello world", "type": "string" }
       ],
@@ -103,11 +107,14 @@
       "readOnlyLines": [1, 1],
       "documentation": [{
         "title": "String operations",
-        "text": "While in mathematics adding things together using a + operator will work the same in JavaScript with numbers, using a + operator with strings will in JavaScript add the second string at the end of the first string. For example, |var result = \"Hello\" + \"World\";| will give result the value of HelloWorld"
+        "text": "While in mathematics adding things together using a + operator will work the same in JavaScript with numbers, using a + operator with strings will in JavaScript add the second string at the end of the first string. For example, |var result = \"Hello\" + \"World\";| will give result the value of HelloWorld",
+        "url": "https://www.w3schools.com/js/js_operators.asp"
       },{
         "title": "Types",
-        "text": "A variable can have many different types. Examples of types it can have are number, string, object, array, among others. JavaScript has a built-in operator to get the type of any variable. For instance, if you type |var type = typeof 2;|, type will not have a string value of Number"
+        "text": "A variable can have many different types. Examples of types it can have are number, string, object, array, among others. JavaScript has a built-in operator to get the type of any variable. For instance, if you type |var type = typeof 2;|, type will not have a string value of Number",
+        "url": "https://www.w3schools.com/js/js_datatypes.asp"
       }],
+      "hint": "Variable result equals string one plus string two, then return result",
       "arguments": [
         { "description": "String", "example": "Hello", "type": "string" },
         { "description": "String", "example": "World", "type": "string" }
@@ -127,17 +134,17 @@
     }
   },{
     "id": 4,
-    "title": "Math",
+    "title": "Add function",
     "precursors": [1],
     "messages": [{
-      "authorId": 1,
+      "authorId": 4,
       "delay":  10, 
-      "text": "In addition to the string concatenation assignment, heres another one for you. Here a client is making a game that required a modified add function as follows: |sum|"
+      "text": "Hi! I'm Maja, i'm and intern here but im fairly good at maths so i was told to forward you some tasks related to that :) Here a client is making a game that requires a modified add function as follows: |sum|"
     }],
     "completedMessages": [{
-      "authorId": 1,
+      "authorId": 4,
       "delay": 2,
-      "text": "Good job! As the maths you use in code get more advanced, you'll need to use more advanced functionality such as built-in math functions, i'll forward you an assignment related to that next"
+      "text": "Good job :) As the maths you use in code get more advanced, you'll need to use more advanced functionality such as built-in math functions, i'll forward you an assignment related to that next"
     }],
     "assignment": {
       "id": 3,
@@ -147,6 +154,16 @@
       "solution": "function sumdiv(num1, num2) { var result = num1 + num2; result = result * 0.27; return result; }",
       "template": "function sumdiv(num1, num2) {\n\tvar result = 0;\n\tresult = 0 * 0;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
+      "documentation": [{
+        "title": "Operators",
+        "text": "To do math in JavaScript, you simply need to use the desired math operator combined with one or more number variable. For example, if you wish to multiply to numbers, you can do |var result = 2 * 4;|. If you have variables containing the numbers, you can do |var result = num1 / num2;|",
+        "url": "https://www.w3schools.com/js/js_operators.asp"
+      }, {
+        "title": "Order of operations",
+        "text": "Just as in math, math operations resolve in a particular order. For instance, if you write |2 * 5 + 2|, it will first do the multiplication, then do the addition. To work around this, you can surround the operation you wish to do first with parantheses. For instance, if you wished to do the addition first in the previous example, you could do |2 * (5 + 2)|",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence"
+      }],
+      "hint": "Variable result equals number one plus number 2, then result equals result times 0.27, then return result",
       "arguments": [
         { "description": "Number", "example": "52" },
         { "description": "Number", "example": "24" }
@@ -165,15 +182,15 @@
       }
   },{
     "id": 5,
-    "title": "Objects",
+    "title": "Email handle",
     "precursors": [2],
     "messages": [{
-      "authorId": 4,
+      "authorId": 3,
       "delay":  3, 
       "text": "Good work on the string assignment! This time i have a client that is a startup that wants us to make a function that generates an email address handle based on their name and title in the company. What i want you to do is as follows: |sum|. I will attach some information about objects and properties that will be useful for this"
     }],
     "completedMessages": [{
-      "authorId": 4,
+      "authorId": 3,
       "delay": 2,
       "text": "Great! Forwarding another assignment in a similar vein to this one"
     }],
@@ -185,6 +202,16 @@
       "solution": "function objconcat(obj) { var name = obj.name; var title = obj.title; var result = name + title; return result; }",
       "template": "function objconcat(obj) {\n\tvar name = \"Paul\";\n\tvar title = \"CEO\";\n\tvar result = name;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
+      "documentation": [{
+        "title": "Objects",
+        "text": "Objects are variables that can contain many values and methods. You may think of it in the same way as real-life objects. A phone is an object with many properties and methods. For instance, you could say a phone has a certain screen property, colour property, as well as a certain power-on method. Most phones share these properties and methods, yet they may differ from phone to phone. The same is true for objects in JavaScript",
+        "url": "https://www.w3schools.com/js/js_objects.asp"
+      }, {
+        "title": "Object properties",
+        "text": "To access the properties of an object you use a period. For instance, |var screen = phone.screen;| would get the screen property of the phone object. To create an object with properties you can write |var phone = { screen: \"HD\", colour: \"red\" };|. Now if you would do |console.log(phone.colour);| the console would print \"red\"",
+        "url": "https://www.w3schools.com/js/js_properties.asp"
+      }],
+      "hint": "Variable name equals name property of obj, then variable title equals title property of obj, then variable result equals variable name plus variable title, then return result",
       "arguments": [
         { "description": "Object with properties \"name\" and \"title\"", "example": "{name: \"Paul\", title: \"CEO\"}" }
       ],
@@ -202,17 +229,17 @@
       }
   },{
     "id": 6,
-    "title": "Libraries",
+    "title": "Game math",
     "precursors": [3],
     "messages": [{
-      "authorId": 1,
+      "authorId": 4,
       "delay":  3, 
-      "text": "In addition to math operators, JavaScript contains a math library with a collection of functions for you to use. We have a customer who wants to generate random user ids for his employees, and want this to be done as follows: |sum|."
+      "text": "In addition to math operators, JavaScript contains a math library with a collection of functions for you to use. We have a customer who is in the process of developing a game, and need a function that combines a couple of Math functions like this: |sum|."
     }],
     "completedMessages": [{
-      "authorId": 1,
+      "authorId": 4,
       "delay": 2,
-      "text": "Great! Forwarding another assignment in a similar vein to this one"
+      "text": "Great :) It looks a bit barren now but i will send you a new assignment as it comes in!"
     }],
     "assignment": {
       "id": 5,
@@ -222,6 +249,16 @@
       "solution": "function powsqrt(num1, num2) { var pow = Math.pow(num1, num2); var result = Math.sqrt(pow); return result; }",
       "template": "function powsqrt(num1, num2) {\n\tvar pow = num1 + num2 /* Use Math.pow() /*;\n\tvar result = pow /* Use Math.sqrt();\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
+      "documentation": [{
+        "title": "Libraries",
+        "text": "Libraries are collections of functionality for specific purposes. For instance, JavaScript contains a Math library with a myriad of functions and constants to help with mathematical operations.",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects"
+      }, {
+        "title": "Math library",
+        "text": "The Math library in JavaScript can be used for anything from retrieving the value of PI to generating random numbers or rounding numbers. As the Math library is already included with JavaScript, to call a function is simple. For instance, |var rand = Math.random();| will assign rand a number between 0 and 1. If you wish to round a number to the lowest integer you could call |var num = Math.floor(2.8);|. This would make num be 2",
+        "url": "https://www.w3schools.com/js/js_math.asp"
+      }],
+      "hint": "Variable pow equals result of math function pow with arguments num1 and num2, then variable result equals result of math function sqrt with argument pow, then return result",
       "arguments": [
         { "description": "Number", "example": "2" },
         { "description": "Number", "example": "4" }
@@ -237,43 +274,6 @@
         { "arguments": [  1,  1 ], "result": 1 },
         { "arguments": [ 10,  9 ], "result": 100000 },
         { "arguments": [  9,  8 ], "result": 19683 }]
-      }
-  },{
-    "id": 5,
-    "title": "Object methods",
-    "precursors": [2],
-    "messages": [{
-      "authorId": 1,
-      "delay":  3, 
-      "text": "Good work on the string assignment! This time i have a client that is a startup that wants us to make a function that generates an email address handle based on their name and title in the company. What i want you to do is as follows: |sum|. I will attach some information about objects and properties that will be useful for this"
-    }],
-    "completedMessages": [{
-      "authorId": 1,
-      "delay": 2,
-      "text": "Great! Forwarding another assignment in a similar vein to this one"
-    }],
-    "assignment": {
-      "id": 6,
-      "name": "Object methods",
-      "function": "objname",
-      "summary": "Modify the function to return the concatenated string of the object properties \"name\" and \"title\"",
-      "solution": "function objconcat(obj) { var name = obj.name; var title = obj.title; var result = name + title; return result; }",
-      "template": "function objconcat(obj) {\n\tvar name = \"Paul\";\n\tvar title = \"CEO\";\n\tvar result = name;\n\treturn result;\n}",
-      "readOnlyLines": [1, 1],
-      "arguments": [
-        { "description": "Object with properties \"name\" and \"title\"", "example": "{name: \"Paul\", title: \"CEO\"}" }
-      ],
-      "tests": [
-        { "arguments": [ "{name: peter, title: intern}" ], "result": "peterintern" },
-        { "arguments": [ "{name: paul, title: ceo}" ], "result": "paulceo" },
-        { "arguments": [ "{name: kyle, title: cashier}" ], "result": "kylecashier" },
-        { "arguments": [ "{name: lars, title: drummer}" ], "result": "larsdrummer" },
-        { "arguments": [ "{name: sebastian, title: driver}" ], "result": "sebastiandriver" },
-        { "arguments": [ "{name: linus, title: developer}" ], "result": "linusdeveloper" },
-        { "arguments": [ "{name: obi, title: jedi}" ], "result": "obijedi" },
-        { "arguments": [ "{name: elizabeth, title: queen}" ], "result": "elizabethqueen" },
-        { "arguments": [ "{name: trump, title: tweeter}" ], "result": "trumptweeter" },
-        { "arguments": [ "{name: john, title: guitarist}" ], "result": "johnguitarist" }]
       }
   }]
 }

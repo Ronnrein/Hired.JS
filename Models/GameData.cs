@@ -34,7 +34,9 @@ namespace Hiredjs.Models {
             public string Solution { get; set; }
             public string Template { get; set; }
             public int Score { get; set; }
+            public string Hint { get; set; }
             public AssignmentCompletion Completion { get; set; }
+            public IEnumerable<Documentation> Documentation { get; set; }
             public IEnumerable<int> ReadOnlyLines { get; set; }
             public IEnumerable<Argument> Arguments { get; set; }
             public IEnumerable<Test> Tests {
@@ -80,6 +82,12 @@ namespace Hiredjs.Models {
         public class Test {
             public IEnumerable<string> Arguments { get; set; }
             public string Result { get; set; }
+        }
+
+        public class Documentation {
+            public string Title { get; set; }
+            public string Text { get; set; }
+            public string Url { get; set; }
         }
 
     }

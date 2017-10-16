@@ -26,6 +26,8 @@ export interface Assignment {
     readOnlyLines: number[];
     completed: boolean;
     completedOn?: Date;
+    hint: string;
+    documentation: Documentation[];
     arguments: Argument[];
     scoreSummary?: ScoreSummary;
 }
@@ -55,6 +57,12 @@ export interface Worker {
     id: number;
     name: string;
     position: string;
+}
+
+export interface Documentation {
+    title: string;
+    text: string;
+    url: string;
 }
 
 export interface RequestThreadsAction {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Segment, List } from "semantic-ui-react";
+import { Segment, List, Transition } from "semantic-ui-react";
 import { ConsoleEntry } from "../../store/Console";
 import { default as ConsoleEntryComponent } from "./ConsoleEntry";
 
@@ -26,9 +26,9 @@ export default class Console extends React.Component<Props, {}> {
             <Segment as="div" attached="bottom" id="console" inverted>
                 <div id="console-shadow"></div>
                 <div id="console-messages" ref={(el: HTMLDivElement) => { this.container = el }}>
-                    <List>
-                        {this.props.entries.map((entry, i) => <ConsoleEntryComponent key={i} entry={entry} />)}
-                    </List>
+                    <Transition.Group as={List} animation="fade down">
+                        {this.props.entries.map((entry, i) => <List.Item key={i}><ConsoleEntryComponent entry={entry} /></List.Item>)}
+                    </Transition.Group>
                 </div>
             </Segment>
         );
