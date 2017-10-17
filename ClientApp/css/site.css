@@ -53,9 +53,13 @@
     position: relative;
 }
 
-#editor {
+#editor, #preview {
     height: 100% !important;
     width: 100% !important;
+}
+
+#preview {
+    min-height: 400px;
 }
 
 #editor-container > div {
