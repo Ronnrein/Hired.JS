@@ -43,7 +43,7 @@ export default class Threads extends React.Component<Props, {}> {
     
     render() {
         return (
-            <div>
+            <div id="content-wrapper">
                 <Header as="h2" attached="top">
                     <Icon name="mail" />
                     <Header.Content>
@@ -51,10 +51,10 @@ export default class Threads extends React.Component<Props, {}> {
                         <Header.Subheader>Your threads and assignments</Header.Subheader>
                     </Header.Content>
                 </Header>
-                <Segment attached className="no-padding" loading={this.props.isLoading}>
-                    <Grid celled stackable className="no-margin">
+                <Segment id="content-main" attached className="no-padding" loading={this.props.isLoading}>
+                    <Grid celled stackable className="no-margin full-height">
                         <Grid.Row>
-                            <Grid.Column width={5}>
+                            <Grid.Column width={5} className="scroll-y">
                                 <Transition.Group as={Item.Group} className="threads-items" divided>
                                     {this.state.threads.map((thread, i) => {
                                         let selected = !!this.props.selectedThread && this.props.selectedThread.id === thread.id;

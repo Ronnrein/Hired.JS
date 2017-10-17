@@ -30,7 +30,7 @@ class Editor extends React.Component<Props, {}> {
             <a href={doc.url} target="_blank">Read more</a>
         ]}));
         return (
-            <div>
+            <div id="content-wrapper">
                 <Header as="h2" attached="top">
                     <Icon name="edit" />
                     <Header.Content>
@@ -38,8 +38,8 @@ class Editor extends React.Component<Props, {}> {
                         <Header.Subheader>{this.props.assignment.name}</Header.Subheader>
                     </Header.Content>
                 </Header>
-                <Segment attached className="no-padding">
-                    <Grid celled stackable className="no-margin">
+                <Segment id="content-main" attached className="no-padding">
+                    <Grid celled stackable className="no-margin full-height">
                         <Grid.Row>
                             <Grid.Column width={11} className="no-padding">
                                 <Segment id="thread-body" loading={this.props.isLoading}>
@@ -59,7 +59,7 @@ class Editor extends React.Component<Props, {}> {
                                     </Segment>
                                 </Segment>
                             </Grid.Column>
-                            <Grid.Column width={5}>
+                            <Grid.Column width={5} className="scroll-y">
                                 <Item.Group as={Feed} divided>
                                     <Feed.Event>
                                         <Feed.Label image="/images/workers/0.jpg" />
@@ -71,24 +71,19 @@ class Editor extends React.Component<Props, {}> {
                                             <Feed.Extra text>{convertNewLine(this.props.assignment.summary)}</Feed.Extra>
                                         </Feed.Content>
                                     </Feed.Event>
-                                    <Divider />
                                     <Header icon="archive" content="Documentation" attached="top" />
                                     <Accordion panels={docs} exclusive={false} fluid styled attached />
                                 </Item.Group>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <EditorForm
-                                    assignment={this.props.assignment}
-                                    consoleAppend={(c: ConsoleEntry) => this.props.consoleAppend(c)}
-                                    onRunClick={(args: string[]) => this.props.onRunClick(args)}
-                                    onVerifyClick={() => this.props.onVerifyClick()}
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
                     </Grid>
                 </Segment>
+                <EditorForm
+                    assignment={this.props.assignment}
+                    consoleAppend={(c: ConsoleEntry) => this.props.consoleAppend(c)}
+                    onRunClick={(args: string[]) => this.props.onRunClick(args)}
+                    onVerifyClick={() => this.props.onVerifyClick()}
+                />
                 <ConsoleComponent />
             </div>
         );

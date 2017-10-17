@@ -10,7 +10,7 @@ type Props = {
 export default class NavMenu extends React.Component<Props, {}> {
     render() {
         return (
-            <Menu className="huge">
+            <Menu id="navbar" className="huge">
                 <Menu.Item as={Link} to="/" active={this.props.currentPath === "/"}>
                     <Icon name="home" />
                     Home

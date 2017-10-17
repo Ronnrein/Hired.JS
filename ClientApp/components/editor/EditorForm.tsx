@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Label, Button, Popup, Input } from "semantic-ui-react";
+import { Label, Button, Popup, Input, Segment } from "semantic-ui-react";
 import { Assignment } from "../../store/Threads";
 import { ConsoleEntryStatus } from "../../store/Console";
 
@@ -42,7 +42,7 @@ class EditorForm extends React.Component<Props, {}> {
 
     render() {
         return (
-            <div id="run-input">
+            <Segment attached id="run-input">
                 <Label size="large">console.log({this.props.assignment.function}(</Label>
                 {this.generateFields()}
                 <Label size="large">));</Label>
@@ -50,7 +50,7 @@ class EditorForm extends React.Component<Props, {}> {
                 {this.props.assignment.id !== 0 &&
                     <Button primary onClick={() => this.props.onVerifyClick()} icon="cubes" content="Verify" />
                 }
-            </div>
+            </Segment>
         );
     }
 

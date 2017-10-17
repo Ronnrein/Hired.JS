@@ -13,9 +13,9 @@ type Props = {
 export default class Layout extends React.Component<Props, {}> {
     render() {
         return (
-            <div>
+            <div className="full-height">
                 <NavMenu currentPath={this.props.currentPath} />
-                <Container>
+                <Container id="main-container">
                     <Route path="/home" component={Home} />
                     <Route path="/editor/:id?" component={Editor} />
                     <Route path="/threads" component={Threads} />
