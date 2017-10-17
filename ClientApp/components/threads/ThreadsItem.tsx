@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default class ThreadsItem extends React.Component<Props, {}> {
-    render() {
+    render(): any {
         if(this.props.thread.messages.length === 0) {
             return null;
         }

@@ -7,7 +7,7 @@ type Props = {
 }
 
 export default class ConsoleEntry extends React.Component<Props, {}> {
-    render() {
+    render(): any {
         return [
             <List.Icon key="icon" name={this.props.entry.icon as SemanticICONS} />,
             <List.Content key="content" className={this.props.entry.status}>
