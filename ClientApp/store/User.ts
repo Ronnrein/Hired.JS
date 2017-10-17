@@ -23,6 +23,7 @@ export interface User {
 export interface RequestUserAction { type: "REQUEST_USER"; }
 export interface RequestUsernameUpdateAction { type: "REQUEST_USERNAME_UPDATE"; }
 export interface RequestPasswordUpdateAction { type: "REQUEST_PASSWORD_UPDATE"; }
+export interface LogoutCompleteAction { type: "LOGOUT_COMPLETE"; }
 export interface LogoutAction { type: "LOGOUT"; }
 export interface ReceiveUserAction { type: "RECEIVE_USER"; user: User; message?: Message; }
 export interface UserRequestPasswordRequiredAction { type: "USER_REQUEST_PASSWORD_REQUIRED"; }
@@ -31,7 +32,7 @@ export interface ResetMessageAction { type: "RESET_MESSAGE"; }
 
 type KnownAction = RequestUserAction | ReceiveUserAction | LogoutAction
     | RequestUsernameUpdateAction | UserRequestFailedAction | RequestPasswordUpdateAction
-    | UserRequestPasswordRequiredAction | ResetMessageAction;
+    | UserRequestPasswordRequiredAction | ResetMessageAction | LogoutCompleteAction;
 
 export const actionCreators = {
     fetchUser: (): AppThunkAction<KnownAction> => (dispatch) => {
@@ -166,6 +167,8 @@ export const actionCreators = {
         fetch("api/user/logout", {
             credentials: "same-origin",
             method: "POST"
+        }).then(() => {
+            dispatch({ type: "LOGOUT_COMPLETE" });
         });
         dispatch({ type: "LOGOUT" });
     },
@@ -227,7 +230,12 @@ export const reducer: Reducer<UserState> = (state: UserState, incomingAction: Ac
             }};
         case "LOGOUT":
             return {...state, ...{
+                isLoading: true
+            }};
+        case "LOGOUT_COMPLETE":
+            return {...state, ...{
                 user: undefined,
+                isLoading: false,
                 message: {
                     title: "Logged out",
                     text: "You were successfully logged out",
