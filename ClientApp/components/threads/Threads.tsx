@@ -64,7 +64,7 @@ export default class Threads extends React.Component<Props, {}> {
                                             className="cursor-pointer" id={selected ? "selected-thread" : ""}
                                         >
                                             <ThreadsItem thread={thread} selected={selected}/>
-                                        </Item>
+                                        </Item>;
                                         }
                                     )}
                                 </Transition.Group>

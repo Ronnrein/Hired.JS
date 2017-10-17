@@ -11,13 +11,6 @@ type ThreadsProps =
     & RouteComponentProps<{}>
 
 class Threads extends React.Component<ThreadsProps, {}> {
-
-    componentDidMount() {
-        if(this.props.threads.length === 0) {
-            this.props.requestThreads();
-        }
-    }
-
     render() {
         return (
             <ThreadsComponent
@@ -28,7 +21,6 @@ class Threads extends React.Component<ThreadsProps, {}> {
             />
         );
     }
-
 }
 
 export default connect(
