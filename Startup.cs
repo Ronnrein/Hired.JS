@@ -61,8 +61,20 @@ namespace Hiredjs {
             // Use lower case urls for controllers and actions
             services.AddRouting(o => o.LowercaseUrls = true);
 
-            // Add tasks from JSON as a singleton
+            // Add gamedata from json as singleton
             GameData gameData = JsonConvert.DeserializeObject<GameData>(File.ReadAllText("Scripts/GameData.json"));
+            // Assign missing data
+            foreach (GameData.Thread thread in gameData.Threads) {
+                foreach (GameData.Message message in thread.Messages.Union(thread.CompletedMessages ?? new GameData.Message[0])) {
+                    message.Author = gameData.Workers.SingleOrDefault(w => w.Id == message.AuthorId);
+                }
+                if (thread.Assignment == null) {
+                    continue;
+                }
+                thread.Assignment.Documentations = thread.Assignment.DocumentationIds.Select(
+                    id => gameData.Documentations.SingleOrDefault(d => d.Title == id)
+                );
+            }
             services.AddSingleton(gameData);
 
             // Add automapper
@@ -106,8 +118,7 @@ namespace Hiredjs {
                     });
                 o.CreateMap<GameData.Assignment, ThreadVm.AssignmentVm>()
                     .ForMember(d => d.CompletedOn, opt => opt.MapFrom(s => s.Completion.CompletedOn));
-                o.CreateMap<GameData.Message, ThreadVm.MessageVm>()
-                    .ForMember(d => d.Author, opt => opt.MapFrom(s => gameData.Workers.Single(w => w.Id == s.AuthorId)));
+                o.CreateMap<GameData.Message, ThreadVm.MessageVm>();
                 o.CreateMap<User, UserVm>()
                     .ForMember(d => d.IsPasswordEnabled, opt => opt.MapFrom(s => !string.IsNullOrEmpty(s.PasswordHash)));
                 o.CreateMap<Script, ScriptVm>();

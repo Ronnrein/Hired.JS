@@ -3,6 +3,7 @@ import { Action, Reducer } from "redux";
 import { AppThunkAction } from "./";
 import * as _ from "lodash";
 import { Script } from "./Scripts";
+import { Documentation} from "./Documentation";
 
 export interface ThreadsState {
     threads: Thread[];
@@ -27,7 +28,7 @@ export interface Assignment {
     completed: boolean;
     completedOn?: Date;
     hint: string;
-    documentation: Documentation[];
+    documentations: Documentation[];
     arguments: Argument[];
     scoreSummary?: ScoreSummary;
 }
@@ -57,12 +58,6 @@ export interface Worker {
     id: number;
     name: string;
     position: string;
-}
-
-export interface Documentation {
-    title: string;
-    text: string;
-    url: string;
 }
 
 export interface RequestThreadsAction {

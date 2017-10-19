@@ -188,7 +188,7 @@ const unloadedState: EditorState = {
         template: "",
         readOnlyLines: [],
         hint: "",
-        documentation: [],
+        documentations: [],
         arguments: [{
             description: "Argument list",
             example: "1, \"Hello there!\""

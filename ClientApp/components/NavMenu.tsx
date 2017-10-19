@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { Menu, Icon } from "semantic-ui-react";
 import { default as UserComponent } from "../containers/User";
+import { default as DocumentationComponent } from "../containers/Documentation";
 
 type Props = {
     currentPath: string;
@@ -24,6 +25,7 @@ export default class NavMenu extends React.Component<Props, {}> {
                     Editor
                 </Menu.Item>
                 <Menu.Menu position="right">
+                    <DocumentationComponent />
                     <UserComponent />
                 </Menu.Menu>
             </Menu>

@@ -25,7 +25,7 @@ type Props = {
 
 class Editor extends React.Component<Props, {}> {
     render() {
-        const docs = this.props.assignment.documentation.map((doc) => ({ title: doc.title, content: [
+        const docs = this.props.assignment.documentations.map((doc) => ({ title: doc.title, content: [
             <p dangerouslySetInnerHTML={{ __html: convertCode(doc.text) }}></p>,
             <a href={doc.url} target="_blank">Read more</a>
         ]}));

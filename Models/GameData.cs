@@ -8,6 +8,7 @@ namespace Hiredjs.Models {
     public class GameData {
         public IEnumerable<Thread> Threads { get; set; }
         public IEnumerable<Worker> Workers { get; set; }
+        public IEnumerable<Documentation> Documentations { get; set; }
 
         public class Worker {
             public int Id { get; set; }
@@ -36,7 +37,8 @@ namespace Hiredjs.Models {
             public int Score { get; set; }
             public string Hint { get; set; }
             public AssignmentCompletion Completion { get; set; }
-            public IEnumerable<Documentation> Documentation { get; set; }
+            public IEnumerable<string> DocumentationIds { get; set; }
+            public IEnumerable<Documentation> Documentations { get; set; }
             public IEnumerable<int> ReadOnlyLines { get; set; }
             public IEnumerable<Argument> Arguments { get; set; }
             public IEnumerable<Test> Tests {

@@ -1,23 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using Hiredjs.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hiredjs.Controllers
-{
-    public class HomeController : Controller
-    {
-        public IActionResult Index()
-        {
+namespace Hiredjs.Controllers {
+    public class HomeController : Controller {
+
+        private readonly GameData _gameData;
+
+        public HomeController(GameData gameData) {
+            _gameData = gameData;
+        }
+
+        public IActionResult Index() {
             return View();
         }
 
-        public IActionResult Error()
-        {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            return View();
+        [HttpGet]
+        [Authorize]
+        public IActionResult Documentation() {
+            return Json(_gameData.Documentations.OrderBy(d => d.Title));
         }
     }
 }

@@ -50,7 +50,7 @@ class Editor extends React.Component<Props, {}> {
             <span>
                 <Popup
                     trigger={<Menu.Item><Icon name="user" />{this.props.user.userName}<Icon name="dropdown" /></Menu.Item>}
-                    on="click"
+                    hoverable
                     position="bottom left"
                     id="user-modal"
                 >

@@ -7,6 +7,51 @@
     { "id": 4, "name": "Maja Dürr", "position": "Intern" },
     { "id": 5, "name": "Phil Andrews", "position": "CEO" }
   ],
+  "documentations": [{
+    "title": "Variables",
+    "text": "Variables are ways to store values. Variables can be declared and assigned by writing|var varName = \"Hello World\";|",
+    "url": "https://www.w3schools.com/js/js_variables.asp"
+  },{
+    "title": "Functions",
+    "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing|function name(param1, param2) {|where param1 and param2 are variables you can use in your functions",
+    "url": "https://www.w3schools.com/js/js_functions.asp"
+  },{
+    "title": "console.log",
+    "text": "console.log is a function that is heavily used in JavaScript development to debug and get more feedback of your running code. For instance, writing |console.log(\"Hello world!\");| will print Hello World in the console.",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Console/log"
+  },{
+    "title": "String operations",
+    "text": "While in mathematics adding things together using a + operator will work the same in JavaScript with numbers, using a + operator with strings will in JavaScript add the second string at the end of the first string. For example, |var result = \"Hello\" + \"World\";| will give result the value of HelloWorld",
+    "url": "https://www.w3schools.com/js/js_operators.asp"
+  },{
+    "title": "Types",
+    "text": "A variable can have many different types. Examples of types it can have are number, string, object, array, among others. JavaScript has a built-in operator to get the type of any variable. For instance, if you type |var type = typeof 2;|, type will not have a string value of Number",
+    "url": "https://www.w3schools.com/js/js_datatypes.asp"
+  },{
+    "title": "Operators",
+    "text": "To do math in JavaScript, you simply need to use the desired math operator combined with one or more number variable. For example, if you wish to multiply to numbers, you can do |var result = 2 * 4;|. If you have variables containing the numbers, you can do |var result = num1 / num2;|",
+    "url": "https://www.w3schools.com/js/js_operators.asp"
+  },{
+    "title": "Order of operations",
+    "text": "Just as in math, math operations resolve in a particular order. For instance, if you write |2 * 5 + 2|, it will first do the multiplication, then do the addition. To work around this, you can surround the operation you wish to do first with parantheses. For instance, if you wished to do the addition first in the previous example, you could do |2 * (5 + 2)|",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence"
+  },{
+    "title": "Objects",
+    "text": "Objects are variables that can contain many values and methods. You may think of it in the same way as real-life objects. A phone is an object with many properties and methods. For instance, you could say a phone has a certain screen property, colour property, as well as a certain power-on method. Most phones share these properties and methods, yet they may differ from phone to phone. The same is true for objects in JavaScript",
+    "url": "https://www.w3schools.com/js/js_objects.asp"
+  },{
+    "title": "Object properties",
+    "text": "To access the properties of an object you use a period. For instance, |var screen = phone.screen;| would get the screen property of the phone object. To create an object with properties you can write |var phone = { screen: \"HD\", colour: \"red\" };|. Now if you would do |console.log(phone.colour);| the console would print \"red\"",
+    "url": "https://www.w3schools.com/js/js_properties.asp"
+  },{
+    "title": "Libraries",
+    "text": "Libraries are collections of functionality for specific purposes. For instance, JavaScript contains a Math library with a myriad of functions and constants to help with mathematical operations.",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects"
+  },{
+    "title": "Math library",
+    "text": "The Math library in JavaScript can be used for anything from retrieving the value of PI to generating random numbers or rounding numbers. As the Math library is already included with JavaScript, to call a function is simple. For instance, |var rand = Math.random();| will assign rand a number between 0 and 1. If you wish to round a number to the lowest integer you could call |var num = Math.floor(2.8);|. This would make num be 2",
+    "url": "https://www.w3schools.com/js/js_math.asp"
+  }],
   "threads": [{
     "id": 1,
     "title": "Welcome!",
@@ -45,19 +90,7 @@
       "solution": "function intro(str) { var result = str+'!'; return result; }",
       "template": "function intro(str) {\n\tvar result = str /* Add exclamation mark here */;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
-      "documentation": [{
-        "title": "Variables",
-        "text": "Variables are ways to store values. Variables can be declared and assigned by writing|var varName = \"Hello World\";|",
-        "url": "https://www.w3schools.com/js/js_variables.asp"
-      }, {
-        "title": "Functions",
-        "text": "Functions (Also called subroutines or procedures) are bodies of code that receive one or more inputs, perform a specific task, and can optionally return a value. A function is defined by writing|function name(param1, param2) {|where param1 and param2 are variables you can use in your functions",
-        "url": "https://www.w3schools.com/js/js_functions.asp"
-      }, {
-        "title": "console.log",
-        "text": "console.log is a function that is heavily used in JavaScript development to debug and get more feedback of your running code. For instance, writing |console.log(\"Hello world!\");| will print Hello World in the console.",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Console/log"
-      }],
+      "documentationIds": ["Variables", "Functions", "console.log"],
       "hint": "Variable result equals parameter plus exclamation mark, then return str",
       "arguments": [
         { "description": "String", "example": "Hello world", "type": "string" }
@@ -105,15 +138,7 @@
       "solution": "function concat(str1, str2) { var result = str1 + str2; return result; }",
       "template": "function concat(str1, str2) {\n\tvar result = str1 /* Modify to concatenate here */;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
-      "documentation": [{
-        "title": "String operations",
-        "text": "While in mathematics adding things together using a + operator will work the same in JavaScript with numbers, using a + operator with strings will in JavaScript add the second string at the end of the first string. For example, |var result = \"Hello\" + \"World\";| will give result the value of HelloWorld",
-        "url": "https://www.w3schools.com/js/js_operators.asp"
-      },{
-        "title": "Types",
-        "text": "A variable can have many different types. Examples of types it can have are number, string, object, array, among others. JavaScript has a built-in operator to get the type of any variable. For instance, if you type |var type = typeof 2;|, type will not have a string value of Number",
-        "url": "https://www.w3schools.com/js/js_datatypes.asp"
-      }],
+      "documentationIds": ["String operations", "Types"],
       "hint": "Variable result equals string one plus string two, then return result",
       "arguments": [
         { "description": "String", "example": "Hello", "type": "string" },
@@ -154,15 +179,7 @@
       "solution": "function sumdiv(num1, num2) { var result = num1 + num2; result = result * 0.27; return result; }",
       "template": "function sumdiv(num1, num2) {\n\tvar result = 0;\n\tresult = 0 * 0;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
-      "documentation": [{
-        "title": "Operators",
-        "text": "To do math in JavaScript, you simply need to use the desired math operator combined with one or more number variable. For example, if you wish to multiply to numbers, you can do |var result = 2 * 4;|. If you have variables containing the numbers, you can do |var result = num1 / num2;|",
-        "url": "https://www.w3schools.com/js/js_operators.asp"
-      }, {
-        "title": "Order of operations",
-        "text": "Just as in math, math operations resolve in a particular order. For instance, if you write |2 * 5 + 2|, it will first do the multiplication, then do the addition. To work around this, you can surround the operation you wish to do first with parantheses. For instance, if you wished to do the addition first in the previous example, you could do |2 * (5 + 2)|",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence"
-      }],
+      "documentationIds": ["Operators", "Order of operations"],
       "hint": "Variable result equals parameters num1 plus num2, then result equals result times 0.27, then return result",
       "arguments": [
         { "description": "Number", "example": "52" },
@@ -202,15 +219,7 @@
       "solution": "function objconcat(obj) { var name = obj.name; var title = obj.title; var result = name + title; return result; }",
       "template": "function objconcat(obj) {\n\tvar name = \"Paul\";\n\tvar title = \"CEO\";\n\tvar result = name;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
-      "documentation": [{
-        "title": "Objects",
-        "text": "Objects are variables that can contain many values and methods. You may think of it in the same way as real-life objects. A phone is an object with many properties and methods. For instance, you could say a phone has a certain screen property, colour property, as well as a certain power-on method. Most phones share these properties and methods, yet they may differ from phone to phone. The same is true for objects in JavaScript",
-        "url": "https://www.w3schools.com/js/js_objects.asp"
-      }, {
-        "title": "Object properties",
-        "text": "To access the properties of an object you use a period. For instance, |var screen = phone.screen;| would get the screen property of the phone object. To create an object with properties you can write |var phone = { screen: \"HD\", colour: \"red\" };|. Now if you would do |console.log(phone.colour);| the console would print \"red\"",
-        "url": "https://www.w3schools.com/js/js_properties.asp"
-      }],
+      "documentationIds": ["Objects", "Object properties"],
       "hint": "Variable name equals name property of obj, then variable title equals title property of obj, then variable result equals variable name plus variable title, then return result",
       "arguments": [
         { "description": "Object with properties \"name\" and \"title\"", "example": "{name: \"Paul\", title: \"CEO\"}" }
@@ -249,15 +258,7 @@
       "solution": "function powsqrt(num1, num2) { var pow = Math.pow(num1, num2); var result = Math.sqrt(pow); return result; }",
       "template": "function powsqrt(num1, num2) {\n\tvar pow = num1 + num2 /* Use Math.pow() */;\n\tvar result = pow /* Use Math.sqrt() */;\n\treturn result;\n}",
       "readOnlyLines": [1, 1],
-      "documentation": [{
-        "title": "Libraries",
-        "text": "Libraries are collections of functionality for specific purposes. For instance, JavaScript contains a Math library with a myriad of functions and constants to help with mathematical operations.",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects"
-      }, {
-        "title": "Math library",
-        "text": "The Math library in JavaScript can be used for anything from retrieving the value of PI to generating random numbers or rounding numbers. As the Math library is already included with JavaScript, to call a function is simple. For instance, |var rand = Math.random();| will assign rand a number between 0 and 1. If you wish to round a number to the lowest integer you could call |var num = Math.floor(2.8);|. This would make num be 2",
-        "url": "https://www.w3schools.com/js/js_math.asp"
-      }],
+      "documentationIds": ["Libraries", "Math library"],
       "hint": "Variable pow equals result of math function pow with arguments num1 and num2, then variable result equals result of math function sqrt with argument pow, then return result",
       "arguments": [
         { "description": "Number", "example": "2" },

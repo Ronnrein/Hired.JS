@@ -259,4 +259,11 @@ code {
     overflow-y: auto;
 }
 
+#documentation {
+    width: 500px !important;
+    height: 200px !important;
+}
 
+#documentation .column {
+    overflow: auto;
+}
