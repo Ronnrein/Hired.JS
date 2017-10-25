@@ -51,6 +51,14 @@
     "title": "Math library",
     "text": "The Math library in JavaScript can be used for anything from retrieving the value of PI to generating random numbers or rounding numbers. As the Math library is already included with JavaScript, to call a function is simple. For instance, |var rand = Math.random();| will assign rand a number between 0 and 1. If you wish to round a number to the lowest integer you could call |var num = Math.floor(2.8);|. This would make num be 2",
     "url": "https://www.w3schools.com/js/js_math.asp"
+  },{
+    "title": "Arrays",
+    "text": "Arrays are lists that store several variables in one variable. Creating an array can be accomplished in several ways. If you wish to create an array containing variables that you have, you could write |var arr = new Array(var1, var2);|If you wish to create an empty array with a specified size of for instance 10 you can write |var arr = new Array(10);|To access an element of an array you can write |var element = arr[2];|Here you are accessing the third element of the array (counting starts at 0). You can check how many elements an array has like so|var len = arr.length;|Arrays also have functions, such as a function to add an element to the array:|arr.push(newElement);|",
+    "url": "https://www.w3schools.com/js/js_arrays.asp"
+  },{
+    "title": "Loops",
+    "text": "To work with arrays, one is often required to use loops. The most important one to know is the for-loop. This repeats a set of operations as many times as specified. For instance, here:|for(var i = 0; i < 10; i++) {|We tell the for loop to create the variable i, set it to 0, repeat the following code as long as the value of i is less than 10, and increase the value of i by one each iteration. For arrays, we often do the following:|for(var i = 0; i < arr.length; i++) { console.log(arr[i]); }|This will go through the array and print each element of the array into the console",
+    "url": "https://www.w3schools.com/js/js_loop_for.asp"
   }],
   "threads": [{
     "id": 1,
@@ -275,6 +283,46 @@
         { "arguments": [  1,  1 ], "result": 1 },
         { "arguments": [ 10,  9 ], "result": 31622.776601683792 },
         { "arguments": [  9,  8 ], "result": 6561 }]
+      }
+  },{
+    "id": 7,
+    "title": "List functions",
+    "precursors": [4, 5],
+    "messages": [{
+      "authorId": 2,
+      "delay":  3, 
+      "text": "Hi, we have a client want a series of list-functions, i will forward them to you as they come along, here is the first one: |sum|There are several different ways to tackle this one, but as long as it works they will be happy!"
+    }],
+    "completedMessages": [{
+      "authorId": 2,
+      "delay": 2,
+      "text": "Fantastic, sending the next one"
+    }],
+    "assignment": {
+      "id": 6,
+      "name": "Array generator",
+      "function": "arrval",
+      "summary": "Modify the function return an array of provided size with each item having the provided value",
+      "solution": "function arrval(size, value) { var arr = new Array(size); for(var i = 0; i < arr.length; i++) { arr[i] = value } return arr; }",
+      "template": "function arrval(size, value) {\n\tvar arr = size /* Create new array object */;\n\t/* Loop through array and set each items value */\n\treturn arr;\n}",
+      "readOnlyLines": [1, 1],
+      "documentationIds": ["Arrays", "Loops"],
+      "hint": "Variable arr equals new array using parameter size, then loop through arr and set each item to be parameter value, then return arr",
+      "arguments": [
+        { "description": "Number", "example": "2" },
+        { "description": "Any", "example": "\"Paul\"" }
+      ],
+      "tests": [
+        { "arguments": [  5, "\"Test\"" ], "result": "Test,Test,Test,Test,Test" },
+        { "arguments": [  4, 4 ], "result": "4,4,4,4" },
+        { "arguments": [  6, "\"Hello\"" ], "result": "Hello,Hello,Hello,Hello,Hello,Hello" },
+        { "arguments": [ 10, true ], "result": "true,true,true,true,true,true,true,true,true,true" },
+        { "arguments": [  2, "\"Value\"" ], "result": "Value,Value" },
+        { "arguments": [ 12, 1 ], "result": "1,1,1,1,1,1,1,1,1,1,1,1" },
+        { "arguments": [  3, -23 ], "result": "-23,-23,-23" },
+        { "arguments": [  1, "\"Boom\"" ], "result": "Boom" },
+        { "arguments": [  8, 2 ], "result": "2,2,2,2,2,2,2,2" },
+        { "arguments": [  9, 1 ], "result": "1,1,1,1,1,1,1,1,1" }]
       }
   }]
 }

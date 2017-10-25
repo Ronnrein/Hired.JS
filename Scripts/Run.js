@@ -19,7 +19,7 @@ module.exports = function(callback, script, solution, args) {
     });
 
     try {
-        o.result = vm.run(`(${script})(${args.join(", ")})`);
+        o.result = vm.run(`(${script})(${args.join(", ")})`).toString();
     } catch (e) {
 
         // Something went wrong in the users code
@@ -27,7 +27,7 @@ module.exports = function(callback, script, solution, args) {
     }
     if (o.error === null && solution !== null) {
         try {
-            o.correct = vm.run(`(${solution})(${args.join(", ")})`);
+            o.correct = vm.run(`(${solution})(${args.join(", ")})`).toString();
         } catch(e) {
 
             // Should not happen, if it does something is wrong in the task template
