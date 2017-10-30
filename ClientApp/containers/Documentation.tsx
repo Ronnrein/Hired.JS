@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
 import * as DocumentationStore from "../store/Documentation";
-import { default as DocumentationComponent } from "../components/documentation/Documentation";
+import { default as DocumentationComponent } from "../components/documentation/DocumentationMenuItem";
 
 type DocumentationProps =
     DocumentationStore.DocumentationState

@@ -259,11 +259,26 @@ code {
     overflow-y: auto;
 }
 
-#documentation {
+#documentation-wrapper {
     width: 500px !important;
     height: 200px !important;
+    padding: 0 !important;
 }
 
-#documentation .column {
-    overflow: auto;
+#documentation {
+    height: 100% !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+#documentation > div {
+    overflow: auto !important;
+}
+
+.home-column {
+    height: 300px !important;
+}
+
+#home-grid .column.row > div:last-child {
+    padding-right: 0 !important;
 }
