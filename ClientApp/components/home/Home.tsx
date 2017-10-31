@@ -49,17 +49,17 @@ export default class Home extends React.Component<HomeProps, {}> {
                             </Statistic>
                             <Statistic>
                                 <Statistic.Value>
-                                    {Math.floor(_.meanBy(completed, (t: ThreadStore.Thread) =>
+                                    {completed.length > 0 ? Math.floor(_.meanBy(completed, (t: ThreadStore.Thread) =>
                                         t.assignment && t.assignment.scoreSummary ? t.assignment.scoreSummary.script.score : 0
-                                    ))}
+                                    )) : 0}
                                 </Statistic.Value>
                                 <Statistic.Label>Avg. Score</Statistic.Label>
                             </Statistic>
                             <Statistic>
                                 <Statistic.Value>
-                                    {Math.floor(_.meanBy(completed, (t: ThreadStore.Thread) =>
+                                    {completed.length > 0 ? Math.floor(_.meanBy(completed, (t: ThreadStore.Thread) =>
                                         t.assignment && t.assignment.scoreSummary ? t.assignment.scoreSummary.solutionScore : 0
-                                    ))}
+                                    )) : 0}
                                 </Statistic.Value>
                                 <Statistic.Label>Avg. AI Score</Statistic.Label>
                             </Statistic>
